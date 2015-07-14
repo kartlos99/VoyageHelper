@@ -1,0 +1,14 @@
+package diakonidze.kartlos.voiage.models;
+
+/**
+ * Created by k.diakonidze on 7/13/2015.
+ */
+public class City {
+    public static final String
+            TBILISI = "???????",
+            FOTI = "????",
+            BATUMI = "??????",
+            TELAVI = "??????",
+            KUTAISI = "???????",
+            MCXETA = "??????";
+}
