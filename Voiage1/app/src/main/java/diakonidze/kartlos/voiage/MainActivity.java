@@ -1,4 +1,4 @@
-package diakonidze.kartlos.voiage;
+package diakonidze.kartlos.voiage; //1.0.1
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
