@@ -26,7 +26,7 @@ public class FragmentA extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_a, container,false);
+        View v = inflater.inflate(R.layout.fragment_a, container, false);
         ListView listViewStatements1 = (ListView) v.findViewById(R.id.statement_1_list);
 
         statements1 = getStatementData();
@@ -40,10 +40,11 @@ public class FragmentA extends Fragment {
     private ArrayList<Statement1> getStatementData() {
         ArrayList<Statement1> data = new ArrayList<>();
         Calendar now = Calendar.getInstance();
-        for (int i = 0; i<5; i++) {
+        for (int i = 0; i < 5; i++)
+        {
             Statement1 newStatment = new Statement1(1, 3, 22, now, "tbilisi", "batumi");
-            newStatment.setName("????");
-            newStatment.setSurname("???????");
+            newStatment.setName("gela");
+            newStatment.setSurname("ss");
             newStatment.setNumber("577987006");
             data.add(newStatment);
         }
