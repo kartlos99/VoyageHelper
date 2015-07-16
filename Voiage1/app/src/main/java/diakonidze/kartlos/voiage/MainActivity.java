@@ -1,5 +1,7 @@
-package diakonidze.kartlos.voiage; //1.0.1
+package diakonidze.kartlos.voiage; //1.0.2
 
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,9 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     ViewPager pager = null;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +20,22 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         pager = (ViewPager) findViewById(R.id.pageView);
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        Mypageadapter myadapter = new Mypageadapter(fragmentManager);
-
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            Mypageadapter myadapter = new Mypageadapter(fragmentManager);
         pager.setAdapter(myadapter);
+
+        actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        ActionBar.Tab tabDriver = actionBar.newTab();
+        tabDriver.setText("????????");
+        tabDriver.setIcon(R.drawable.notification_template_icon_bg);
+        tabDriver.setTabListener(this);
+
+        ActionBar.Tab tabPassenger = actionBar.newTab();
+        tabPassenger.setText("?????????");
+        tabPassenger.setIcon(R.drawable.notification_template_icon_bg);
+        tabPassenger.setTabListener(this);
 
     }
 
@@ -44,5 +59,20 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
     }
 }
