@@ -7,4 +7,5 @@
     <dimen name="list_imig_hiegth">160dp</dimen>
     <dimen name="list_item_padding">6dp</dimen>
     <dimen name="gap_from_image">12dp</dimen>
+    <dimen name="text_margin_in_list">6dp</dimen>
 </resources>

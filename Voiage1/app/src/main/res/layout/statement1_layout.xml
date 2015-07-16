@@ -1,79 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/list_item_padding">
+    >
 
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        card_view:cardCornerRadius="14dp">
+        android:layout_height="160dp"
 
-        <TextView
-            android:id="@+id/list1_city_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="საიდან - სად"
-            android:textSize="@dimen/statement_list_title_size" />
-
-        <TextView
-            android:id="@+id/list1_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/list1_city_text"
-            android:layout_marginLeft="@dimen/gap_from_image"
-            android:layout_toRightOf="@+id/list1_image"
-            android:text="სახელი გვარი" />
-
-        <TextView
-            android:id="@+id/list1_freespace_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/list1_city_text"
-            android:text="1000" />
+        android:layout_margin="10dp"
+        card_view:cardCornerRadius="10dp">
 
         <ImageView
             android:id="@+id/list1_image"
             android:layout_width="@dimen/list_imig_width"
             android:layout_height="@dimen/list_imig_hiegth"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/list1_city_text"
-            android:background="#ff56dcff" />
+            android:layout_gravity="left"
+            android:src="@drawable/girl"
+            android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/list1_date"
+            android:id="@+id/list1_city_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/list1_image"
-            android:layout_marginBottom="23dp"
-            android:layout_marginLeft="@dimen/gap_from_image"
-            android:layout_toEndOf="@+id/list1_image"
-            android:layout_toRightOf="@+id/list1_image"
-            android:text="17.08.2015"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/date_color" />
+            android:text="საიდან - სად"
+            android:layout_gravity="right|top"
+            android:textSize="@dimen/statement_list_title_size"
+            android:layout_margin="@dimen/text_margin_in_list"
+            />
+
+        <TextView
+            android:id="@+id/list1_freespace_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_below="@+id/list1_city_text"
+            android:layout_marginRight="@dimen/text_margin_in_list"
+            android:layout_marginTop="40dp"
+            android:text="1000" />
+
+        <TextView
+            android:id="@+id/list1_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="სახელი გვარი"
+            android:layout_marginLeft="110dp"
+            android:layout_marginTop="40dp"
+            />
 
         <TextView
             android:id="@+id/list1_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/list1_date"
+            android:layout_gravity="right|bottom"
             android:text="10L"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/date_color" />
+            android:textColor="@color/date_color"
+            android:layout_margin="@dimen/text_margin_in_list"
+            />
 
+        <TextView
+            android:id="@+id/list1_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="17.08.2015"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/date_color"
+            android:layout_marginLeft="110dp"
+            android:layout_marginBottom="@dimen/text_margin_in_list"
+            />
 
     </android.support.v7.widget.CardView>
+
+
+
+
+
+
 
 </RelativeLayout>
