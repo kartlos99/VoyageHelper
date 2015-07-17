@@ -1,17 +1,18 @@
 package diakonidze.kartlos.voiage.models;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by k.diakonidze on 7/15/2015.
  */
-public class Statement1 {
+public class DriverStatement implements Serializable {
     long id, userID, placeX, placeY;
     int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome, marka, modeli, color, ageFrom, ageTo, gender;
     Calendar date;
     String cityFrom, cityTo, cityPath, time, comment,  number, name, surname;
 
-    public Statement1(long userID, int freeSpace, int price, Calendar date, String cityFrom, String cityTo) {
+    public DriverStatement(long userID, int freeSpace, int price, Calendar date, String cityFrom, String cityTo) {
         this.userID = userID;
         this.freeSpace = freeSpace;
         this.price = price;
@@ -35,7 +36,7 @@ public class Statement1 {
 
     @Override
     public String toString() {
-        return "Statement1{" +
+        return "DriverStatement{" +
                 "id=" + id +
                 ", userID=" + userID +
                 ", placeX=" + placeX +

@@ -1,5 +1,7 @@
-package diakonidze.kartlos.voiage; //1.0.1
+package diakonidze.kartlos.voiage; //1.0.2
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.MenuItem;
 public class MainActivity extends ActionBarActivity {
 
     ViewPager pager = null;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +20,11 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         pager = (ViewPager) findViewById(R.id.pageView);
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        Mypageadapter myadapter = new Mypageadapter(fragmentManager);
-
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager);
         pager.setAdapter(myadapter);
+
+//http://stackoverflow.com/questions/19238738/android-shape-with-bottom-stroke
 
     }
 
@@ -42,7 +46,16 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if(id == R.id.add_statement){
+
+            Intent intent = new Intent(getApplicationContext(), AddStatement.class);
+
+            startActivity(intent);
+
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
 }

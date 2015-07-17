@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import diakonidze.kartlos.voiage.R;
 
 /**
- * Created by k.diakonidze on 7/13/2015.
+ * Created by k.diakonidze on 7/17/2015.
  */
-public class FragmentB extends Fragment {
+public class AddPassengetStatementF extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_b, container,false);
-        return v;
+        View view = inflater.inflate(R.layout.add_passanger_statement_layout, container, false);
+        return view;
     }
 }
