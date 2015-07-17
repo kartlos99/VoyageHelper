@@ -1,37 +1,27 @@
-package diakonidze.kartlos.voiage; //1.0.2
+package diakonidze.kartlos.voiage;
 
-import android.app.ActionBar;
-import android.content.Intent;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
-public class MainActivity extends ActionBarActivity {
-
-    ViewPager pager = null;
-    ActionBar actionBar;
+public class DetailPage extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_detail_page);
 
-        pager = (ViewPager) findViewById(R.id.pageView);
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager);
-        pager.setAdapter(myadapter);
-
-
-
+        TextView textView = (TextView) findViewById(R.id.textView);
+        textView.setText(getIntent().getSerializableExtra("driver_st").toString());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_detail_page, menu);
         return true;
     }
 
@@ -46,16 +36,7 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id == R.id.add_statement){
-
-            Intent intent = new Intent(getApplicationContext(), AddStatement.class);
-
-            startActivity(intent);
-
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
-
 }

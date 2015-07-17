@@ -10,8 +10,8 @@ import diakonidze.kartlos.voiage.fragments.PassengerStatatementListFragment;
 /**
  * Created by k.diakonidze on 7/14/2015.
  */
-public class Mypageadapter extends FragmentPagerAdapter {
-    public Mypageadapter(FragmentManager fm) {
+public class StatementListPagesAdapter extends FragmentPagerAdapter {
+    public StatementListPagesAdapter(FragmentManager fm) {
         super(fm);
     }
 

@@ -3,5 +3,46 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_add_statement">AddStatement</string>
+    <string-array name="cityes">
+        <item>თბილისი</item>
+        <item>ბათუმი</item>
+        <item>ქუთაისი</item>
+        <item>ბორჯომი</item>
+        <item>სტეფანწმინდა</item>
+    </string-array>
+    <string-array name="tarigi">
+        <item>დღეს</item>
+        <item>ხვალ</item>
+        <item>ზეგ</item>
+        <item>სხვა</item>
+    </string-array>
+    <string-array name="day_time">
+        <item>სულერთია</item>
+        <item>ადრე დილით</item>
+        <item>დილით</item>
+        <item>შუადგეს</item>
+        <item>საღამოს</item>
+    </string-array>
+    <string-array name="veh_color">
+        <item>თეთრი</item>
+        <item>შავი</item>
+        <item>წითელი</item>
+        <item>ყვითელი</item>
+        <item>ლურჯი</item>
+    </string-array>
+    <string-array name="numbers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="passanger_sex">
+        <item>სქესი</item>
+        <item>კაცი</item>
+        <item>ქალი</item>
+    </string-array>
+    <string name="title_activity_detail_page">DetailPage</string>
 
 </resources>

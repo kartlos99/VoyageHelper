@@ -1,11 +1,12 @@
 package diakonidze.kartlos.voiage.models;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by k.diakonidze on 7/15/2015.
  */
-public class DriverStatement {
+public class DriverStatement implements Serializable {
     long id, userID, placeX, placeY;
     int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome, marka, modeli, color, ageFrom, ageTo, gender;
     Calendar date;

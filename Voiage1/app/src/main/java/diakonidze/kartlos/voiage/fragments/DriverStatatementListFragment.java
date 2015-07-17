@@ -1,16 +1,19 @@
 package diakonidze.kartlos.voiage.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import diakonidze.kartlos.voiage.DetailPage;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
 import diakonidze.kartlos.voiage.models.DriverStatement;
@@ -26,12 +29,25 @@ public class DriverStatatementListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_a, container, false);
-        ListView listViewStatements1 = (ListView) v.findViewById(R.id.statement_1_list);
+        ListView driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
 
         driverStatements = getStatementData();
 
         DriverListAdapter driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
-        listViewStatements1.setAdapter(driverListAdapter);
+        driverStatementList.setAdapter(driverListAdapter);
+
+        driverStatementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), DetailPage.class);
+
+                DriverStatement currStatement = (DriverStatement) parent.getItemAtPosition(position);
+                intent.putExtra("driver_st",currStatement);
+
+                startActivity(intent);
+
+            }
+        });
 
         return v;
     }

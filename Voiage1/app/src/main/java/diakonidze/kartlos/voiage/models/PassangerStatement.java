@@ -1,11 +1,12 @@
 package diakonidze.kartlos.voiage.models;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by k.diakonidze on 7/13/2015.
  */
-public class PassangerStatement {
+public class PassangerStatement implements Serializable {
         long id, userID, placeX, placeY;
         int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome;
         String cityFrom, cityTo, time, comment, number, name, surname;

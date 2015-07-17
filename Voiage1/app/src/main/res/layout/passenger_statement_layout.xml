@@ -19,7 +19,7 @@
             android:layout_height="@dimen/list_imig_hiegth"
             android:layout_gravity="left"
             android:scaleType="centerCrop"
-            android:background="@mipmap/ic_launcher" />
+            android:src="@drawable/girl" />
 
         <TextView
             android:id="@+id/list2_city_text"

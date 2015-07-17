@@ -19,7 +19,7 @@
             android:layout_width="@dimen/list_imig_width"
             android:layout_height="@dimen/list_imig_hiegth"
             android:layout_gravity="left"
-            android:src="@drawable/girl"
+            android:src="@drawable/mgz"
             android:scaleType="centerCrop" />
 
         <TextView
