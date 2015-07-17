@@ -24,7 +24,7 @@ public class MainActivity extends ActionBarActivity {
             StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager);
         pager.setAdapter(myadapter);
 
-
+//http://stackoverflow.com/questions/19238738/android-shape-with-bottom-stroke
 
     }
 
