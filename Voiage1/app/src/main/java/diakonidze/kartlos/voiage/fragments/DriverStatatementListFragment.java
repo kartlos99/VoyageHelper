@@ -1,5 +1,7 @@
 package diakonidze.kartlos.voiage.fragments;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,11 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import diakonidze.kartlos.voiage.DetailPage;
+import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
 import diakonidze.kartlos.voiage.models.DriverStatement;
@@ -23,17 +39,34 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
  */
 public class DriverStatatementListFragment extends Fragment {
 
+    private ProgressDialog progress;
     private ArrayList<DriverStatement> driverStatements;
+    private DriverListAdapter driverListAdapter;
+    ListView driverStatementList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_a, container, false);
-        ListView driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
 
-        driverStatements = getStatementData();
 
-        DriverListAdapter driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
+        driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
+
+//        driverStatements = getStatementData();
+
+
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        driverStatements = new ArrayList<>();
+        getDriversStatements();
+
+
+        driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
         driverStatementList.setAdapter(driverListAdapter);
 
         driverStatementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -42,15 +75,98 @@ public class DriverStatatementListFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), DetailPage.class);
 
                 DriverStatement currStatement = (DriverStatement) parent.getItemAtPosition(position);
-                intent.putExtra("driver_st",currStatement);
+                intent.putExtra("driver_st", currStatement);
 
                 startActivity(intent);
 
             }
         });
-
-        return v;
     }
+
+    private void getDriversStatements() {
+
+        String url = "http://back.meet.ge/get.php?type=1";
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+
+        JsonArrayRequest request = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray jsonArray) {
+
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        ArrayList<DriverStatement> newData = new ArrayList<>();
+
+                        if(jsonArray.length()>0){
+                            for(int i=0; i<jsonArray.length(); i++){
+                                try {
+                                    String stringDate = jsonArray.getJSONObject(i).getString("date");
+                                    Calendar calendar = Calendar.getInstance();
+                                    try {
+                                        Date tttt =format.parse(stringDate);
+                                        calendar.setTime(format.parse(stringDate));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    DriverStatement newDriverStatement = new DriverStatement( 1,
+                                            jsonArray.getJSONObject(i).getInt("freespace"),
+                                            jsonArray.getJSONObject(i).getInt("price"),
+                                            calendar,
+                                            jsonArray.getJSONObject(i).getString("cityFrom"),
+                                            jsonArray.getJSONObject(i).getString("cityTo"));
+
+                                    newDriverStatement.setCityPath(jsonArray.getJSONObject(i).getString("cityPath"));
+                                    newDriverStatement.setTime(jsonArray.getJSONObject(i).getString("time"));
+                                    newDriverStatement.setMarka(1); //int
+                                    newDriverStatement.setModeli(1); //int
+                                    newDriverStatement.setColor(jsonArray.getJSONObject(i).getInt("color"));
+                                    newDriverStatement.setCarpicture(jsonArray.getJSONObject(i).getString("photo"));
+                                    newDriverStatement.setKondencioneri(jsonArray.getJSONObject(i).getInt("kondincioneri"));
+                                    newDriverStatement.setSigareti(jsonArray.getJSONObject(i).getInt("sigareti"));
+                                    newDriverStatement.setSabarguli(jsonArray.getJSONObject(i).getInt("sabarguli"));
+                                    newDriverStatement.setAtHome(jsonArray.getJSONObject(i).getInt("adgilzemisvla"));
+                                    newDriverStatement.setCxovelebi(jsonArray.getJSONObject(i).getInt("cxoveli"));
+                                    newDriverStatement.setPlaceX(jsonArray.getJSONObject(i).getLong("placex"));
+                                    newDriverStatement.setPlaceY(jsonArray.getJSONObject(i).getLong("placey"));
+                                    newDriverStatement.setAgeTo(jsonArray.getJSONObject(i).getInt("ageTo"));
+                                    newDriverStatement.setGender(jsonArray.getJSONObject(i).getInt("gender"));
+                                    newDriverStatement.setComment(jsonArray.getJSONObject(i).getString("comment"));
+
+                                    newDriverStatement.setName(jsonArray.getJSONObject(i).getString("firstname"));
+                                    newDriverStatement.setSurname(jsonArray.getJSONObject(i).getString("lastname"));
+                                    newDriverStatement.setNumber(jsonArray.getJSONObject(i).getString("mobile"));
+
+                                    newData.add(newDriverStatement);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        if (newData.size() > 0) {           // tu erti mowyobiloba mainc aris mashin vaxarisxebt lists
+                            driverStatements = newData;
+                            driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
+                            driverStatementList.setAdapter(driverListAdapter);
+                        }
+                        progress.dismiss();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                      //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                    }
+                }
+        );
+
+        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+        queue.add(request);
+    }
+
+
 
     private ArrayList<DriverStatement> getStatementData() {
         ArrayList<DriverStatement> data = new ArrayList<>();
@@ -61,6 +177,9 @@ public class DriverStatatementListFragment extends Fragment {
             newStatment.setName("მალზახ");
             newStatment.setSurname("აბდუშელაშვილი");
             newStatment.setNumber("577987006");
+            newStatment.setMarka(1+i);
+            newStatment.setAgeTo(55);
+
             data.add(newStatment);
         }
         return data;

@@ -31,4 +31,13 @@ public class StatementListPagesAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 2;
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if(position == 0){
+            return "წავიყვან";
+        }else{
+            return "წამიყვანეთ";
+        }
+    }
 }

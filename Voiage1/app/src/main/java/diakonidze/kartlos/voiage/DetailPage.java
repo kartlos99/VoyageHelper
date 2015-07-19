@@ -6,6 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
+import diakonidze.kartlos.voiage.models.DriverStatement;
+
 
 public class DetailPage extends ActionBarActivity {
 
@@ -14,8 +18,26 @@ public class DetailPage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_page);
 
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(getIntent().getSerializableExtra("driver_st").toString());
+        DriverStatement driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
+
+        TextView nameT = (TextView) findViewById(R.id.detiles_name_text);
+        TextView cityT = (TextView) findViewById(R.id.detiles_city_text);
+        TextView timeT = (TextView) findViewById(R.id.detiles_time_text);
+        TextView freespaceT = (TextView) findViewById(R.id.detiles_freespace_text);
+        TextView priceT = (TextView) findViewById(R.id.detiles_price_text);
+        TextView carT = (TextView) findViewById(R.id.detiles_car_text);
+        TextView limitT = (TextView) findViewById(R.id.detiles_limit_text);
+        TextView commentT = (TextView) findViewById(R.id.detiles_comment_text);
+
+        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
+        cityT.setText(driverStatement.getCityFrom()+" - "+driverStatement.getCityTo());
+        timeT.setText(driverStatement.getDate().get(Calendar.YEAR)+"/"+(driverStatement.getDate().get(Calendar.MONTH)+1)+"/"+driverStatement.getDate().get(Calendar.DAY_OF_MONTH)+" "+driverStatement.getTime());
+        freespaceT.setText(String.valueOf(driverStatement.getFreeSpace()));
+        priceT.setText(String.valueOf(driverStatement.getPrice()));
+        carT.setText(driverStatement.getMarka()+" "+driverStatement.getModeli()+" "+driverStatement.getColor());
+        limitT.setText(driverStatement.getAgeTo()+"წ. სქესი "+driverStatement.getGender());
+        commentT.setText(driverStatement.getComment());
+
     }
 
     @Override

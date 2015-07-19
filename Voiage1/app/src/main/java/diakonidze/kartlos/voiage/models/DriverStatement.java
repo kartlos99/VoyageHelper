@@ -10,7 +10,7 @@ public class DriverStatement implements Serializable {
     long id, userID, placeX, placeY;
     int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome, marka, modeli, color, ageFrom, ageTo, gender;
     Calendar date;
-    String cityFrom, cityTo, cityPath, time, comment,  number, name, surname;
+    String cityFrom, cityTo, cityPath, time, comment,  number, name, surname, carpicture;
 
     public DriverStatement(long userID, int freeSpace, int price, Calendar date, String cityFrom, String cityTo) {
         this.userID = userID;
@@ -63,6 +63,14 @@ public class DriverStatement implements Serializable {
                 '}';
     }
 
+
+    public String getCarpicture() {
+        return carpicture;
+    }
+
+    public void setCarpicture(String carpicture) {
+        this.carpicture = carpicture;
+    }
 
     public String getNumber() {
         return number;

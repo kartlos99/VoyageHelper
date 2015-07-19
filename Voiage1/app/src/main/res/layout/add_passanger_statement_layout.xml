@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#fffff5f0">
+    android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/add_passanger_scroll"
@@ -19,6 +18,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:showDividers="middle"
+                android:divider="@drawable/linedivider"
+                android:dividerPadding="2dp"
                 android:padding="@dimen/add_statement_inline_padding">
 
                 <TextView
@@ -49,6 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:showDividers="middle"
+                android:divider="@drawable/linedivider"
+                android:dividerPadding="2dp"
                 android:padding="@dimen/add_statement_inline_padding">
 
                 <TextView
@@ -78,6 +83,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:showDividers="middle"
+                android:divider="@drawable/linedivider"
+                android:dividerPadding="2dp"
                 android:padding="@dimen/add_statement_inline_padding">
 
                 <TextView
@@ -110,6 +118,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:showDividers="middle"
+                android:divider="@drawable/linedivider"
+                android:dividerPadding="2dp"
                 android:padding="@dimen/add_statement_inline_padding">
 
                 <TextView
@@ -117,7 +128,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="4"
+                    android:layout_weight="2"
                     android:text="გადავიხდი" />
 
                 <Spinner
@@ -128,6 +139,13 @@
                     android:entries="@array/numbers"
                     android:gravity="center"
                     android:textAlignment="center" />
+                <TextView
+
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:text="ლარს" />
 
             </LinearLayout>
 

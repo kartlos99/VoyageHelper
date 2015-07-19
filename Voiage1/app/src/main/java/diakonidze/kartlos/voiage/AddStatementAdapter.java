@@ -18,10 +18,10 @@ public class AddStatementAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
-        if(position == 0){
+        if (position == 0) {
             fragment = new AddDriverStatementF();
         }
-        if(position == 1){
+        if (position == 1) {
             fragment = new AddPassengetStatementF();
         }
         return fragment;
@@ -30,5 +30,14 @@ public class AddStatementAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return 2;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (position == 0) {
+            return "ვეძებ მგზავრს";
+        } else {
+            return "ვეძებ ტრანსპორტს";
+        }
     }
 }
