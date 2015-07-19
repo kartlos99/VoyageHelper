@@ -49,11 +49,7 @@ public class DriverStatatementListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_a, container, false);
 
-
         driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
-
-//        driverStatements = getStatementData();
-
 
         return v;
     }
@@ -103,7 +99,6 @@ public class DriverStatatementListFragment extends Fragment {
                                     String stringDate = jsonArray.getJSONObject(i).getString("date");
                                     Calendar calendar = Calendar.getInstance();
                                     try {
-                                        Date tttt =format.parse(stringDate);
                                         calendar.setTime(format.parse(stringDate));
                                     } catch (ParseException e) {
                                         e.printStackTrace();
