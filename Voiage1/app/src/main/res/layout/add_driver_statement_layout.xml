@@ -64,15 +64,18 @@
                     android:layout_weight="4"
                     android:text="დრო" />
 
-                <Spinner
-                    android:id="@+id/driver_date_spiner"
+                <TextView
+                    android:id="@+id/driver_date_text"
+                    android:layout_gravity="center_vertical"
+                    android:text="დღეს"
+                    android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:entries="@array/tarigi" />
+                    android:layout_weight="5" />
 
                 <Spinner
                     android:id="@+id/driver_time_spiner"
+                    android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"

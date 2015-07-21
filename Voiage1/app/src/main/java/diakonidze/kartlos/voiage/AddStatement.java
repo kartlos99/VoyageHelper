@@ -1,17 +1,22 @@
 package diakonidze.kartlos.voiage;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+
+import java.util.Calendar;
 
 
 public class AddStatement extends ActionBarActivity {
 
     ViewPager viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +27,6 @@ public class AddStatement extends ActionBarActivity {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         AddStatementAdapter addStatementAdapter = new AddStatementAdapter(fragmentManager);
         viewPager.setAdapter(addStatementAdapter);
-
 
 
 //        Spinner spinner = (Spinner) findViewById(R.id.spiner1);

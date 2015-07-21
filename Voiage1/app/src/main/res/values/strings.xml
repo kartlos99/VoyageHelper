@@ -19,10 +19,10 @@
     </string-array>
     <string-array name="day_time">
         <item>სულერთია</item>
-        <item>ადრე დილით</item>
         <item>დილით</item>
         <item>შუადგეს</item>
         <item>საღამოს</item>
+        <item>სხვა</item>
     </string-array>
     <string-array name="veh_color">
         <item>თეთრი</item>

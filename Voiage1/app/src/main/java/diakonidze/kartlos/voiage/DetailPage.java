@@ -38,6 +38,8 @@ public class DetailPage extends ActionBarActivity {
         limitT.setText(driverStatement.getAgeTo()+"წ. სქესი "+driverStatement.getGender());
         commentT.setText(driverStatement.getComment());
 
+
+
     }
 
     @Override
