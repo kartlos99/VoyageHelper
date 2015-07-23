@@ -1,33 +1,47 @@
-<RelativeLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:src="@drawable/girl" />-->
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pageView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <include
+            android:id="@+id/tool_bar"
+            layout="@layout/tool_bar"/>
 
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/list_title"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:background="#00ccdd"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        </android.support.v4.view.PagerTabStrip>
-    </android.support.v4.view.ViewPager>
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/list_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00ccdd"
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp">
+
+            </android.support.v4.view.PagerTabStrip>
+        </android.support.v4.view.ViewPager>
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/drawer_manu"/>
 
 
-
-
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

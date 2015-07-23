@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/manuFilter"
+            android:checked="false"
+            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:title="@string/manu_filter" />
+
+        <item
+            android:id="@+id/manuAdd"
+            android:checked="false"
+            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:title="@string/manu_add" />
+
+        <item
+            android:id="@+id/manuFav"
+            android:checked="false"
+            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:title="@string/manu_favorites" />
+
+        <item
+            android:id="@+id/manuMy"
+            android:checked="false"
+            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:title="@string/manu_mystatm" />
+
+
+        <item
+            android:id="@+id/manuPivit"
+            android:checked="false"
+            android:icon="@drawable/gamchvirvale"
+            android:title="@string/manu_privit_info" />
+        <item
+            android:id="@+id/manuExit"
+            android:checked="false"
+            android:icon="@drawable/mgz"
+            android:title="@string/manu_exit" />
+
+    </group>
+</menu>

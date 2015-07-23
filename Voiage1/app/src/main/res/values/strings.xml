@@ -45,4 +45,16 @@
     </string-array>
     <string name="title_activity_detail_page">DetailPage</string>
 
+<!-- navigationDrawer-is menus dasaxelebebi-->
+    <string name="manu_filter">ფილტრი</string>
+    <string name="manu_add">განცხ. დამატება</string>
+    <string name="manu_favorites">რჩეული განცხ.</string>
+    <string name="manu_mystatm">ჩემი განცხ.</string>
+    <string name="manu_privit_info">პირადი ინფო</string>
+    <string name="manu_exit">გასვლა</string>
+
+    <string name="openDrawer">OpenDrawer</string>
+    <string name="closeDrawer">CloseDrawer</string>
+
+
 </resources>
