@@ -11,8 +11,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:divider="@drawable/linedividerhorizontal"
+            android:dividerPadding="6dp"
+            android:showDividers="middle">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,6 +51,8 @@
 
             </LinearLayout>
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -57,7 +63,7 @@
                 android:padding="@dimen/add_statement_inline_padding">
 
                 <TextView
-                    android:id="@+id/driver_time_text"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -73,13 +79,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5" />
 
-                <Spinner
-                    android:id="@+id/driver_time_spiner"
+                <TextView
+                    android:id="@+id/driver_time_text"
                     android:gravity="center"
+                    android:text="00:00"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:entries="@array/day_time" />
+                    android:layout_weight="5" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,7 +122,9 @@
                 android:showDividers="middle"
                 android:divider="@drawable/linedivider"
                 android:dividerPadding="2dp"
-                android:padding="@dimen/add_statement_inline_padding">
+                android:padding="@dimen/add_statement_inline_padding"
+                android:elevation="6dp"
+                android:outlineProvider="paddedBounds">
 
                 <TextView
                     android:id="@+id/driver_price_text"
@@ -180,7 +188,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding">
+                android:padding="@dimen/add_statement_inline_padding"
+                android:elevation="6dp">
 
                 <CheckBox
                     android:id="@+id/driver_comfort_checkBox"
@@ -193,6 +202,7 @@
 
             <LinearLayout
                 android:id="@+id/comfort1"
+                android:animateLayoutChanges="true"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -214,6 +224,7 @@
 
             <LinearLayout
                 android:id="@+id/comfort2"
+                android:animateLayoutChanges="true"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -245,7 +256,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding">
+                android:padding="@dimen/add_statement_inline_padding"
+                android:elevation="6dp">
 
                 <CheckBox
                     android:id="@+id/driver_passanger_restrict_checkBox"
@@ -293,7 +305,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:gravity="right"
+                android:gravity="end"
                 android:padding="@dimen/add_statement_inline_padding">
 
                 <Button

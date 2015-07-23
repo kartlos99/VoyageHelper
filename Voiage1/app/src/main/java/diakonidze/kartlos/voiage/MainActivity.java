@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.manuFilter:
                         Toast.makeText(getApplicationContext(),"filtri",Toast.LENGTH_SHORT).show();
                         return true;
+
+                    case R.id.manuAdd:
+                        Intent intent = new Intent(getApplicationContext(), AddStatement.class);
+                        startActivity(intent);
+                        return true;
+
                     case R.id.manuExit:
                         Toast.makeText(getApplicationContext(),"exit",Toast.LENGTH_SHORT).show();
                         return true;

@@ -8,5 +8,5 @@
     <dimen name="list_item_padding">6dp</dimen>
     <dimen name="gap_from_image">12dp</dimen>
     <dimen name="text_margin_in_list">6dp</dimen>
-    <dimen name="add_statement_inline_padding">10dp</dimen>
+    <dimen name="add_statement_inline_padding">6dp</dimen>
 </resources>

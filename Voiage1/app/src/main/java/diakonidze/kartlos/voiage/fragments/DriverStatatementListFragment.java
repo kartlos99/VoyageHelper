@@ -13,14 +13,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,7 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
  */
 public class DriverStatatementListFragment extends Fragment {
 
+    private JSONObject myobj;
     private ProgressDialog progress;
     private ArrayList<DriverStatement> driverStatements;
     private DriverListAdapter driverListAdapter;
@@ -90,8 +94,37 @@ public class DriverStatatementListFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
 
+                        RequestQueue queue = Volley.newRequestQueue(getActivity());
+                        String url = "http://back.meet.ge/index.php?type=INSERT&sub_type=1&json=";
+
+
+                        try {
+                            myobj = jsonArray.getJSONObject(1);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST ,url, myobj, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+
+                                Toast.makeText(getActivity(),"chawera", Toast.LENGTH_SHORT).show();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                Toast.makeText(getActivity(),"arao "+volleyError.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }); // end
+
+
+                        queue.add(jsonRequest);
+
+
+
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         ArrayList<DriverStatement> newData = new ArrayList<>();
+
 
                         if(jsonArray.length()>0){
                             for(int i=0; i<jsonArray.length(); i++){

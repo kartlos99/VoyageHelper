@@ -8,15 +8,26 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
 
 public class AddStatement extends ActionBarActivity {
 
-    ViewPager viewPager;
-
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +38,17 @@ public class AddStatement extends ActionBarActivity {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         AddStatementAdapter addStatementAdapter = new AddStatementAdapter(fragmentManager);
         viewPager.setAdapter(addStatementAdapter);
+
+
+//
+//        driverDonebtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+
+//            }
+//        });
 
 
 //        Spinner spinner = (Spinner) findViewById(R.id.spiner1);
