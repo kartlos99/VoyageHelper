@@ -23,6 +23,12 @@
                 android:dividerPadding="2dp"
                 android:padding="@dimen/add_statement_inline_padding">
 
+                <AutoCompleteTextView
+                    android:id="@+id/autocomplite"
+                    android:layout_weight="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <TextView
                     android:id="@+id/passanger_marshuti_text"
                     android:layout_width="0dp"

@@ -15,7 +15,7 @@
             android:animateLayoutChanges="true"
             android:orientation="vertical"
             android:divider="@drawable/linedividerhorizontal"
-            android:dividerPadding="6dp"
+            android:dividerPadding="10dp"
             android:showDividers="middle">
 
             <LinearLayout
@@ -67,8 +67,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="4"
+                    android:layout_weight="1"
                     android:text="დრო" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:focusable="false"
+
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/driver_date_text"

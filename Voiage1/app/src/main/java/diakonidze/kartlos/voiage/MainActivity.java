@@ -1,4 +1,4 @@
-package diakonidze.kartlos.voiage; //1.0.3
+package diakonidze.kartlos.voiage; // v 25-07-2015
 
 import android.app.ActionBar;
 import android.content.Context;

@@ -80,7 +80,7 @@ public class AddDriverStatementF extends Fragment {
                 try {
                     jsonObject.put("cityFrom", "TB-1");
                     jsonObject.put("cityTo", "BA-1");
-                    jsonObject.put("cityPath", "A_B");
+                    jsonObject.put("cityPath", "AA__BB");
                     jsonObject.put("date", "2009-11-11");
                     jsonObject.put("time", "0");
                     jsonObject.put("freespace", 9);
@@ -106,7 +106,7 @@ public class AddDriverStatementF extends Fragment {
                     jsonObject.put("status", 1);
                     jsonObject.put("sex", 1);
                     jsonObject.put("photo", "NON");
-                    jsonObject.put("statment_type", 1);
+                    jsonObject.put("user_id", "hghgh");
 
 
                 } catch (JSONException e) {
@@ -114,21 +114,20 @@ public class AddDriverStatementF extends Fragment {
                 }
 
                 RequestQueue queue = Volley.newRequestQueue(getActivity());
-                String url = "http://back.meet.ge/index.php?type=INSERT&sub_type=1&json=";
+                String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
 
-                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET ,url, jsonObject, new Response.Listener<JSONObject>() {
+                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST ,url, jsonObject, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
 
-                        Toast.makeText(getActivity(),"chawera", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),"OK "+jsonObject.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(getActivity(),volleyError.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(),volleyError.toString()+"   -   "+volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }); // end
-
+                });
 
                 queue.add(jsonRequest);
 

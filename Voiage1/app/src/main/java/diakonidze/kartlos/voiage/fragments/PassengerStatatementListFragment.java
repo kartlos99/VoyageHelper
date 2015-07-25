@@ -10,14 +10,17 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +40,7 @@ public class PassengerStatatementListFragment extends Fragment {
     private ArrayList<PassangerStatement> passangerStatements;
     ListView passangerStatementList;
     private ProgressDialog progress;
+    private JSONObject myobj;
 
     @Nullable
     @Override
@@ -60,6 +64,32 @@ public class PassengerStatatementListFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
+
+//                        RequestQueue queue2 = Volley.newRequestQueue(getActivity());
+//                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
+//
+//
+//                        try {
+//                            myobj = jsonArray.getJSONObject(1);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT ,url, myobj, new Response.Listener<JSONObject>() {
+//                            @Override
+//                            public void onResponse(JSONObject jsonObject) {
+//
+//                                Toast.makeText(getActivity(),"chawera", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }, new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError volleyError) {
+//                                Toast.makeText(getActivity(),"araoPPP - "+volleyError.toString(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        }); // end
+
+
+//                        queue2.add(jsonRequest);
 
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         ArrayList<PassangerStatement> newData = new ArrayList<>();
