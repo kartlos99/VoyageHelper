@@ -211,7 +211,7 @@ public class AddDriverStatementF extends Fragment {
 
 // damatebiti pirobebis manipulaciebi
 
-        CheckBox pirobebi = (CheckBox) view.findViewById(R.id.driver_comfort_checkBox);
+        final CheckBox pirobebi = (CheckBox) view.findViewById(R.id.driver_comfort_checkBox);
         final RelativeLayout comfort1 = (RelativeLayout) view.findViewById(R.id.comfort1);
 
         pirobebi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -226,7 +226,7 @@ public class AddDriverStatementF extends Fragment {
         });
 
 // mgzavrze shezgudvebis dayeneba
-        CheckBox passengerLimit = (CheckBox) view.findViewById(R.id.driver_passanger_restrict_checkBox);
+        final CheckBox passengerLimit = (CheckBox) view.findViewById(R.id.driver_passanger_restrict_checkBox);
         final LinearLayout passangerLimitBox = (LinearLayout) view.findViewById(R.id.driver_passanger_restrict_box);
 
         passengerLimit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -240,7 +240,7 @@ public class AddDriverStatementF extends Fragment {
             }
         });
 
-        SeekBar seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
+        final SeekBar seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
         seekBar.setMax(80);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -261,7 +261,8 @@ public class AddDriverStatementF extends Fragment {
             }
         });
 
-        // chawera / gagzavna bazashi
+
+// chawera / gagzavna bazashi
         driverDonebtn = (Button) view.findViewById(R.id.done_driver);
 
         driverDonebtn.setOnClickListener(new View.OnClickListener() {
@@ -269,31 +270,70 @@ public class AddDriverStatementF extends Fragment {
             public void onClick(View v) {
 
 
-//                addDriverStatement = new DriverStatement(1,)
+                Spinner freeSpaceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
+                Spinner priceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
+                Spinner markaSpiner = (Spinner) view.findViewById(R.id.driver_marka_spiner);
+                Spinner modelSpiner = (Spinner) view.findViewById(R.id.driver_model_spiner);
+                CheckBox condicionerCK = (CheckBox) view.findViewById(R.id.driver_conditioner_checkBox);
+                CheckBox atplaceCK = (CheckBox) view.findViewById(R.id.driver_atplace_checkBox);
+                CheckBox cigarCK = (CheckBox) view.findViewById(R.id.driver_cigar_checkBox);
+                CheckBox baggageCK = (CheckBox) view.findViewById(R.id.driver_baggage_checkBox);
+                CheckBox animalCK = (CheckBox) view.findViewById(R.id.driver_animal_checkBox);
+
+                Spinner genderSpinner = (Spinner) view.findViewById(R.id.driver_sex_spiner);
+
+
+
+                addDriverStatement = new DriverStatement(1,freeSpaceSpinner.getSelectedItemPosition()+1, Integer.valueOf(priceSpinner.getSelectedItem().toString()), runTimeC,cityFrom.getText().toString(), cityTo.getText().toString());
+                addDriverStatement.setMarka(markaSpiner.getSelectedItemPosition());
+                addDriverStatement.setModeli(modelSpiner.getSelectedItemPosition());
+                if(pirobebi.isChecked()) {
+                    addDriverStatement.setKondencioneri(BoolToInt(condicionerCK.isChecked()));
+                    addDriverStatement.setAtHome(BoolToInt(atplaceCK.isChecked()));
+                    addDriverStatement.setSigareti(BoolToInt(cigarCK.isChecked()));
+                    addDriverStatement.setSabarguli(BoolToInt(baggageCK.isChecked()));
+                    addDriverStatement.setCxovelebi(BoolToInt(animalCK.isChecked()));
+                }else{
+                    addDriverStatement.setKondencioneri(-1);
+                    addDriverStatement.setAtHome(-1);
+                    addDriverStatement.setSigareti(-1);
+                    addDriverStatement.setSabarguli(-1);
+                    addDriverStatement.setCxovelebi(-1);
+                }
+
+                if(passengerLimit.isChecked()){
+                    addDriverStatement.setAgeTo(seekBar.getProgress());
+                    addDriverStatement.setGender(genderSpinner.getSelectedItemPosition());
+                }else{
+                    addDriverStatement.setAgeTo(1000);
+                    addDriverStatement.setGender(-1);
+                }
+
+
 
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("cityFrom", "TB-1");
-                    jsonObject.put("cityTo", "BA-1");
+                    jsonObject.put("cityFrom", addDriverStatement.getCityFrom());
+                    jsonObject.put("cityTo", addDriverStatement.getCityTo());
                     jsonObject.put("cityPath", "AA__BB");
-                    jsonObject.put("date", "2009-11-11");
-                    jsonObject.put("time", "0");
-                    jsonObject.put("freespace", 9);
-                    jsonObject.put("price", 10);
-                    jsonObject.put("mark", "1");
-                    jsonObject.put("model", "1");
+                    jsonObject.put("date", setedDate);
+                    jsonObject.put("time", setedtime);
+                    jsonObject.put("freespace", addDriverStatement.getFreeSpace());
+                    jsonObject.put("price", addDriverStatement.getPrice());
+                    jsonObject.put("mark", addDriverStatement.getMarka());
+                    jsonObject.put("model", addDriverStatement.getModeli());
                     jsonObject.put("color", 1);
-                    jsonObject.put("kondincioneri", 2);
-                    jsonObject.put("sigareti", 2);
-                    jsonObject.put("sabarguli", 2);
-                    jsonObject.put("adgilzemisvla", 2);
-                    jsonObject.put("cxoveli", 2);
+                    jsonObject.put("kondincioneri", addDriverStatement.getKondencioneri());
+                    jsonObject.put("sigareti", addDriverStatement.getSigareti());
+                    jsonObject.put("sabarguli", addDriverStatement.getSabarguli());
+                    jsonObject.put("adgilzemisvla", addDriverStatement.getAtHome());
+                    jsonObject.put("cxoveli", addDriverStatement.getCxovelebi());
                     jsonObject.put("placex", "555");
                     jsonObject.put("placey", "555");
                     jsonObject.put("ageFrom", 1);
-                    jsonObject.put("ageTo", 100);
-                    jsonObject.put("gender", 1);
-                    jsonObject.put("comment", "cccooooommm");
+                    jsonObject.put("ageTo", addDriverStatement.getAgeTo());
+                    jsonObject.put("gender", addDriverStatement.getGender());
+                    jsonObject.put("comment", addDriverStatement.getComment());
                     jsonObject.put("firstname", "KARTLOS");
                     jsonObject.put("lastname", "DIAKO");
                     jsonObject.put("mobile", "577987006");
@@ -301,7 +341,7 @@ public class AddDriverStatementF extends Fragment {
                     jsonObject.put("status", 1);
                     jsonObject.put("sex", 1);
                     jsonObject.put("photo", "NON");
-                    jsonObject.put("user_id", "hghgh");
+                    jsonObject.put("user_id", "1");
 
 
                 } catch (JSONException e) {
@@ -330,6 +370,14 @@ public class AddDriverStatementF extends Fragment {
         });
 
         return view;
+    }
+
+    private int BoolToInt(boolean checked) {
+        if(checked){
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
     private void initialazeAll() {
