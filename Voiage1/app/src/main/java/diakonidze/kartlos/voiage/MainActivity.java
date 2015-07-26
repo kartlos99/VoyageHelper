@@ -35,12 +35,13 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int MY_ID = 2;
     public final Context mainctx = this;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
-    ViewPager pager = null;
+    private ViewPager pager = null;
 
 
     @Override
@@ -106,6 +107,12 @@ public class MainActivity extends AppCompatActivity {
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager);
         pager.setAdapter(myadapter);
+
+
+        // meniu gancxadebis monishvnaze (didi xnit dacheraze)
+
+
+
 
 
     }

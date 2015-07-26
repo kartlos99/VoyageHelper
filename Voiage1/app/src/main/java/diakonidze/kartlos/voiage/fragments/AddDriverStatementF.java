@@ -2,6 +2,7 @@ package diakonidze.kartlos.voiage.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
@@ -95,7 +97,7 @@ public class AddDriverStatementF extends Fragment {
             timeSpinnerAdapter.notifyDataSetChanged();
             runTimeSpinner.setAdapter(timeSpinnerAdapter);
 
-            runDateSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
+            runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
 
 //            runTimeText.setText());
         }
@@ -181,8 +183,16 @@ public class AddDriverStatementF extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // tu aavirchiet "sxva" romelic me4 poziciaa gamova dayepikeri
                 if(i == 3){
-                    new DatePickerDialog(getActivity(), datelistener, runTimeC.get(Calendar.YEAR), runTimeC.get(Calendar.MONTH), runTimeC.get(Calendar.DAY_OF_MONTH)).show();
+                    DatePickerDialog dialog = new DatePickerDialog(getActivity(), datelistener, runTimeC.get(Calendar.YEAR), runTimeC.get(Calendar.MONTH), runTimeC.get(Calendar.DAY_OF_MONTH));
+                    dialog.setCancelable(false);
+                    dialog.show();
 
+                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                            runDateSpinner.setSelection(0);
+                        }
+                    });
                 }
             }
 
@@ -196,7 +206,16 @@ public class AddDriverStatementF extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i == 3) {
-                    new TimePickerDialog(getActivity(), timelistener, runTimeC.get(Calendar.HOUR_OF_DAY), runTimeC.get(Calendar.MINUTE), false).show();
+                    TimePickerDialog dialog = new TimePickerDialog(getActivity(), timelistener, runTimeC.get(Calendar.HOUR_OF_DAY), runTimeC.get(Calendar.MINUTE), false);
+                    dialog.setCancelable(false);
+                    dialog.show();
+
+                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialogInterface) {
+                            runTimeSpinner.setSelection(0);
+                        }
+                    });
                 }
             }
 
@@ -269,11 +288,12 @@ public class AddDriverStatementF extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Calendar calendar = Calendar.getInstance();
 
                 Spinner freeSpaceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
-                Spinner priceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
-                Spinner markaSpiner = (Spinner) view.findViewById(R.id.driver_marka_spiner);
-                Spinner modelSpiner = (Spinner) view.findViewById(R.id.driver_model_spiner);
+                Spinner priceSpinner = (Spinner) view.findViewById(R.id.driver_price_spiner);
+                Spinner markaSpinner = (Spinner) view.findViewById(R.id.driver_marka_spiner);
+                Spinner modelSpinner = (Spinner) view.findViewById(R.id.driver_model_spiner);
                 CheckBox condicionerCK = (CheckBox) view.findViewById(R.id.driver_conditioner_checkBox);
                 CheckBox atplaceCK = (CheckBox) view.findViewById(R.id.driver_atplace_checkBox);
                 CheckBox cigarCK = (CheckBox) view.findViewById(R.id.driver_cigar_checkBox);
@@ -282,11 +302,15 @@ public class AddDriverStatementF extends Fragment {
 
                 Spinner genderSpinner = (Spinner) view.findViewById(R.id.driver_sex_spiner);
 
+                if(runDateSpinner.getSelectedItemPosition() < 3){
+                    setedDate = calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+(calendar.get(Calendar.DAY_OF_MONTH)+ runDateSpinner.getSelectedItemPosition() );
+
+                }
 
 
                 addDriverStatement = new DriverStatement(1,freeSpaceSpinner.getSelectedItemPosition()+1, Integer.valueOf(priceSpinner.getSelectedItem().toString()), runTimeC,cityFrom.getText().toString(), cityTo.getText().toString());
-                addDriverStatement.setMarka(markaSpiner.getSelectedItemPosition());
-                addDriverStatement.setModeli(modelSpiner.getSelectedItemPosition());
+                addDriverStatement.setMarka(markaSpinner.getSelectedItemPosition());
+                addDriverStatement.setModeli(modelSpinner.getSelectedItemPosition());
                 if(pirobebi.isChecked()) {
                     addDriverStatement.setKondencioneri(BoolToInt(condicionerCK.isChecked()));
                     addDriverStatement.setAtHome(BoolToInt(atplaceCK.isChecked()));
@@ -308,6 +332,7 @@ public class AddDriverStatementF extends Fragment {
                     addDriverStatement.setAgeTo(1000);
                     addDriverStatement.setGender(-1);
                 }
+
 
 
 
@@ -341,7 +366,7 @@ public class AddDriverStatementF extends Fragment {
                     jsonObject.put("status", 1);
                     jsonObject.put("sex", 1);
                     jsonObject.put("photo", "NON");
-                    jsonObject.put("user_id", "1");
+                    jsonObject.put("user_id", MainActivity.MY_ID);
 
 
                 } catch (JSONException e) {
@@ -390,9 +415,9 @@ public class AddDriverStatementF extends Fragment {
         citylist.add("ბორჯომი");
         citylist.add("სტეფანწმინდა");
 
-        timelist.add("დილა");
-        timelist.add("შუადღე");
-        timelist.add("საღამო");
+        timelist.add("დილით");
+        timelist.add("შუადღეს");
+        timelist.add("საღამოს");
         timelist.add("სხვა");
 
         datelist.add("დღეს");

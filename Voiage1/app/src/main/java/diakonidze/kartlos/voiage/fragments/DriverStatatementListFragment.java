@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,19 @@ public class DriverStatatementListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_a, container, false);
 
         driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
+        driverStatementList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                PopupMenu pManu = new PopupMenu(getActivity(), view);
+                pManu.getMenuInflater().inflate(R.menu.popup_manu, pManu.getMenu());
+                pManu.show();
+
+
+
+                return false;
+            }
+        });
 
         return v;
     }
@@ -93,32 +107,6 @@ public class DriverStatatementListFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
-
-//                        RequestQueue queue2 = Volley.newRequestQueue(getActivity());
-//                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
-//
-//
-//                        try {
-//                            myobj = jsonArray.getJSONObject(1);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET ,url, myobj, new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject jsonObject) {
-//
-//                                Toast.makeText(getActivity(),"chawera", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }, new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError volleyError) {
-//                                Toast.makeText(getActivity(),"arao "+volleyError.toString(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }); // end
-//
-//
-//                        queue2.add(jsonRequest);
 
 
 
