@@ -32,22 +32,37 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="4"
+                    android:layout_weight="3"
                     android:text="მარშუტი" />
 
-                <Spinner
+                <AutoCompleteTextView
                     android:id="@+id/driver_cityfrom"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:entries="@array/cityes" />
+                    android:layout_weight="6"
+                    android:hint="ქალაქი"
+                    android:layout_height="wrap_content" />
 
-                <Spinner
+
+                <AutoCompleteTextView
                     android:id="@+id/driver_cityto"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:entries="@array/cityes" />
+                    android:layout_weight="6"
+                    android:hint="ქალაქი"
+                    android:layout_height="wrap_content" />
+
+                <!--<Spinner-->
+                    <!--android:id="@+id/driver_cityfrom"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="5"-->
+                    <!--android:entries="@array/cityes" />-->
+
+                <!--<Spinner-->
+                    <!--android:id="@+id/driver_cityto"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="5"-->
+                    <!--android:entries="@array/cityes" />-->
 
             </LinearLayout>
 
@@ -67,32 +82,27 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     android:text="დრო" />
 
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:focusable="false"
 
-                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/driver_date_text"
+                <Spinner
+                    android:id="@+id/driver_date_spiner"
                     android:layout_gravity="center_vertical"
                     android:text="დღეს"
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5" />
+                    android:layout_weight="6" />
 
-                <TextView
-                    android:id="@+id/driver_time_text"
+                <Spinner
+                    android:id="@+id/driver_time_spiner"
                     android:gravity="center"
                     android:text="00:00"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5" />
+                    android:layout_weight="6" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,14 +119,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="4"
+                    android:layout_weight="9"
                     android:text="თავისუფალი ადგილი" />
 
                 <Spinner
                     android:id="@+id/driver_freespace_spiner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="6"
                     android:entries="@array/numbers"
                     android:gravity="center" />
 
@@ -138,14 +148,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="4"
+                    android:layout_weight="9"
                     android:text="ფასი" />
 
                 <Spinner
                     android:id="@+id/driver_price_spiner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="6"
                     android:entries="@array/numbers"
                     android:gravity="center"
                     android:textAlignment="center" />
@@ -191,9 +201,10 @@
                     android:entries="@array/veh_color" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
                 android:orientation="horizontal"
                 android:padding="@dimen/add_statement_inline_padding"
                 android:elevation="6dp">
@@ -204,65 +215,67 @@
                     android:layout_height="wrap_content"
                     android:text="სხვა პირობები" />
 
+                <RelativeLayout
+                    android:id="@+id/comfort1"
+                    android:visibility="gone"
+                    android:animateLayoutChanges="true"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/driver_comfort_checkBox"
+                    android:layout_height="wrap_content">
 
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/comfort1"
-                android:animateLayoutChanges="true"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding">
 
                 <CheckBox
                     android:id="@+id/driver_conditioner_checkBox"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginLeft="6dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="კონდენციონერი" />
+                    android:text="კონდიციონერი" />
 
                 <CheckBox
                     android:id="@+id/driver_atplace_checkBox"
+                    android:layout_marginTop="6dp"
+                    android:layout_toRightOf="@+id/driver_conditioner_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ადგილზე მისვლა" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/comfort2"
-                android:animateLayoutChanges="true"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding">
 
                 <CheckBox
                     android:id="@+id/driver_cigar_checkBox"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_below="@+id/driver_conditioner_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="სიგარეტი" />
 
                 <CheckBox
                     android:id="@+id/driver_baggage_checkBox"
+                    android:layout_below="@+id/driver_conditioner_checkBox"
+                    android:layout_toEndOf="@+id/driver_cigar_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ბარგი" />
 
                 <CheckBox
                     android:id="@+id/driver_animal_checkBox"
+                    android:layout_below="@+id/driver_conditioner_checkBox"
+                    android:layout_toEndOf="@+id/driver_baggage_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="შ.ცხოველები" />
 
+                </RelativeLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
                 android:padding="@dimen/add_statement_inline_padding"
                 android:elevation="6dp">
 
@@ -272,41 +285,73 @@
                     android:layout_height="wrap_content"
                     android:text="შეზღუდვა მგზავრზე" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:id="@+id/driver_passanger_restrict_box"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_height="70dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:id="@+id/driver_pass_age_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:layout_marginBottom="12dp"
+
+                        android:text="ასაკი" />
+
+                    <SeekBar
+                        android:id="@+id/driver_pass_age_seek"
+                        android:verticalScrollbarPosition="right"
+
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content"
+                        android:progress="50"
+                        android:splitTrack="false" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="12dp"
+                            android:text="სქესი" />
+
+                        <Spinner
+                            android:id="@+id/driver_sex_spiner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/passanger_sex"
+                            android:gravity="center"
+
+                            android:textAlignment="center" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/driver_passanger_restrict_box"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding">
 
-                <TextView
-                    android:id="@+id/driver_pass_age_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="4"
-                    android:text="ზღვრული ასაკი" />
-
-                <SeekBar
-                    android:id="@+id/driver_pass_age_seek"
-                    android:verticalScrollbarPosition="right"
-
-                    android:layout_width="0dp"
-                    android:layout_weight="5"
-                    android:layout_height="wrap_content" />
-
-                <Spinner
-                    android:id="@+id/driver_sex_spiner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:entries="@array/passanger_sex"
-                    android:gravity="center"
-                    android:textAlignment="center" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
