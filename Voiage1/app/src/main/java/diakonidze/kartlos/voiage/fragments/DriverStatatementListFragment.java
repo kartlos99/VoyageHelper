@@ -26,8 +26,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.PriorityQueue;
 
 import diakonidze.kartlos.voiage.DetailPageDriver;
+import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
 import diakonidze.kartlos.voiage.models.DriverStatement;
@@ -41,7 +43,9 @@ public class DriverStatatementListFragment extends Fragment {
     private ProgressDialog progress;
     private ArrayList<DriverStatement> driverStatements;
     private DriverListAdapter driverListAdapter;
-    ListView driverStatementList;
+    private ListView driverStatementList;
+    private String location = "";
+
 
     @Nullable
     @Override
@@ -52,16 +56,14 @@ public class DriverStatatementListFragment extends Fragment {
         driverStatementList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                 PopupMenu pManu = new PopupMenu(getActivity(), view);
                 pManu.getMenuInflater().inflate(R.menu.popup_manu, pManu.getMenu());
                 pManu.show();
-
-
-
                 return false;
             }
         });
+
+        location = getArguments().getString("location");
 
         return v;
     }
@@ -72,7 +74,6 @@ public class DriverStatatementListFragment extends Fragment {
 
         driverStatements = new ArrayList<>();
         getDriversStatements();
-
 
         driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
         driverStatementList.setAdapter(driverListAdapter);
@@ -86,14 +87,23 @@ public class DriverStatatementListFragment extends Fragment {
                 intent.putExtra("driver_st", currStatement);
 
                 startActivity(intent);
-
             }
         });
     }
 
     private void getDriversStatements() {
 
-        String url = "http://back.meet.ge/get.php?type=1";
+        String url="";
+// romeli info wamovigo serveridan
+        switch (location){
+            case MainActivity.ALL_STAT:  url = "http://back.meet.ge/get.php?type=1";
+                break;
+            case MainActivity.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=1";
+                break;
+            case MainActivity.FAVORIT:  url = "http://back.meet.ge/get.php?type=1";
+                break;
+        }
+
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
 
@@ -101,8 +111,6 @@ public class DriverStatatementListFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
-
-
 
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         ArrayList<DriverStatement> newData = new ArrayList<>();

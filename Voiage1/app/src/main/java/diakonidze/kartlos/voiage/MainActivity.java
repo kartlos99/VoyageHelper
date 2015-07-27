@@ -38,6 +38,10 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
 public class MainActivity extends AppCompatActivity {
 
     public static int MY_ID = 2;
+    public final static String MY_OWN_STAT = "chemi";
+    public final static String ALL_STAT = "yvela";
+    public final static String FAVORIT = "rcheuli";
+
     public final Context mainctx = this;
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -82,6 +86,16 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
 
+                    case R.id.manuMy:
+                        Intent toMyPage = new Intent(getApplicationContext(), MyStatements.class);
+                        startActivity(toMyPage);
+                        return true;
+
+                    case R.id.manuFav:
+                        Intent toMyfav = new Intent(getApplicationContext(), FavoriteStatements.class);
+                        startActivity(toMyfav);
+                        return true;
+
                     case R.id.manuExit:
                         Toast.makeText(getApplicationContext(),"exit",Toast.LENGTH_SHORT).show();
                         return true;
@@ -117,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         pager = (ViewPager) findViewById(R.id.pageView);
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager);
+            StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, ALL_STAT);
         pager.setAdapter(myadapter);
 
 

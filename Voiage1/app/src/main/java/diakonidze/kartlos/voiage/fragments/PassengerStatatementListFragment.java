@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.PassangerListAdapter;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
@@ -38,9 +39,10 @@ import diakonidze.kartlos.voiage.models.PassangerStatement;
 public class PassengerStatatementListFragment extends Fragment {
 
     private ArrayList<PassangerStatement> passangerStatements;
-    ListView passangerStatementList;
+    private ListView passangerStatementList;
     private ProgressDialog progress;
     private JSONObject myobj;
+    private String location = "";
 
     @Nullable
     @Override
@@ -49,14 +51,31 @@ public class PassengerStatatementListFragment extends Fragment {
         passangerStatementList = (ListView) v.findViewById(R.id.statement_2_list);
         passangerStatements = new ArrayList<>();
 
-        getPassengersStatements();
+        location = getArguments().getString("location");
 
         return v;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getPassengersStatements();
+
+    }
+
     private void getPassengersStatements() {
 
-        String url = "http://back.meet.ge/get.php?type=2";
+        String url = "";
+// romeli info wamovigo serveridan
+        switch (location){
+            case MainActivity.ALL_STAT:  url = "http://back.meet.ge/get.php?type=2";
+                break;
+            case MainActivity.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
+                break;
+            case MainActivity.FAVORIT:  url = "http://back.meet.ge/get.php?type=2";
+                break;
+        }
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
 
@@ -65,31 +84,6 @@ public class PassengerStatatementListFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
 
-//                        RequestQueue queue2 = Volley.newRequestQueue(getActivity());
-//                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
-//
-//
-//                        try {
-//                            myobj = jsonArray.getJSONObject(1);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.PUT ,url, myobj, new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject jsonObject) {
-//
-//                                Toast.makeText(getActivity(),"chawera", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }, new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError volleyError) {
-//                                Toast.makeText(getActivity(),"araoPPP - "+volleyError.toString(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }); // end
-
-
-//                        queue2.add(jsonRequest);
 
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         ArrayList<PassangerStatement> newData = new ArrayList<>();

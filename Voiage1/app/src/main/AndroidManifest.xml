@@ -23,12 +23,28 @@
             android:label="@string/title_activity_add_statement" >
         </activity>
         <activity
-            android:name=".DetailPage"
+            android:name=".DetailPageDriver"
             android:label="@string/title_activity_detail_page" >
         </activity>
         <activity
             android:name=".DetailPagePassanger"
             android:label="@string/title_activity_detail_page_passanger" >
+        </activity>
+        <activity
+            android:name=".MyStatements"
+            android:label="@string/title_activity_my_statements"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="diakonidze.kartlos.voiage.MainActivity" />
+        </activity>
+        <activity
+            android:name=".FavoriteStatements"
+            android:label="@string/title_activity_favorite_statements"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="diakonidze.kartlos.voiage.MainActivity" />
         </activity>
     </application>
 
