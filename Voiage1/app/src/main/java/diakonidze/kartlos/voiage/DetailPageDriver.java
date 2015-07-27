@@ -11,12 +11,12 @@ import java.util.Calendar;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
 
-public class DetailPage extends ActionBarActivity {
+public class DetailPageDriver extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_page);
+        setContentView(R.layout.detail_layout_driver);
 
         DriverStatement driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
 

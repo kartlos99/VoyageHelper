@@ -1,7 +1,6 @@
 package diakonidze.kartlos.voiage.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,14 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -30,10 +26,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-import diakonidze.kartlos.voiage.DetailPage;
-import diakonidze.kartlos.voiage.MainActivity;
+import diakonidze.kartlos.voiage.DetailPageDriver;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
 import diakonidze.kartlos.voiage.models.DriverStatement;
@@ -86,7 +80,7 @@ public class DriverStatatementListFragment extends Fragment {
         driverStatementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), DetailPage.class);
+                Intent intent = new Intent(getActivity(), DetailPageDriver.class);
 
                 DriverStatement currStatement = (DriverStatement) parent.getItemAtPosition(position);
                 intent.putExtra("driver_st", currStatement);

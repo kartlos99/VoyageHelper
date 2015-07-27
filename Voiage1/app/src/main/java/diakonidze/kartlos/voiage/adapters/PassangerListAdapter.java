@@ -73,7 +73,7 @@ public class PassangerListAdapter extends BaseAdapter {
         viewholder.city.setText(currentStatement.getCityFrom()+" - "+currentStatement.getCityTo());
         viewholder.date.setText(c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH) );
         viewholder.name.setText(currentStatement.getName()+" "+currentStatement.getSurname());
-        viewholder.cost.setText(String.valueOf(currentStatement.getPrice())+"L");
+        viewholder.cost.setText(String.valueOf(currentStatement.getPrice()));
         viewholder.freeSpace.setText(String.valueOf(currentStatement.getFreeSpace()));
 
         return itemToShow;

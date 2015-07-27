@@ -55,6 +55,7 @@
 
     <string name="openDrawer">OpenDrawer</string>
     <string name="closeDrawer">CloseDrawer</string>
+    <string name="title_activity_detail_page_passanger">DetailPagePassanger</string>
 
 
 </resources>

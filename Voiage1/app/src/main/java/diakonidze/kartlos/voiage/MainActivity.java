@@ -3,6 +3,7 @@ package diakonidze.kartlos.voiage; // v 25-07-2015
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -30,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private ViewPager pager = null;
+    SlidingTabLayout tabs;
 
 
     @Override
@@ -51,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddStatement.class);
+                startActivity(intent);
+            }
+        });
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
