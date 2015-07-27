@@ -39,7 +39,7 @@
                     android:id="@+id/driver_cityfrom"
                     android:layout_width="0dp"
                     android:layout_weight="6"
-                    android:hint="ქალაქი"
+                    android:hint="საიდან"
                     android:layout_height="wrap_content" />
 
 
@@ -47,7 +47,7 @@
                     android:id="@+id/driver_cityto"
                     android:layout_width="0dp"
                     android:layout_weight="6"
-                    android:hint="ქალაქი"
+                    android:hint="საით"
                     android:layout_height="wrap_content" />
 
                 <!--<Spinner-->
@@ -139,9 +139,7 @@
                 android:showDividers="middle"
                 android:divider="@drawable/linedivider"
                 android:dividerPadding="2dp"
-                android:padding="@dimen/add_statement_inline_padding"
-                android:elevation="6dp"
-                android:outlineProvider="paddedBounds">
+                android:padding="@dimen/add_statement_inline_padding">
 
                 <TextView
                     android:id="@+id/driver_price_text"
@@ -353,6 +351,16 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:padding="@dimen/add_statement_inline_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/driver_comment"
+                    android:hint="კომენტარი"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

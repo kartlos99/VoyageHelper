@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -51,7 +52,7 @@ public class AddDriverStatementF extends Fragment {
     private TextView runDateText;
     private TextView runTimeText;
     private Button driverDonebtn;
-    private DriverStatement addDriverStatement;
+    private DriverStatement addDriverStatement, getetDriverStatement;
 
     AutoCompleteTextView cityFrom;
     AutoCompleteTextView cityTo;
@@ -107,7 +108,6 @@ public class AddDriverStatementF extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.add_driver_statement_layout, container, false);
-
 
         initialazeAll();
 
@@ -299,6 +299,7 @@ public class AddDriverStatementF extends Fragment {
                 CheckBox cigarCK = (CheckBox) view.findViewById(R.id.driver_cigar_checkBox);
                 CheckBox baggageCK = (CheckBox) view.findViewById(R.id.driver_baggage_checkBox);
                 CheckBox animalCK = (CheckBox) view.findViewById(R.id.driver_animal_checkBox);
+                EditText commentText = (EditText) view.findViewById(R.id.driver_comment);
 
                 Spinner genderSpinner = (Spinner) view.findViewById(R.id.driver_sex_spiner);
 
@@ -332,6 +333,7 @@ public class AddDriverStatementF extends Fragment {
                     addDriverStatement.setAgeTo(1000);
                     addDriverStatement.setGender(-1);
                 }
+                addDriverStatement.setComment(commentText.getText().toString());
 
 
 

@@ -5,6 +5,9 @@
     android:orientation="vertical"
     tools:context="diakonidze.kartlos.voiage.DetailPageDriver">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

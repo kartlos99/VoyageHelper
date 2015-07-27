@@ -1,10 +1,14 @@
 package diakonidze.kartlos.voiage;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -13,12 +17,24 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
 
 public class DetailPageDriver extends ActionBarActivity {
 
+    private DriverStatement driverStatement;
+    private String whereFrom="";
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_layout_driver);
 
-        DriverStatement driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        toolbar.setVisibility(View.GONE);
+
+        whereFrom = getIntent().getStringExtra("from");
+        if(whereFrom.equals(MainActivity.MY_OWN_STAT)){
+            toolbar.setVisibility(View.VISIBLE);
+        }
+        driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
 
         TextView nameT = (TextView) findViewById(R.id.detiles_name_text);
         TextView cityT = (TextView) findViewById(R.id.detiles_city_text);
@@ -46,6 +62,8 @@ public class DetailPageDriver extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_page, menu);
+
+
         return true;
     }
 
@@ -58,6 +76,22 @@ public class DetailPageDriver extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.del_dr_manu) {
+            // serverze gaushvebt gancx ID-s wasashlelad
+            Toast.makeText(getApplicationContext(),"ar unda waishalos es gancxadeba", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id == R.id.edit_dr_manu) {
+            // aq unda gamovidzaxot gancxadebis Sesavsebi forma, romelic
+            // shevsebuli iqneba redaqtirebadi gancxadebis parametrebiT
+            // amitom intentshi vatant gancxadebas
+            Intent intent = new Intent(getApplicationContext(), AddStatement.class);
+
+            intent.putExtra("driver_st", driverStatement);
+            intent.putExtra("reason","edit");
+            startActivity(intent);
             return true;
         }
 

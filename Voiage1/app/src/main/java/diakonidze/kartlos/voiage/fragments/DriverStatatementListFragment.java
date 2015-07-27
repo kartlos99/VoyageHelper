@@ -85,6 +85,7 @@ public class DriverStatatementListFragment extends Fragment {
 
                 DriverStatement currStatement = (DriverStatement) parent.getItemAtPosition(position);
                 intent.putExtra("driver_st", currStatement);
+                intent.putExtra("from",location);
 
                 startActivity(intent);
             }

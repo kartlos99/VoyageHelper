@@ -58,6 +58,9 @@
     <string name="title_activity_detail_page_passanger">DetailPagePassanger</string>
     <string name="title_activity_my_statements">MyStatements</string>
     <string name="title_activity_favorite_statements">FavoriteStatements</string>
+    <string name="in_manu_del">Delete</string>
+    <string name="in_manu_edit">edit</string>
+    <string name="title_activity_edit_my_statement">EditMyStatement</string>
 
 
 </resources>
