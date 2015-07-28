@@ -25,9 +25,7 @@ public class EditMyStatement extends ActionBarActivity {
         setContentView(R.layout.edit_my_statement);
 
         if(savedInstanceState != null){
-
             stType = savedInstanceState.getString("type");
-
         }else {
             stType = getIntent().getStringExtra("type");
         }
@@ -37,6 +35,7 @@ public class EditMyStatement extends ActionBarActivity {
         if(stType.equals(Constantebi.STAT_TYPE_DRIVER)){
             driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
             Bundle bundle = new Bundle();
+            bundle.putString("action", Constantebi.REASON_EDIT);
             bundle.putSerializable("statement",driverStatement);
             fragment = new AddDriverStatementF();
             fragment.setArguments(bundle);

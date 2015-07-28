@@ -12,4 +12,6 @@ public class Constantebi {
     public final static String FAVORIT_STAT = "rcheuli";
     public final static String STAT_TYPE_DRIVER = "driver";
     public final static String STAT_TYPE_PASSANGER = "passanger";
+    public final static String REASON_ADD = "add";
+    public final static String REASON_EDIT = "edit";
 }

@@ -91,7 +91,6 @@ public class AddDriverStatementF extends Fragment {
             runDateSpinner.setAdapter(dateSpinnerAdapter);
 
             runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
-//            runDateText.setText();
         }
     };
 
@@ -105,10 +104,7 @@ public class AddDriverStatementF extends Fragment {
             timelist.add(setedtime);
             timeSpinnerAdapter.notifyDataSetChanged();
             runTimeSpinner.setAdapter(timeSpinnerAdapter);
-
             runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
-
-//            runTimeText.setText());
         }
     };
 
@@ -145,15 +141,17 @@ public class AddDriverStatementF extends Fragment {
         if (savedInstanceState != null) {
             // tu reCreate moxda grafebshi vabrumebt ra mdgomareobac iyo
             driverStatement = (DriverStatement) savedInstanceState.getSerializable("statement");
-
             fillForm(driverStatement);
-
         } else {
-            // obieqti gadmoeca e.i. redaqtirebaa
-            driverStatement = (DriverStatement) getArguments().getSerializable("statement");
-            // tu ar gadmoeca mashin vavsebT axal ganacxadis formas
-            if (driverStatement == null)
-                driverStatement = new DriverStatement(Constantebi.MY_ID, 0, 0, setedDate, "", "");
+            // chemi gancxadebis gaxsna redaqtirebisatvis
+            if(getArguments().getString("action").equals(Constantebi.REASON_EDIT)){
+                driverStatement = (DriverStatement) getArguments().getSerializable("statement");
+                fillForm(driverStatement);
+            }
+            // axali gancxadebis chawera
+            if(getArguments().getString("action").equals(Constantebi.REASON_ADD)) {
+                driverStatement = (DriverStatement) getArguments().getSerializable("statement");
+            }
         }
 
 
