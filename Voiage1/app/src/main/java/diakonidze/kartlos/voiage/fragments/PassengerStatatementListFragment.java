@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -26,11 +24,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.PassangerListAdapter;
+import diakonidze.kartlos.voiage.models.Constantebi;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
 
 /**
@@ -69,11 +67,11 @@ public class PassengerStatatementListFragment extends Fragment {
         String url = "";
 // romeli info wamovigo serveridan
         switch (location){
-            case MainActivity.ALL_STAT:  url = "http://back.meet.ge/get.php?type=2";
+            case Constantebi.ALL_STAT:  url = "http://back.meet.ge/get.php?type=2";
                 break;
-            case MainActivity.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
+            case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
                 break;
-            case MainActivity.FAVORIT:  url = "http://back.meet.ge/get.php?type=2";
+            case Constantebi.FAVORIT_STAT:  url = "http://back.meet.ge/get.php?type=2";
                 break;
         }
 
@@ -91,20 +89,20 @@ public class PassengerStatatementListFragment extends Fragment {
                         if(jsonArray.length()>0){
                             for(int i=0; i<jsonArray.length(); i++){
                                 try {
-                                    String stringDate = jsonArray.getJSONObject(i).getString("date");
-                                    Calendar calendar = Calendar.getInstance();
-                                    try {
-                                        calendar.setTime(format.parse(stringDate));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
+//                                    String stringDate = jsonArray.getJSONObject(i).getString("date");
+//                                    Calendar calendar = Calendar.getInstance();
+//                                    try {
+//                                        calendar.setTime(format.parse(stringDate));
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
 
                                     PassangerStatement newPassangerStatement = new PassangerStatement( 1,
                                             jsonArray.getJSONObject(i).getInt("freespace"),
                                             jsonArray.getJSONObject(i).getInt("price"),
                                             jsonArray.getJSONObject(i).getString("cityFrom"),
                                             jsonArray.getJSONObject(i).getString("cityTo"),
-                                            calendar);
+                                            jsonArray.getJSONObject(i).getString("date"));
 
                                     newPassangerStatement.setTime(jsonArray.getJSONObject(i).getString("time"));
                                     newPassangerStatement.setKondencioneri(jsonArray.getJSONObject(i).getInt("kondincioneri"));
@@ -151,15 +149,15 @@ public class PassengerStatatementListFragment extends Fragment {
 
     private ArrayList<PassangerStatement> getStatementData() {
         ArrayList<PassangerStatement> data = new ArrayList<>();
-        Calendar now = Calendar.getInstance();
-        for (int i = 0; i < 14; i++)
-        {
-            PassangerStatement newStatment = new PassangerStatement(1, 1, 10, "ბორჯომი", "ბაკურიანი", Calendar.getInstance());
-            newStatment.setName("მარგარიტა");
-            newStatment.setSurname("აბდუშელაშვილი");
-            newStatment.setNumber("577987__6");
-            data.add(newStatment);
-        }
+//        Calendar now = Calendar.getInstance();
+//        for (int i = 0; i < 14; i++)
+//        {
+//            PassangerStatement newStatment = new PassangerStatement(1, 1, 10, "ბორჯომი", "ბაკურიანი", "");
+//            newStatment.setName("მარგარიტა");
+//            newStatment.setSurname("აბდუშელაშვილი");
+//            newStatment.setNumber("577987__6");
+//            data.add(newStatment);
+//        }
         return data;
     }
 }

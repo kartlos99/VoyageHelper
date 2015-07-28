@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import diakonidze.kartlos.voiage.models.Constantebi;
+
 
 public class MyStatements extends ActionBarActivity {
 
@@ -23,7 +25,7 @@ public class MyStatements extends ActionBarActivity {
 
         pager = (ViewPager) findViewById(R.id.pageView);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, MainActivity.MY_OWN_STAT);
+        StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.MY_OWN_STAT);
         pager.setAdapter(myadapter);
 
     }

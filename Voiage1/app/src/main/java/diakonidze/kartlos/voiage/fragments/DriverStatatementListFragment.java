@@ -26,12 +26,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.PriorityQueue;
 
 import diakonidze.kartlos.voiage.DetailPageDriver;
 import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
+import diakonidze.kartlos.voiage.models.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
 /**
@@ -97,11 +97,11 @@ public class DriverStatatementListFragment extends Fragment {
         String url="";
 // romeli info wamovigo serveridan
         switch (location){
-            case MainActivity.ALL_STAT:  url = "http://back.meet.ge/get.php?type=1";
+            case Constantebi.ALL_STAT:  url = "http://back.meet.ge/get.php?type=1";
                 break;
-            case MainActivity.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=1";
+            case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=1";
                 break;
-            case MainActivity.FAVORIT:  url = "http://back.meet.ge/get.php?type=1";
+            case Constantebi.FAVORIT_STAT:  url = "http://back.meet.ge/get.php?type=1";
                 break;
         }
 
@@ -120,18 +120,18 @@ public class DriverStatatementListFragment extends Fragment {
                         if(jsonArray.length()>0){
                             for(int i=0; i<jsonArray.length(); i++){
                                 try {
-                                    String stringDate = jsonArray.getJSONObject(i).getString("date");
-                                    Calendar calendar = Calendar.getInstance();
-                                    try {
-                                        calendar.setTime(format.parse(stringDate));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
+//                                    String stringDate = jsonArray.getJSONObject(i).getString("date");
+//                                    Calendar calendar = Calendar.getInstance();
+//                                    try {
+//                                        calendar.setTime(format.parse(stringDate));
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
 
                                     DriverStatement newDriverStatement = new DriverStatement( 1,
                                             jsonArray.getJSONObject(i).getInt("freespace"),
                                             jsonArray.getJSONObject(i).getInt("price"),
-                                            calendar,
+                                            jsonArray.getJSONObject(i).getString("date"),
                                             jsonArray.getJSONObject(i).getString("cityFrom"),
                                             jsonArray.getJSONObject(i).getString("cityTo"));
 
@@ -189,18 +189,18 @@ public class DriverStatatementListFragment extends Fragment {
 
     private ArrayList<DriverStatement> getStatementData() {
         ArrayList<DriverStatement> data = new ArrayList<>();
-        Calendar now = Calendar.getInstance();
-        for (int i = 0; i < 14; i++)
-        {
-            DriverStatement newStatment = new DriverStatement(1, 3, 12+i, now, "ქუთაისი", "ზესტაფონი");
-            newStatment.setName("მალზახ");
-            newStatment.setSurname("აბდუშელაშვილი");
-            newStatment.setNumber("577987006");
-            newStatment.setMarka(1+i);
-            newStatment.setAgeTo(55);
-
-            data.add(newStatment);
-        }
+//        Calendar now = Calendar.getInstance();
+//        for (int i = 0; i < 14; i++)
+//        {
+//            DriverStatement newStatment = new DriverStatement(1, 3, 12+i, "", "ქუთაისი", "ზესტაფონი");
+//            newStatment.setName("მალზახ");
+//            newStatment.setSurname("აბდუშელაშვილი");
+//            newStatment.setNumber("577987006");
+//            newStatment.setMarka(1+i);
+//            newStatment.setAgeTo(55);
+//
+//            data.add(newStatment);
+//        }
         return data;
     }
 

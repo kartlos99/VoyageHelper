@@ -10,9 +10,9 @@ public class PassangerStatement implements Serializable {
         long id, userID, placeX, placeY;
         int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome;
         String cityFrom, cityTo, time, comment, number, name, surname;
-        Calendar date;
+        String date;
 
-        public PassangerStatement(long userID, int freeSpace, int price, String cityFrom, String cityTo, Calendar date) {
+        public PassangerStatement(long userID, int freeSpace, int price, String cityFrom, String cityTo, String date) {
                 this.userID = userID;
                 this.freeSpace = freeSpace;
                 this.price = price;
@@ -199,11 +199,11 @@ public class PassangerStatement implements Serializable {
                 this.comment = comment;
         }
 
-        public Calendar getDate() {
+        public String getDate() {
                 return date;
         }
 
-        public void setDate(Calendar date) {
+        public void setDate(String date) {
                 this.date = date;
         }
 }

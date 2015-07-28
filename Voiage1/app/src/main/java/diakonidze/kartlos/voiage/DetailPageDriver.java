@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import diakonidze.kartlos.voiage.models.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
 
@@ -31,7 +32,7 @@ public class DetailPageDriver extends ActionBarActivity {
         toolbar.setVisibility(View.GONE);
 
         whereFrom = getIntent().getStringExtra("from");
-        if(whereFrom.equals(MainActivity.MY_OWN_STAT)){
+        if(whereFrom.equals(Constantebi.MY_OWN_STAT)){
             toolbar.setVisibility(View.VISIBLE);
         }
         driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
@@ -47,11 +48,11 @@ public class DetailPageDriver extends ActionBarActivity {
 
         nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
         cityT.setText(driverStatement.getCityFrom()+" - "+driverStatement.getCityTo());
-        timeT.setText(driverStatement.getDate().get(Calendar.YEAR)+"/"+(driverStatement.getDate().get(Calendar.MONTH)+1)+"/"+driverStatement.getDate().get(Calendar.DAY_OF_MONTH)+" "+driverStatement.getTime());
+        timeT.setText(driverStatement.getDate()+" "+driverStatement.getTime());
         freespaceT.setText(String.valueOf(driverStatement.getFreeSpace()));
         priceT.setText(String.valueOf(driverStatement.getPrice()));
         carT.setText(driverStatement.getMarka()+" "+driverStatement.getModeli()+" "+driverStatement.getColor());
-        limitT.setText(driverStatement.getAgeTo()+"წ. სქესი "+driverStatement.getGender());
+        limitT.setText(driverStatement.getAgeTo()+"წ.  სქესი "+driverStatement.getGender());
         commentT.setText(driverStatement.getComment());
 
 
@@ -87,10 +88,10 @@ public class DetailPageDriver extends ActionBarActivity {
             // aq unda gamovidzaxot gancxadebis Sesavsebi forma, romelic
             // shevsebuli iqneba redaqtirebadi gancxadebis parametrebiT
             // amitom intentshi vatant gancxadebas
-            Intent intent = new Intent(getApplicationContext(), AddStatement.class);
+            Intent intent = new Intent(getApplicationContext(), EditMyStatement.class);
 
             intent.putExtra("driver_st", driverStatement);
-            intent.putExtra("reason","edit");
+            intent.putExtra("type", Constantebi.STAT_TYPE_DRIVER);
             startActivity(intent);
             return true;
         }

@@ -1,17 +1,73 @@
 package diakonidze.kartlos.voiage;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import diakonidze.kartlos.voiage.fragments.AddDriverStatementF;
+import diakonidze.kartlos.voiage.models.Constantebi;
+import diakonidze.kartlos.voiage.models.DriverStatement;
+import diakonidze.kartlos.voiage.models.PassangerStatement;
+
 
 public class EditMyStatement extends ActionBarActivity {
+
+    String stType="";
+    DriverStatement driverStatement;
+    PassangerStatement passangerStatement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_my_statement);
+
+        if(savedInstanceState != null){
+
+            stType = savedInstanceState.getString("type");
+
+        }else {
+            stType = getIntent().getStringExtra("type");
+        }
+
+        android.support.v4.app.Fragment fragment = null;
+
+        if(stType.equals(Constantebi.STAT_TYPE_DRIVER)){
+            driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("statement",driverStatement);
+            fragment = new AddDriverStatementF();
+            fragment.setArguments(bundle);
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+
+            ft.replace(R.id.conteiner, fragment, "driverFR");
+            ft.commit();
+        }
+        if(stType.equals("passanger")){
+            // meore
+        }
+
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("type", stType);
+        if(stType.equals(Constantebi.STAT_TYPE_DRIVER)) {
+            outState.putSerializable("statement", driverStatement);
+        }
+        if(stType.equals(Constantebi.STAT_TYPE_PASSANGER)) {
+            outState.putSerializable("statement", passangerStatement);
+        }
+
+
     }
 
     @Override

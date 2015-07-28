@@ -1,13 +1,11 @@
 package diakonidze.kartlos.voiage; // v 25-07-2015
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,30 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-
 import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
-import diakonidze.kartlos.voiage.models.DriverStatement;
+import diakonidze.kartlos.voiage.models.Constantebi;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    public static int MY_ID = 2;
-    public final static String MY_OWN_STAT = "chemi";
-    public final static String ALL_STAT = "yvela";
-    public final static String FAVORIT = "rcheuli";
 
     public final Context mainctx = this;
     private Toolbar toolbar;
@@ -131,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         pager = (ViewPager) findViewById(R.id.pageView);
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, ALL_STAT);
+            StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.ALL_STAT);
         pager.setAdapter(myadapter);
 
 

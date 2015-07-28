@@ -50,9 +50,9 @@ public class DriverListAdapter extends BaseAdapter {
         View itemToShow;
         Viewholder viewholder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             viewholder = new Viewholder();
-            itemToShow = inflater.inflate(R.layout.driver_statement_layout,null);
+            itemToShow = inflater.inflate(R.layout.driver_statement_layout, null);
 
             viewholder.imig = (ImageView) itemToShow.findViewById(R.id.list1_image);
             viewholder.city = (TextView) itemToShow.findViewById(R.id.list1_city_text);
@@ -63,17 +63,17 @@ public class DriverListAdapter extends BaseAdapter {
 
             itemToShow.setTag(viewholder);
 
-        }else {
+        } else {
             itemToShow = convertView;
             viewholder = (Viewholder) itemToShow.getTag();
         }
 
         DriverStatement currentStatement = (DriverStatement) getItem(position);
-        Calendar c = currentStatement.getDate();
 
-        viewholder.city.setText(currentStatement.getCityFrom()+" - "+currentStatement.getCityTo());
-        viewholder.date.setText(c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH) );
-        viewholder.name.setText(currentStatement.getName()+" "+currentStatement.getSurname());
+
+        viewholder.city.setText(currentStatement.getCityFrom() + " - " + currentStatement.getCityTo());
+        viewholder.date.setText(currentStatement.getDate());                                             //c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH) );
+        viewholder.name.setText(currentStatement.getName() + " " + currentStatement.getSurname());
         viewholder.cost.setText(String.valueOf(currentStatement.getPrice()));
         viewholder.freeSpace.setText(String.valueOf(currentStatement.getFreeSpace()));
 

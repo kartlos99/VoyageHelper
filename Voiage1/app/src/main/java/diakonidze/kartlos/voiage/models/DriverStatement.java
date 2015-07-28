@@ -9,10 +9,10 @@ import java.util.Calendar;
 public class DriverStatement implements Serializable {
     long id, userID, placeX, placeY;
     int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome, marka, modeli, color, ageFrom, ageTo, gender;
-    Calendar date;
-    String cityFrom, cityTo, cityPath, time, comment,  number, name, surname, carpicture;
 
-    public DriverStatement(long userID, int freeSpace, int price, Calendar date, String cityFrom, String cityTo) {
+    String cityFrom, cityTo, cityPath, date, time, comment,  number, name, surname, carpicture;
+
+    public DriverStatement(long userID, int freeSpace, int price, String date, String cityFrom, String cityTo) {
         this.userID = userID;
         this.freeSpace = freeSpace;
         this.price = price;
@@ -232,11 +232,11 @@ public class DriverStatement implements Serializable {
         this.gender = gender;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
