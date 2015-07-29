@@ -187,6 +187,7 @@ public class AddDriverStatementF extends Fragment {
         passengerLimit = (CheckBox) view.findViewById(R.id.driver_passanger_restrict_checkBox);
         passangerLimitBox = (LinearLayout) view.findViewById(R.id.driver_passanger_restrict_box);
         seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
+        driverDonebtn = (Button) view.findViewById(R.id.done_driver);
         seekBar.setMax(80);
 
         runTimeC = Calendar.getInstance();
@@ -317,7 +318,7 @@ public class AddDriverStatementF extends Fragment {
 
 
 // chawera / gagzavna bazashi
-        driverDonebtn = (Button) view.findViewById(R.id.done_driver);
+
 
         driverDonebtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -24,28 +24,34 @@ public class EditMyStatement extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_my_statement);
 
-        if(savedInstanceState != null){
-            stType = savedInstanceState.getString("type");
-        }else {
-            stType = getIntent().getStringExtra("type");
-        }
-
         android.support.v4.app.Fragment fragment = null;
 
-        if(stType.equals(Constantebi.STAT_TYPE_DRIVER)){
-            driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
-            Bundle bundle = new Bundle();
-            bundle.putString("action", Constantebi.REASON_EDIT);
-            bundle.putSerializable("statement",driverStatement);
-            fragment = new AddDriverStatementF();
-            fragment.setArguments(bundle);
+        if(savedInstanceState != null){
+            // recreate
+            stType = savedInstanceState.getString("type");
 
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
+        }else {
+            // pirveladi chartva
+            stType = getIntent().getStringExtra("type");
+            if(stType.equals(Constantebi.STAT_TYPE_DRIVER)){
+                driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
+                Bundle bundle = new Bundle();
+                bundle.putString("action", Constantebi.REASON_EDIT);
+                bundle.putSerializable("statement",driverStatement);
+                fragment = new AddDriverStatementF();
+                fragment.setArguments(bundle);
 
-            ft.replace(R.id.conteiner, fragment, "driverFR");
-            ft.commit();
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+
+                ft.replace(R.id.conteiner, fragment, "driverFR");
+                ft.commit();
+            }
         }
+
+
+
+
         if(stType.equals("passanger")){
             // meore
         }
