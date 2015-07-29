@@ -1,4 +1,4 @@
-package diakonidze.kartlos.voiage;
+package diakonidze.kartlos.voiage.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import diakonidze.kartlos.voiage.fragments.AddDriverStatementF;
 import diakonidze.kartlos.voiage.fragments.AddPassengetStatementF;
-import diakonidze.kartlos.voiage.models.Constantebi;
+import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
 

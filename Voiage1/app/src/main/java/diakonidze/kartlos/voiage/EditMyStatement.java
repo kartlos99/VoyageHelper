@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import diakonidze.kartlos.voiage.fragments.AddDriverStatementF;
-import diakonidze.kartlos.voiage.models.Constantebi;
+import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
 

@@ -1,28 +1,12 @@
 package diakonidze.kartlos.voiage;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Calendar;
+import diakonidze.kartlos.voiage.adapters.AddStatementAdapter;
 
 
 public class AddStatement extends ActionBarActivity {

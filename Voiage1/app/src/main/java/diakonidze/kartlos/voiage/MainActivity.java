@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
-import diakonidze.kartlos.voiage.models.Constantebi;
+import diakonidze.kartlos.voiage.utils.Constantebi;
 
 
 public class MainActivity extends AppCompatActivity {

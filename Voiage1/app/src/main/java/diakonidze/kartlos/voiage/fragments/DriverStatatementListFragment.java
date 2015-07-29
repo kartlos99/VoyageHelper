@@ -22,16 +22,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import diakonidze.kartlos.voiage.DetailPageDriver;
-import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
-import diakonidze.kartlos.voiage.models.Constantebi;
+import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
 /**
@@ -85,7 +82,7 @@ public class DriverStatatementListFragment extends Fragment {
 
                 DriverStatement currStatement = (DriverStatement) parent.getItemAtPosition(position);
                 intent.putExtra("driver_st", currStatement);
-                intent.putExtra("from",location);
+                intent.putExtra("from", location);
 
                 startActivity(intent);
             }

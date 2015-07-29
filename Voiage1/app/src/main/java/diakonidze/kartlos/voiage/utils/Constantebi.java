@@ -1,4 +1,4 @@
-package diakonidze.kartlos.voiage.models;
+package diakonidze.kartlos.voiage.utils;
 
 /**
  * Created by kartlos on 7/28/2015.

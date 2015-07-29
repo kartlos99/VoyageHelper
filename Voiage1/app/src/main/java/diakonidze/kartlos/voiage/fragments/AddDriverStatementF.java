@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -41,9 +40,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
-import diakonidze.kartlos.voiage.models.Constantebi;
+import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
 /**
@@ -86,11 +84,14 @@ public class AddDriverStatementF extends Fragment {
             runTimeC.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             setedDate = runTimeC.get(Calendar.YEAR) + "-" + (runTimeC.get(Calendar.MONTH) + 1) + "-" + runTimeC.get(Calendar.DAY_OF_MONTH);
 
-            datelist.add(setedDate);
-            dateSpinnerAdapter.notifyDataSetChanged();
-            runDateSpinner.setAdapter(dateSpinnerAdapter);
+            if(!datelist.contains(setedDate)){
+                datelist.add(setedDate);
+    //            dateSpinnerAdapter.notifyDataSetChanged();
+    //            runDateSpinner.setAdapter(dateSpinnerAdapter);
+                ((ArrayAdapter<String>)runDateSpinner.getAdapter()).notifyDataSetChanged();
 
-            runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
+                runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
+            }
         }
     };
 
