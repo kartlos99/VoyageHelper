@@ -108,55 +108,9 @@ public class AddDriverStatementF extends Fragment {
         }
     };
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.add_driver_statement_layout, container, false);
-
-        freeSpaceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
-        priceSpinner = (Spinner) view.findViewById(R.id.driver_price_spiner);
-        markaSpinner = (Spinner) view.findViewById(R.id.driver_marka_spiner);
-        modelSpinner = (Spinner) view.findViewById(R.id.driver_model_spiner);
-        condicionerCK = (CheckBox) view.findViewById(R.id.driver_conditioner_checkBox);
-        atplaceCK = (CheckBox) view.findViewById(R.id.driver_atplace_checkBox);
-        cigarCK = (CheckBox) view.findViewById(R.id.driver_cigar_checkBox);
-        baggageCK = (CheckBox) view.findViewById(R.id.driver_baggage_checkBox);
-        animalCK = (CheckBox) view.findViewById(R.id.driver_animal_checkBox);
-        commentText = (EditText) view.findViewById(R.id.driver_comment);
-        genderSpinner = (Spinner) view.findViewById(R.id.driver_sex_spiner);
-        cityFrom = (AutoCompleteTextView) view.findViewById(R.id.driver_cityfrom);
-        cityTo = (AutoCompleteTextView) view.findViewById(R.id.driver_cityto);
-        runDateSpinner = (Spinner) view.findViewById(R.id.driver_date_spiner);
-        runTimeSpinner = (Spinner) view.findViewById(R.id.driver_time_spiner);
-        pirobebi = (CheckBox) view.findViewById(R.id.driver_comfort_checkBox);
-        comfort1 = (RelativeLayout) view.findViewById(R.id.comfort1);
-        passengerLimit = (CheckBox) view.findViewById(R.id.driver_passanger_restrict_checkBox);
-        passangerLimitBox = (LinearLayout) view.findViewById(R.id.driver_passanger_restrict_box);
-        seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
-        seekBar.setMax(80);
-
-        runTimeC = Calendar.getInstance();
-        initialazeAll();
-
-        if (savedInstanceState != null) {
-            // tu reCreate moxda grafebshi vabrumebt ra mdgomareobac iyo
-            driverStatement = (DriverStatement) savedInstanceState.getSerializable("statement");
-            fillForm(driverStatement);
-        } else {
-            // chemi gancxadebis gaxsna redaqtirebisatvis
-            if(getArguments().getString("action").equals(Constantebi.REASON_EDIT)){
-                driverStatement = (DriverStatement) getArguments().getSerializable("statement");
-                fillForm(driverStatement);
-            }
-            // axali gancxadebis chawera
-            if(getArguments().getString("action").equals(Constantebi.REASON_ADD)) {
-                driverStatement = (DriverStatement) getArguments().getSerializable("statement");
-            }
-        }
-
-
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+    public void onResume() {
+        super.onResume();
 
         cityFromAdapret = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, citylist);
         cityToAdapret = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, citylist);
@@ -194,6 +148,7 @@ public class AddDriverStatementF extends Fragment {
                     cityTo.setTextColor(Color.BLACK);
                 } else {
                     Boolean inCityes = false;
+
                     for (int i = 0; i < citylist.size(); i++) {
 
                         if (cityTo.getText().toString().equalsIgnoreCase(citylist.get(i))) {
@@ -205,6 +160,57 @@ public class AddDriverStatementF extends Fragment {
                 }
             }
         });
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.add_driver_statement_layout, container, false);
+
+        freeSpaceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
+        priceSpinner = (Spinner) view.findViewById(R.id.driver_price_spiner);
+        markaSpinner = (Spinner) view.findViewById(R.id.driver_marka_spiner);
+        modelSpinner = (Spinner) view.findViewById(R.id.driver_model_spiner);
+        condicionerCK = (CheckBox) view.findViewById(R.id.driver_conditioner_checkBox);
+        atplaceCK = (CheckBox) view.findViewById(R.id.driver_atplace_checkBox);
+        cigarCK = (CheckBox) view.findViewById(R.id.driver_cigar_checkBox);
+        baggageCK = (CheckBox) view.findViewById(R.id.driver_baggage_checkBox);
+        animalCK = (CheckBox) view.findViewById(R.id.driver_animal_checkBox);
+        commentText = (EditText) view.findViewById(R.id.driver_comment);
+        genderSpinner = (Spinner) view.findViewById(R.id.driver_sex_spiner);
+        cityFrom = (AutoCompleteTextView) view.findViewById(R.id.driver_cityfrom);
+        cityTo = (AutoCompleteTextView) view.findViewById(R.id.driver_cityto);
+        runDateSpinner = (Spinner) view.findViewById(R.id.driver_date_spiner);
+        runTimeSpinner = (Spinner) view.findViewById(R.id.driver_time_spiner);
+        pirobebi = (CheckBox) view.findViewById(R.id.driver_comfort_checkBox);
+        comfort1 = (RelativeLayout) view.findViewById(R.id.comfort1);
+        passengerLimit = (CheckBox) view.findViewById(R.id.driver_passanger_restrict_checkBox);
+        passangerLimitBox = (LinearLayout) view.findViewById(R.id.driver_passanger_restrict_box);
+        seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
+        seekBar.setMax(80);
+
+        runTimeC = Calendar.getInstance();
+        initialazeAll();
+
+        if (savedInstanceState != null) {
+            // tu reCreate moxda grafebshi vabrumebt ra mdgomareobac iyo
+            driverStatement = (DriverStatement) savedInstanceState.getSerializable("statement");
+            fillForm(driverStatement);
+        } else {  // pirvelad chaitvirta es forma
+            driverStatement = (DriverStatement) getArguments().getSerializable("statement");
+            // chemi gancxadebis gaxsna redaqtirebisatvis
+            if(getArguments().getString("action").equals(Constantebi.REASON_EDIT)){
+//                fillForm(driverStatement);
+            }
+            // axali gancxadebis chawera
+            if(getArguments().getString("action").equals(Constantebi.REASON_ADD)) {
+
+            }
+        }
+
+
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
 
         // დროის დაყენება
 
