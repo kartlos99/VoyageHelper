@@ -67,9 +67,18 @@ public class AddDriverStatementF extends Fragment {
 
     private ArrayAdapter<String> dateSpinnerAdapter;
     private ArrayAdapter<String> timeSpinnerAdapter;
+    private ArrayAdapter<String> freeSpaceSpinnerAdapter;
+    private ArrayAdapter<String> priceSpinnerAdapter;
+    private ArrayAdapter<String> brendSpinerAdapter;
+    private ArrayAdapter<String> modelSpinnerAdapter;
+
+    private List<String> brendlist = new ArrayList<>();
+    private List<String> modellist = new ArrayList<>();
     private List<String> timelist = new ArrayList<>();
     private List<String> datelist = new ArrayList<>();
     private List<String> citylist = new ArrayList<>();
+    private List<String> freespacelist = new ArrayList<>();
+    private List<String> pricelist = new ArrayList<>();
     private Spinner runDateSpinner;
     private Spinner runTimeSpinner;
 
@@ -84,12 +93,11 @@ public class AddDriverStatementF extends Fragment {
             runTimeC.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             setedDate = runTimeC.get(Calendar.YEAR) + "-" + (runTimeC.get(Calendar.MONTH) + 1) + "-" + runTimeC.get(Calendar.DAY_OF_MONTH);
 
-            if(!datelist.contains(setedDate)){
+            if (!datelist.contains(setedDate)) {
                 datelist.add(setedDate);
-    //            dateSpinnerAdapter.notifyDataSetChanged();
-    //            runDateSpinner.setAdapter(dateSpinnerAdapter);
-                ((ArrayAdapter<String>)runDateSpinner.getAdapter()).notifyDataSetChanged();
-
+                //            dateSpinnerAdapter.notifyDataSetChanged();
+                //            runDateSpinner.setAdapter(dateSpinnerAdapter);
+                ((ArrayAdapter<String>) runDateSpinner.getAdapter()).notifyDataSetChanged();
                 runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
             }
         }
@@ -102,10 +110,13 @@ public class AddDriverStatementF extends Fragment {
             runTimeC.set(Calendar.MINUTE, minute);
             setedtime = runTimeC.get(Calendar.HOUR_OF_DAY) + ":" + runTimeC.get(Calendar.MINUTE);
 
-            timelist.add(setedtime);
-            timeSpinnerAdapter.notifyDataSetChanged();
-            runTimeSpinner.setAdapter(timeSpinnerAdapter);
-            runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
+            if (!timelist.contains(setedtime)) {
+                timelist.add(setedtime);
+//            timeSpinnerAdapter.notifyDataSetChanged();
+//            runTimeSpinner.setAdapter(timeSpinnerAdapter);
+                ((ArrayAdapter<String>) runTimeSpinner.getAdapter()).notifyDataSetChanged();
+                runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
+            }
         }
     };
 
@@ -134,7 +145,6 @@ public class AddDriverStatementF extends Fragment {
                         if (cityFrom.getText().toString().equalsIgnoreCase(citylist.get(i))) {
                             inCityes = true;
                         }
-
                     }
                     if (!inCityes) cityFrom.setTextColor(Color.RED);
                 }
@@ -155,7 +165,6 @@ public class AddDriverStatementF extends Fragment {
                         if (cityTo.getText().toString().equalsIgnoreCase(citylist.get(i))) {
                             inCityes = true;
                         }
-
                     }
                     if (!inCityes) cityTo.setTextColor(Color.RED);
                 }
@@ -201,11 +210,11 @@ public class AddDriverStatementF extends Fragment {
         } else {  // pirvelad chaitvirta es forma
             driverStatement = (DriverStatement) getArguments().getSerializable("statement");
             // chemi gancxadebis gaxsna redaqtirebisatvis
-            if(getArguments().getString("action").equals(Constantebi.REASON_EDIT)){
-//                fillForm(driverStatement);
+            if (getArguments().getString("action").equals(Constantebi.REASON_EDIT)) {
+                fillForm(driverStatement);
             }
             // axali gancxadebis chawera
-            if(getArguments().getString("action").equals(Constantebi.REASON_ADD)) {
+            if (getArguments().getString("action").equals(Constantebi.REASON_ADD)) {
 
             }
         }
@@ -216,12 +225,6 @@ public class AddDriverStatementF extends Fragment {
 
         // დროის დაყენება
 
-
-        dateSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, datelist);
-        timeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, timelist);
-
-        runDateSpinner.setAdapter(dateSpinnerAdapter);
-        runTimeSpinner.setAdapter(timeSpinnerAdapter);
 
         runDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -395,10 +398,29 @@ public class AddDriverStatementF extends Fragment {
         return view;
     }
 
+
     private void fillForm(DriverStatement statement) {
 
-    }
+        cityFrom.setText(statement.getCityFrom());
+        cityTo.setText(statement.getCityTo());
 
+        if (!datelist.contains(statement.getDate())) {
+            datelist.add(statement.getDate());
+            ((ArrayAdapter<String>) runDateSpinner.getAdapter()).notifyDataSetChanged();
+        }
+        runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, statement.getDate()));
+
+        if (!timelist.contains(statement.getTime())) {
+            timelist.add(statement.getTime());
+            ((ArrayAdapter<String>) runTimeSpinner.getAdapter()).notifyDataSetChanged();
+        }
+        runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, statement.getTime()));
+
+        freeSpaceSpinner.setSelection(statement.getFreeSpace() - 1);
+        priceSpinner.setSelection(statement.getPrice());
+
+
+    }
 
 
     private int BoolToInt(boolean checked) {
@@ -409,6 +431,7 @@ public class AddDriverStatementF extends Fragment {
         }
     }
 
+    // formistvis sachiro monacemebis chatvirtva
     private void initialazeAll() {
 
         citylist.add("თბილისი");
@@ -431,6 +454,40 @@ public class AddDriverStatementF extends Fragment {
 
         setedDate = "";
         setedtime = "";
+
+        for (int i = 1; i < 10; i++) {
+            freespacelist.add(String.valueOf(i));
+        }
+        for (int i = 0; i < 51; i++) {
+            pricelist.add(String.valueOf(i));
+        }
+
+        brendlist.clear();
+        modellist.clear();
+        for (int i = 0; i < Constantebi.brendList.size(); i++) {
+            brendlist.add(Constantebi.brendList.get(i).getMarka());
+        }
+
+        for (int i = 0; i < Constantebi.modelList.size(); i++) {
+            if(Constantebi.modelList.get(i).getBrendID() == 1) {
+                modellist.add(Constantebi.modelList.get(i).getModel());
+            }
+        }
+
+        modelSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modellist);
+        brendSpinerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, brendlist);
+        dateSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, datelist);
+        timeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, timelist);
+        freeSpaceSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, freespacelist);
+        priceSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, pricelist);
+
+
+        modelSpinner.setAdapter(modelSpinnerAdapter);
+        markaSpinner.setAdapter(brendSpinerAdapter);
+        freeSpaceSpinner.setAdapter(freeSpaceSpinnerAdapter);
+        priceSpinner.setAdapter(priceSpinnerAdapter);
+        runDateSpinner.setAdapter(dateSpinnerAdapter);
+        runTimeSpinner.setAdapter(timeSpinnerAdapter);
 
     }
 
@@ -458,15 +515,12 @@ public class AddDriverStatementF extends Fragment {
     private DriverStatement readForm() {
 
 
-
         DriverStatement statement = new DriverStatement(Constantebi.MY_ID,
                 freeSpaceSpinner.getSelectedItemPosition() + 1,
                 Integer.valueOf(priceSpinner.getSelectedItem().toString()),
                 setedDate,
                 cityFrom.getText().toString(),
                 cityTo.getText().toString());
-
-
 
 
         statement.setMarka(markaSpinner.getSelectedItemPosition());

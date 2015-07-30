@@ -15,7 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
 import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
+import diakonidze.kartlos.voiage.models.CarBrend;
+import diakonidze.kartlos.voiage.models.CarModel;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 
 
@@ -116,6 +119,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         // meniu gancxadebis monishvnaze (didi xnit dacheraze)
+
+
+        Constantebi.brendList.add(new CarBrend(1, "mers"));
+        Constantebi.brendList.add(new CarBrend(2, "toyota"));
+        Constantebi.brendList.add(new CarBrend(3, "BMW"));
+        Constantebi.modelList.add(new CarModel(1, 1, "cls"));
+        Constantebi.modelList.add(new CarModel(2, 1, "E class"));
+        Constantebi.modelList.add(new CarModel(3, 2, "prado"));
+        Constantebi.modelList.add(new CarModel(4, 2, "camry"));
+        Constantebi.modelList.add(new CarModel(5, 3, "730i"));
+
+//        http://back.meet.ge/get.php?type=mark
+//        http://back.meet.ge/get.php?type=model
 
 
 

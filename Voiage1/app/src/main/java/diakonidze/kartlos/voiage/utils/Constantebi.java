@@ -1,5 +1,11 @@
 package diakonidze.kartlos.voiage.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import diakonidze.kartlos.voiage.models.CarBrend;
+import diakonidze.kartlos.voiage.models.CarModel;
+
 /**
  * Created by kartlos on 7/28/2015.
  */
@@ -14,4 +20,7 @@ public class Constantebi {
     public final static String STAT_TYPE_PASSANGER = "passanger";
     public final static String REASON_ADD = "add";
     public final static String REASON_EDIT = "edit";
+
+    public static ArrayList<CarBrend> brendList = new ArrayList<>();
+    public static ArrayList<CarModel> modelList = new ArrayList<>();
 }

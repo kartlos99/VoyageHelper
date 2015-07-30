@@ -127,7 +127,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:entries="@array/numbers"
                     android:gravity="center" />
 
             </LinearLayout>
@@ -154,7 +153,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:entries="@array/numbers"
                     android:gravity="center"
                     android:textAlignment="center" />
 

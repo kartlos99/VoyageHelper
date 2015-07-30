@@ -40,24 +40,24 @@ public class AddPassengetStatementF extends Fragment {
             public void onClick(View v) {
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("cityFrom", "TB-1");
-                    jsonObject.put("cityTo", "BA-1");
-//                    jsonObject.put("date", "2009-11-11");
-//                    jsonObject.put("time", "0");
-//                    jsonObject.put("freespace", 9);
-//                    jsonObject.put("price", 10);
-//                    jsonObject.put("kondincioneri", 2);
-//                    jsonObject.put("sigareti", 2);
-//                    jsonObject.put("sabarguli", 2);
-//                    jsonObject.put("adgilzemisvla", 2);
-//                    jsonObject.put("cxoveli", 2);
-//                    jsonObject.put("placex", "555");
-//                    jsonObject.put("placey", "555");
-//                    jsonObject.put("comment", "cccooooommm");
-//                    jsonObject.put("status", 1);
-//                    jsonObject.put("sex", 1);
-//                    jsonObject.put("photo", "NON");
-//                    jsonObject.put("user_id", "1");
+                    jsonObject.put("CityFrom", "TB-1");
+                    jsonObject.put("CityTo", "BA-1");
+                    jsonObject.put("date", "2009-11-11");
+                    jsonObject.put("time", "0");
+                    jsonObject.put("freespace", 9);
+                    jsonObject.put("price", 10);
+                    jsonObject.put("kondincioneri", 2);
+                    jsonObject.put("sigareti", 2);
+                    jsonObject.put("sabarguli", 2);
+                    jsonObject.put("adgilzemisvla", 2);
+                    jsonObject.put("cxovelebi", 2);
+                    jsonObject.put("placex", "555");
+                    jsonObject.put("placey", "555");
+                    jsonObject.put("comment", "cccooooommm");
+                    jsonObject.put("status", 1);
+                    jsonObject.put("sex", 1);
+                    jsonObject.put("photo", "NON");
+                    jsonObject.put("user_id", "1");
 //
 
                 } catch (JSONException e) {
@@ -66,6 +66,8 @@ public class AddPassengetStatementF extends Fragment {
 
                 RequestQueue queue = Volley.newRequestQueue(getActivity());
                 String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
+//                String url = "http://back.meet.ge/get.php?type=my&sub_type=2";
+
 
                 JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST ,url, jsonObject, new Response.Listener<JSONObject>() {
                     @Override

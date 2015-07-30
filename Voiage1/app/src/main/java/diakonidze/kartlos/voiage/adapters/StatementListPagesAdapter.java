@@ -1,4 +1,4 @@
-package diakonidze.kartlos.voiage;
+package diakonidze.kartlos.voiage.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

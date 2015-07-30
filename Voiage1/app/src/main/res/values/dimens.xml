@@ -9,4 +9,6 @@
     <dimen name="gap_from_image">12dp</dimen>
     <dimen name="text_margin_in_list">6dp</dimen>
     <dimen name="add_statement_inline_padding">6dp</dimen>
+    <dimen name="fab_marg_right">22dp</dimen>
+    <dimen name="fab_marg_bottom">22dp</dimen>
 </resources>
