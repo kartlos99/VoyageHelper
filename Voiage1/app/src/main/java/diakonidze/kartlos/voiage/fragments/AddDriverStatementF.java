@@ -273,6 +273,37 @@ public class AddDriverStatementF extends Fragment {
             }
         });
 
+        // modelebis gafiltvra brendebis mixedvit
+        markaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String br = brendlist.get(position).toString();
+                int br_id = 0;
+                for (int i=0; i<Constantebi.brendList.size(); i++){
+                    if(br.equals(Constantebi.brendList.get(i).getMarka())){
+                        br_id=Constantebi.brendList.get(i).getId();
+                    }
+                }
+                modellist.clear();
+                for (int i = 0; i < Constantebi.modelList.size(); i++) {
+                    if (Constantebi.modelList.get(i).getBrendID() == br_id) {
+                        if (!Constantebi.modelList.get(i).getModel().equals(""))
+                            modellist.add(Constantebi.modelList.get(i).getModel());
+                    }
+                }
+                if (modellist.size() == 0) {
+                    modellist.add("-");
+                }
+                ((ArrayAdapter<String>) modelSpinner.getAdapter()).notifyDataSetChanged();
+                modelSpinner.setSelection(0);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
 // damatebiti pirobebis manipulaciebi
 
@@ -469,7 +500,7 @@ public class AddDriverStatementF extends Fragment {
         }
 
         for (int i = 0; i < Constantebi.modelList.size(); i++) {
-            if(Constantebi.modelList.get(i).getBrendID() == 1) {
+            if (Constantebi.modelList.get(i).getBrendID() == 1) {
                 modellist.add(Constantebi.modelList.get(i).getModel());
             }
         }

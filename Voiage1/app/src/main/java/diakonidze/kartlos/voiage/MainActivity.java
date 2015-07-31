@@ -1,5 +1,6 @@
 package diakonidze.kartlos.voiage; // v 25-07-2015
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -15,16 +16,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
 import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
 import diakonidze.kartlos.voiage.models.CarBrend;
 import diakonidze.kartlos.voiage.models.CarModel;
+import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private ProgressDialog progress;
     public final Context mainctx = this;
     private Toolbar toolbar;
     private NavigationView navigationView;
@@ -121,22 +135,92 @@ public class MainActivity extends AppCompatActivity {
         // meniu gancxadebis monishvnaze (didi xnit dacheraze)
 
 
-        Constantebi.brendList.add(new CarBrend(1, "mers"));
-        Constantebi.brendList.add(new CarBrend(2, "toyota"));
-        Constantebi.brendList.add(new CarBrend(3, "BMW"));
-        Constantebi.modelList.add(new CarModel(1, 1, "cls"));
-        Constantebi.modelList.add(new CarModel(2, 1, "E class"));
-        Constantebi.modelList.add(new CarModel(3, 2, "prado"));
-        Constantebi.modelList.add(new CarModel(4, 2, "camry"));
-        Constantebi.modelList.add(new CarModel(5, 3, "730i"));
+//        Constantebi.brendList.add(new CarBrend(1, "mers"));
+//        Constantebi.brendList.add(new CarBrend(2, "toyota"));
+//        Constantebi.brendList.add(new CarBrend(3, "BMW"));
+//        Constantebi.modelList.add(new CarModel(1, 1, "cls"));
+//        Constantebi.modelList.add(new CarModel(2, 1, "E class"));
+//        Constantebi.modelList.add(new CarModel(3, 2, "prado"));
+//        Constantebi.modelList.add(new CarModel(4, 2, "camry"));
+//        Constantebi.modelList.add(new CarModel(5, 3, "730i"));
+
+        LoadVehicles();
+
+    }
+
+    private void LoadVehicles() {
 
 //        http://back.meet.ge/get.php?type=mark
 //        http://back.meet.ge/get.php?type=model
 
 
+        RequestQueue queue = Volley.newRequestQueue(this);
 
+        String url="http://back.meet.ge/get.php?type=mark";
+        JsonArrayRequest requestMarka = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray jsonArray) {
 
+                        if(jsonArray.length()>0){
+                            Constantebi.brendList.clear();
+                            for(int i=0; i<jsonArray.length(); i++){
+                                try {
+                                    CarBrend carBrend = new CarBrend(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("name")  );
+                                    Constantebi.brendList.add(carBrend);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        if (Constantebi.brendList.size() > 0) {           // bazashi shebivaxot
+                        }
+                        progress.dismiss();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                    }
+                }
+        );
 
+        url="http://back.meet.ge/get.php?type=model";
+        JsonArrayRequest requestModel = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray jsonArray) {
+
+                        if(jsonArray.length()>0){
+                            Constantebi.modelList.clear();
+                            for(int i=0; i<jsonArray.length(); i++){
+                                try {
+                                    CarModel carModel = new CarModel(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getInt("id_mark"),jsonArray.getJSONObject(i).getString("name"));
+                                    Constantebi.modelList.add(carModel);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        if (Constantebi.modelList.size() > 0) {           // bazashi shebivaxot
+                        }
+                        progress.dismiss();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                    }
+                }
+        );
+
+        progress = ProgressDialog.show(this, "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+        queue.add(requestMarka);
+        queue.add(requestModel);
     }
 
     @Override

@@ -1,5 +1,5 @@
+
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="statement_list_title_size">22sp</dimen>
@@ -9,6 +9,6 @@
     <dimen name="gap_from_image">12dp</dimen>
     <dimen name="text_margin_in_list">6dp</dimen>
     <dimen name="add_statement_inline_padding">6dp</dimen>
-    <dimen name="fab_marg_right">0dp</dimen>
-    <dimen name="fab_marg_bottom">0dp</dimen>
+    <dimen name="fab_marg_right">22dp</dimen>
+    <dimen name="fab_marg_bottom">22dp</dimen>
 </resources>

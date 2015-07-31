@@ -74,6 +74,7 @@ public class DriverStatatementListFragment extends Fragment {
 
         driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
         driverStatementList.setAdapter(driverListAdapter);
+        driverStatementList.setDivider(null);
 
         driverStatementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

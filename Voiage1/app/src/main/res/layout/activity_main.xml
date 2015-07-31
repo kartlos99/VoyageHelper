@@ -56,7 +56,7 @@
             app:pressedTranslationZ="12dp"
             android:layout_marginRight="@dimen/fab_marg_right"
             android:layout_marginEnd="@dimen/fab_marg_bottom"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/fab_marg_bottom"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
