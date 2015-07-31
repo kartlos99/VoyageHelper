@@ -20,6 +20,9 @@ public class Constantebi {
     public final static String STAT_TYPE_PASSANGER = "passanger";
     public final static String REASON_ADD = "add";
     public final static String REASON_EDIT = "edit";
+    public final static int MY_STATEMENT = 1;
+    public final static int FAV_STATEMENT = 2;
+
 
     public static ArrayList<CarBrend> brendList = new ArrayList<>();
     public static ArrayList<CarModel> modelList = new ArrayList<>();

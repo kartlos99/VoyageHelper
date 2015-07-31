@@ -154,6 +154,10 @@ public class DriverStatatementListFragment extends Fragment {
                                     newDriverStatement.setSurname(jsonArray.getJSONObject(i).getString("lastname"));
                                     newDriverStatement.setNumber(jsonArray.getJSONObject(i).getString("mobile"));
 
+                                    newDriverStatement.setId(jsonArray.getJSONObject(i).getInt("s_id"));
+                                    newDriverStatement.setUserID(jsonArray.getJSONObject(i).getInt("user_id"));
+
+
                                     newData.add(newDriverStatement);
 
                                 } catch (JSONException e) {

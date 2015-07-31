@@ -115,6 +115,9 @@ public class PassengerStatatementListFragment extends Fragment {
                                     newPassangerStatement.setSurname(jsonArray.getJSONObject(i).getString("lastname"));
                                     newPassangerStatement.setNumber(jsonArray.getJSONObject(i).getString("mobile"));
 
+                                    newPassangerStatement.setId(jsonArray.getJSONObject(i).getInt("s_id"));
+                                    newPassangerStatement.setUserID(jsonArray.getJSONObject(i).getInt("user_id"));
+
                                     newData.add(newPassangerStatement);
 
                                 } catch (JSONException e) {
