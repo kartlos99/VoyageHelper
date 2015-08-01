@@ -5,37 +5,37 @@
         <item
             android:id="@+id/manuFilter"
             android:checked="false"
-            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:icon="@drawable/ic_filter_list_black_24dp"
             android:title="@string/manu_filter" />
 
         <item
             android:id="@+id/manuAdd"
             android:checked="false"
-            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:icon="@drawable/ic_add_white_24dp"
             android:title="@string/manu_add" />
 
         <item
             android:id="@+id/manuFav"
             android:checked="false"
-            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:icon="@drawable/ic_star_black_24dp"
             android:title="@string/manu_favorites" />
 
         <item
             android:id="@+id/manuMy"
             android:checked="false"
-            android:icon="@drawable/abc_ic_go_search_api_mtrl_alpha"
+            android:icon="@drawable/ic_list_black_24dp"
             android:title="@string/manu_mystatm" />
 
 
         <item
             android:id="@+id/manuPivit"
             android:checked="false"
-            android:icon="@drawable/gamchvirvale"
+            android:icon="@drawable/ic_info_outline_black_24dp"
             android:title="@string/manu_privit_info" />
         <item
             android:id="@+id/manuExit"
             android:checked="false"
-            android:icon="@drawable/mgz"
+            android:icon="@drawable/ic_close_black_24dp"
             android:title="@string/manu_exit" />
 
     </group>

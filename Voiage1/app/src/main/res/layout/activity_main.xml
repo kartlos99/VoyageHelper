@@ -38,7 +38,7 @@
                 android:id="@+id/list_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#00ccdd"
+                android:background="@color/ColorPrimary"
                 android:paddingBottom="6dp"
                 android:paddingTop="6dp">
 
@@ -49,8 +49,10 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/abc_btn_radio_material"
+            android:src="@drawable/ic_add_white_24dp"
             android:layout_gravity="bottom|right|end"
+            app:rippleColor="@color/ColorPrimary"
+            app:backgroundTint="@color/fab_color"
             app:elevation="6dp"
             app:borderWidth="0dp"
             app:pressedTranslationZ="12dp"

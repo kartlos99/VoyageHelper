@@ -45,7 +45,7 @@ public class PassengerStatatementListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_b, container,false);
         passangerStatementList = (ListView) v.findViewById(R.id.statement_2_list);
         passangerStatements = new ArrayList<>();
-
+        passangerStatementList.setDivider(null);
         location = getArguments().getString("location");
 
         return v;

@@ -62,7 +62,6 @@ public class DriverStatatementListFragment extends Fragment {
         });
 
 
-
         return v;
     }
 

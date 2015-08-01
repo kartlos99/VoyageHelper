@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public class PassangerListAdapter extends BaseAdapter {
             viewholder.date = (TextView) itemToShow.findViewById(R.id.list2_date);
             viewholder.name = (TextView) itemToShow.findViewById(R.id.list2_name_text);
             viewholder.cost = (TextView) itemToShow.findViewById(R.id.list2_price);
-            viewholder.freeSpace = (TextView) itemToShow.findViewById(R.id.list2_freespace_text);
+//            viewholder.freeSpace = (TextView) itemToShow.findViewById(R.id.list2_freespace_text);
+            viewholder.kacunebiConteiner = (LinearLayout) itemToShow.findViewById(R.id.list2_kacunebi);
 
             itemToShow.setTag(viewholder);
 
@@ -73,7 +75,19 @@ public class PassangerListAdapter extends BaseAdapter {
         viewholder.date.setText(currentStatement.getDate());                                        //c.get(Calendar.YEAR)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.DAY_OF_MONTH) );
         viewholder.name.setText(currentStatement.getName()+" "+currentStatement.getSurname());
         viewholder.cost.setText(String.valueOf(currentStatement.getPrice()));
-        viewholder.freeSpace.setText(String.valueOf(currentStatement.getFreeSpace()));
+//        viewholder.freeSpace.setText(String.valueOf(currentStatement.getFreeSpace()));
+
+        viewholder.kacunebiConteiner.removeAllViews();
+        ImageView[] imageView = new ImageView[currentStatement.getFreeSpace()];
+        // kacunebi ra zomis amochdnen, sxvanairad arvici rogor miutito zoma
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams( 50, ViewGroup.LayoutParams.MATCH_PARENT); //(Constantebi.MAN_WIDTH, Constantebi.MAN_HIEGHT);
+        for (int i = 0; i < currentStatement.getFreeSpace(); i++) {
+            imageView[i] = new ImageView(context);
+            imageView[i].setImageResource(R.drawable.man_full);
+            imageView[i].setLayoutParams(lp);
+            imageView[i].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            viewholder.kacunebiConteiner.addView(imageView[i]);
+        }
 
         return itemToShow;
     }
@@ -81,5 +95,6 @@ public class PassangerListAdapter extends BaseAdapter {
     private class Viewholder {
         TextView city, date, name, cost, freeSpace;
         ImageView imig;
+        LinearLayout kacunebiConteiner;
     }
 }

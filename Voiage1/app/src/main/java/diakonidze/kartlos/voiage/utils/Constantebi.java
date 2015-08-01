@@ -22,6 +22,8 @@ public class Constantebi {
     public final static String REASON_EDIT = "edit";
     public final static int MY_STATEMENT = 1;
     public final static int FAV_STATEMENT = 2;
+    public final static int MAN_WIDTH = 32;
+    public final static int MAN_HIEGHT = 52;
 
 
     public static ArrayList<CarBrend> brendList = new ArrayList<>();
