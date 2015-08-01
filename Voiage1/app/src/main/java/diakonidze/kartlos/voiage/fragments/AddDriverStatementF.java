@@ -54,7 +54,7 @@ public class AddDriverStatementF extends Fragment {
     private Button driverDonebtn;
     private DriverStatement driverStatement, getetDriverStatement;
 
-    Spinner freeSpaceSpinner, priceSpinner, markaSpinner, modelSpinner, genderSpinner;
+    Spinner freeSpaceSpinner, priceSpinner, markaSpinner, modelSpinner, genderSpinner, colorSpinner;
     CheckBox pirobebi, passengerLimit, condicionerCK, atplaceCK, cigarCK, baggageCK, animalCK;
     EditText commentText;
     RelativeLayout comfort1;
@@ -198,6 +198,8 @@ public class AddDriverStatementF extends Fragment {
         passangerLimitBox = (LinearLayout) view.findViewById(R.id.driver_passanger_restrict_box);
         seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
         driverDonebtn = (Button) view.findViewById(R.id.done_driver);
+        colorSpinner = (Spinner) view.findViewById(R.id.driver_color_spiner);
+
         seekBar.setMax(80);
 
         runTimeC = Calendar.getInstance();
@@ -379,7 +381,7 @@ public class AddDriverStatementF extends Fragment {
                     jsonObject.put("price", driverStatement.getPrice());
                     jsonObject.put("mark", driverStatement.getMarka());
                     jsonObject.put("model", driverStatement.getModeli());
-                    jsonObject.put("color", 1);
+                    jsonObject.put("color", driverStatement.getColor());
                     jsonObject.put("kondincioneri", driverStatement.getKondencioneri());
                     jsonObject.put("sigareti", driverStatement.getSigareti());
                     jsonObject.put("sabarguli", driverStatement.getSabarguli());
@@ -449,6 +451,10 @@ public class AddDriverStatementF extends Fragment {
 
         freeSpaceSpinner.setSelection(statement.getFreeSpace() - 1);
         priceSpinner.setSelection(statement.getPrice());
+
+        markaSpinner.setSelection(statement.getMarka());
+        modelSpinner.setSelection(statement.getModeli());
+        colorSpinner.setSelection(statement.getColor());
 
 
     }
@@ -556,6 +562,7 @@ public class AddDriverStatementF extends Fragment {
 
         statement.setMarka(markaSpinner.getSelectedItemPosition());
         statement.setModeli(modelSpinner.getSelectedItemPosition());
+        statement.setColor(colorSpinner.getSelectedItemPosition());
         if (pirobebi.isChecked()) {
             statement.setKondencioneri(BoolToInt(condicionerCK.isChecked()));
             statement.setAtHome(BoolToInt(atplaceCK.isChecked()));
