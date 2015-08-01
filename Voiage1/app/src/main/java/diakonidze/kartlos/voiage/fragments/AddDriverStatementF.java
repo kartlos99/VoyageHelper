@@ -95,8 +95,6 @@ public class AddDriverStatementF extends Fragment {
 
             if (!datelist.contains(setedDate)) {
                 datelist.add(setedDate);
-                //            dateSpinnerAdapter.notifyDataSetChanged();
-                //            runDateSpinner.setAdapter(dateSpinnerAdapter);
                 ((ArrayAdapter<String>) runDateSpinner.getAdapter()).notifyDataSetChanged();
                 runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
             }
@@ -112,8 +110,6 @@ public class AddDriverStatementF extends Fragment {
 
             if (!timelist.contains(setedtime)) {
                 timelist.add(setedtime);
-//            timeSpinnerAdapter.notifyDataSetChanged();
-//            runTimeSpinner.setAdapter(timeSpinnerAdapter);
                 ((ArrayAdapter<String>) runTimeSpinner.getAdapter()).notifyDataSetChanged();
                 runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
             }
@@ -455,7 +451,28 @@ public class AddDriverStatementF extends Fragment {
         markaSpinner.setSelection(statement.getMarka());
         modelSpinner.setSelection(statement.getModeli());
         colorSpinner.setSelection(statement.getColor());
+        if(statement.getAtHome() != -1){
+            if(statement.getKondencioneri()==1) condicionerCK.setChecked(true);
+                else condicionerCK.setChecked(false);
+            if(statement.getSigareti()==1) cigarCK.setChecked(true);
+                else cigarCK.setChecked(false);
+            if(statement.getAtHome()==1) atplaceCK.setChecked(true);
+                else atplaceCK.setChecked(false);
+            if(statement.getCxovelebi()==1) animalCK.setChecked(true);
+                else animalCK.setChecked(false);
+            if(statement.getSabarguli()==1) baggageCK.setChecked(true);
+                else baggageCK.setChecked(false);
+        }
 
+        if(statement.getAgeTo() != 1000){
+            seekBar.setProgress(statement.getAgeTo());
+            genderSpinner.setSelection(statement.getGender());
+        }else{
+            seekBar.setProgress(1);
+            genderSpinner.setSelection(0);
+        }
+
+        commentText.setText(statement.getComment());
 
     }
 
