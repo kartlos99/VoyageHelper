@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
+import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
 import diakonidze.kartlos.voiage.models.CarBrend;
 import diakonidze.kartlos.voiage.models.CarModel;
@@ -153,74 +154,98 @@ public class MainActivity extends AppCompatActivity {
 //        http://back.meet.ge/get.php?type=mark
 //        http://back.meet.ge/get.php?type=model
 
+        DBmanager.initialaize(this);
+        DBmanager.openReadable();
+        Constantebi.brendList = DBmanager.getMarkaList();
+        Constantebi.modelList = DBmanager.getModelList();
+        DBmanager.close();
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+        if(Constantebi.brendList.size() == 0 ) {
 
-        String url="http://back.meet.ge/get.php?type=mark";
-        JsonArrayRequest requestMarka = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray jsonArray) {
+            RequestQueue queue = Volley.newRequestQueue(this);
 
-                        if(jsonArray.length()>0){
-                            Constantebi.brendList.clear();
-                            for(int i=0; i<jsonArray.length(); i++){
-                                try {
-                                    CarBrend carBrend = new CarBrend(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("name")  );
-                                    Constantebi.brendList.add(carBrend);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+            String url = "http://back.meet.ge/get.php?type=mark";
+            JsonArrayRequest requestMarka = new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray jsonArray) {
+
+                            if (jsonArray.length() > 0) {
+                                Constantebi.brendList.clear();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    try {
+                                        CarBrend carBrend = new CarBrend(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("name"));
+                                        Constantebi.brendList.add(carBrend);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
-                        }
-                        if (Constantebi.brendList.size() > 0) {           // bazashi shebivaxot
-                        }
-                        progress.dismiss();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                        progress.dismiss();
-                    }
-                }
-        );
+                            progress.dismiss();
 
-        url="http://back.meet.ge/get.php?type=model";
-        JsonArrayRequest requestModel = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray jsonArray) {
-
-                        if(jsonArray.length()>0){
-                            Constantebi.modelList.clear();
-                            for(int i=0; i<jsonArray.length(); i++){
-                                try {
-                                    CarModel carModel = new CarModel(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getInt("id_mark"),jsonArray.getJSONObject(i).getString("name"));
-                                    Constantebi.modelList.add(carModel);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                            if (Constantebi.brendList.size() > 0) {           // bazashi shebivaxot
+                                DBmanager.initialaize(getApplication());
+                                DBmanager.openWritable();
+                                for (int i = 0 ; i< Constantebi.brendList.size(); i++){
+                                    DBmanager.insertToMarka(Constantebi.brendList.get(i));
                                 }
+                                DBmanager.close();
                             }
                         }
-                        if (Constantebi.modelList.size() > 0) {           // bazashi shebivaxot
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                            progress.dismiss();
                         }
-                        progress.dismiss();
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                        progress.dismiss();
-                    }
-                }
-        );
+            );
 
-        progress = ProgressDialog.show(this, "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
-        queue.add(requestMarka);
-        queue.add(requestModel);
+            url = "http://back.meet.ge/get.php?type=model";
+            JsonArrayRequest requestModel = new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray jsonArray) {
+
+                            if (jsonArray.length() > 0) {
+                                Constantebi.modelList.clear();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    try {
+                                        CarModel carModel = new CarModel(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getInt("id_mark"), jsonArray.getJSONObject(i).getString("name"));
+                                        Constantebi.modelList.add(carModel);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            progress.dismiss();
+
+                            if (Constantebi.modelList.size() > 0) {           // bazashi shebivaxot
+                                DBmanager.initialaize(getApplication());
+                                DBmanager.openWritable();
+                                for (int i = 0 ; i< Constantebi.modelList.size(); i++){
+                                    DBmanager.insertToModel(Constantebi.modelList.get(i));
+                                }
+                                DBmanager.close();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                            progress.dismiss();
+                        }
+                    }
+            );
+
+            progress = ProgressDialog.show(this, "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+            queue.add(requestMarka);
+            queue.add(requestModel);
+
+            Toast.makeText(this, "INtidan chamotvirtva", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

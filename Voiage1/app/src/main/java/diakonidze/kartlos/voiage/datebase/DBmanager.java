@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+import diakonidze.kartlos.voiage.models.CarBrend;
+import diakonidze.kartlos.voiage.models.CarModel;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
 
@@ -18,28 +20,70 @@ public class DBmanager {
     private static DBhelper dbhelper;
     private static SQLiteDatabase db;
 
-    public static void initialaize(Context context){
-        if(dbhelper == null){
+    public static void initialaize(Context context) {
+        if (dbhelper == null) {
             dbhelper = new DBhelper(context);
         }
     }
 
-    public static void openWritable(){
+    public static void openWritable() {
         db = dbhelper.getWritableDatabase();
     }
 
-    public static void openReadable(){
+    public static void openReadable() {
         db = dbhelper.getReadableDatabase();
     }
 
-    public static void close(){
+    public static void close() {
         db.close();
     }
 
-    public static long insertIntoDriver(DriverStatement driverStatement, int location){
+    public static long insertToModel(CarModel carModel) {
+        ContentValues values = new ContentValues();
+        values.put(DBscheme.MODEL_ID, carModel.getId());
+        values.put(DBscheme.MARKA_ID, carModel.getBrendID());
+        values.put(DBscheme.NAME, carModel.getModel());
+        return db.insert(DBscheme.MODEL_TABLE_NAME, null, values);
+    }
+
+    public static long insertToMarka(CarBrend carBrend) {
+        ContentValues values = new ContentValues();
+            values.put(DBscheme.MARKA_ID, carBrend.getId());
+            values.put(DBscheme.NAME, carBrend.getMarka());
+        return db.insert(DBscheme.MARKA_TABLE_NAME, null, values);
+    }
+
+    public static ArrayList<CarModel> getModelList() {
+        ArrayList<CarModel> modelList = new ArrayList<>();
+        Cursor cursor = db.query(DBscheme.MODEL_TABLE_NAME, null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                CarModel model = new CarModel(cursor.getInt(cursor.getColumnIndex(DBscheme.MODEL_ID)),
+                        cursor.getInt(cursor.getColumnIndex(DBscheme.MARKA_ID)),
+                        cursor.getString(cursor.getColumnIndex(DBscheme.NAME)));
+                modelList.add(model);
+            } while (cursor.moveToNext());
+        }
+        return modelList;
+    }
+
+    public static ArrayList<CarBrend> getMarkaList() {
+        ArrayList<CarBrend> markaList = new ArrayList<>();
+        Cursor cursor = db.query(DBscheme.MARKA_TABLE_NAME, null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                CarBrend marka = new CarBrend(cursor.getInt(cursor.getColumnIndex(DBscheme.MARKA_ID)),
+                        cursor.getString(cursor.getColumnIndex(DBscheme.NAME)));
+                markaList.add(marka);
+            } while (cursor.moveToNext());
+        }
+        return markaList;
+    }
+
+    public static long insertIntoDriver(DriverStatement driverStatement, int location) {
         ContentValues values = new ContentValues();
 
-        values.put(DBscheme.ID, driverStatement.getId());
+        values.put(DBscheme.S_ID, driverStatement.getId());
         values.put(DBscheme.USER_ID, driverStatement.getUserID());
         values.put(DBscheme.PLACE_X, driverStatement.getPlaceX());
         values.put(DBscheme.PLACE_Y, driverStatement.getPlaceY());
@@ -62,7 +106,7 @@ public class DBmanager {
         values.put(DBscheme.DATE, driverStatement.getDate());
         values.put(DBscheme.TIME, driverStatement.getTime());
         values.put(DBscheme.COMMENT, driverStatement.getComment());
-        values.put(DBscheme.LOCATION, location);                            //********* favritebshia tu chem gancxadebebshi
+        values.put(DBscheme.MANU_LOCATION, location);                            //********* favritebshia tu chem gancxadebebshi
         values.put(DBscheme.NUMBER_MOBILE, driverStatement.getNumber());
         values.put(DBscheme.NAME, driverStatement.getName());
         values.put(DBscheme.SURMANE, driverStatement.getSurname());
@@ -70,10 +114,10 @@ public class DBmanager {
         return db.insert(DBscheme.DRIVER_TABLE_NAME, null, values);
     }
 
-    public static long insertIntoPassanger(PassangerStatement passangerStatement, int location){
+    public static long insertIntoPassanger(PassangerStatement passangerStatement, int location) {
         ContentValues values = new ContentValues();
 
-        values.put(DBscheme.ID, passangerStatement.getId());
+        values.put(DBscheme.S_ID, passangerStatement.getId());
         values.put(DBscheme.USER_ID, passangerStatement.getUserID());
         values.put(DBscheme.PLACE_X, passangerStatement.getPlaceX());
         values.put(DBscheme.PLACE_Y, passangerStatement.getPlaceY());
@@ -89,7 +133,7 @@ public class DBmanager {
         values.put(DBscheme.DATE, passangerStatement.getDate());
         values.put(DBscheme.TIME, passangerStatement.getTime());
         values.put(DBscheme.COMMENT, passangerStatement.getComment());
-        values.put(DBscheme.LOCATION, location);                            //********* favritebshia tu chem gancxadebebshi
+        values.put(DBscheme.MANU_LOCATION, location);                            //********* favritebshia tu chem gancxadebebshi
         values.put(DBscheme.NUMBER_MOBILE, passangerStatement.getNumber());
         values.put(DBscheme.NAME, passangerStatement.getName());
         values.put(DBscheme.SURMANE, passangerStatement.getSurname());
@@ -97,10 +141,10 @@ public class DBmanager {
         return db.insert(DBscheme.PASSANGER_TABLE_NAME, null, values);
     }
 
-    public static ArrayList<DriverStatement> getDriverList(int location){
+    public static ArrayList<DriverStatement> getDriverList(int location) {
         ArrayList<DriverStatement> statementsToReturn = new ArrayList<>();
-        Cursor cursor = db.query(DBscheme.DRIVER_TABLE_NAME, null, DBscheme.LOCATION +" = "+ location, null, null, null, null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.query(DBscheme.DRIVER_TABLE_NAME, null, DBscheme.MANU_LOCATION + " = " + location, null, null, null, null);
+        if (cursor.moveToFirst()) {
             do {
                 int user_id = cursor.getInt(cursor.getColumnIndex(DBscheme.USER_ID));
                 int freeSpace = cursor.getInt(cursor.getColumnIndex(DBscheme.FREESPACE));
@@ -111,7 +155,7 @@ public class DBmanager {
 
                 DriverStatement driverStatement = new DriverStatement(user_id, freeSpace, price, date, cityfrom, cityto);
 
-                driverStatement.setId(cursor.getInt(cursor.getColumnIndex(DBscheme.ID)));
+                driverStatement.setId(cursor.getInt(cursor.getColumnIndex(DBscheme.S_ID)));
                 driverStatement.setPlaceX(cursor.getInt(cursor.getColumnIndex(DBscheme.PLACE_X)));
                 driverStatement.setPlaceY(cursor.getInt(cursor.getColumnIndex(DBscheme.PLACE_Y)));
                 driverStatement.setKondencioneri(cursor.getInt(cursor.getColumnIndex(DBscheme.CONDICIONERI)));
@@ -136,11 +180,47 @@ public class DBmanager {
                 driverStatement.setSurname(cursor.getString(cursor.getColumnIndex(DBscheme.SURMANE)));
                 driverStatement.setNumber(cursor.getString(cursor.getColumnIndex(DBscheme.NUMBER_MOBILE)));
 
-
                 statementsToReturn.add(driverStatement);
-            } while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
+        return statementsToReturn;
+    }
 
+    public static ArrayList<PassangerStatement> getPassangerList(int location) {
+        ArrayList<PassangerStatement> statementsToReturn = new ArrayList<>();
+        Cursor cursor = db.query(DBscheme.DRIVER_TABLE_NAME, null, DBscheme.MANU_LOCATION + " = " + location, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int user_id = cursor.getInt(cursor.getColumnIndex(DBscheme.USER_ID));
+                int freeSpace = cursor.getInt(cursor.getColumnIndex(DBscheme.FREESPACE));
+                int price = cursor.getInt(cursor.getColumnIndex(DBscheme.PRICE));
+                String date = cursor.getString(cursor.getColumnIndex(DBscheme.DATE));
+                String cityfrom = cursor.getString(cursor.getColumnIndex(DBscheme.CITY_FROM));
+                String cityto = cursor.getString(cursor.getColumnIndex(DBscheme.CITY_TO));
+
+                PassangerStatement passangerStatement = new PassangerStatement(user_id, freeSpace, price, cityfrom, cityto, date);
+
+                passangerStatement.setId(cursor.getInt(cursor.getColumnIndex(DBscheme.S_ID)));
+                passangerStatement.setPlaceX(cursor.getInt(cursor.getColumnIndex(DBscheme.PLACE_X)));
+                passangerStatement.setPlaceY(cursor.getInt(cursor.getColumnIndex(DBscheme.PLACE_Y)));
+                passangerStatement.setKondencioneri(cursor.getInt(cursor.getColumnIndex(DBscheme.CONDICIONERI)));
+                passangerStatement.setSigareti(cursor.getInt(cursor.getColumnIndex(DBscheme.SIGAR)));
+                passangerStatement.setSabarguli(cursor.getInt(cursor.getColumnIndex(DBscheme.SABARGULI)));
+                passangerStatement.setCxovelebi(cursor.getInt(cursor.getColumnIndex(DBscheme.CXOVELEBI)));
+                passangerStatement.setAtHome(cursor.getInt(cursor.getColumnIndex(DBscheme.ATHOME)));
+                passangerStatement.setCityFrom(cursor.getString(cursor.getColumnIndex(DBscheme.CITY_FROM)));
+                passangerStatement.setCityTo(cursor.getString(cursor.getColumnIndex(DBscheme.CITY_TO)));
+                passangerStatement.setDate(cursor.getString(cursor.getColumnIndex(DBscheme.DATE)));
+                passangerStatement.setTime(cursor.getString(cursor.getColumnIndex(DBscheme.TIME)));
+                passangerStatement.setComment(cursor.getString(cursor.getColumnIndex(DBscheme.COMMENT)));
+
+                passangerStatement.setName(cursor.getString(cursor.getColumnIndex(DBscheme.NAME)));
+                passangerStatement.setSurname(cursor.getString(cursor.getColumnIndex(DBscheme.SURMANE)));
+                passangerStatement.setNumber(cursor.getString(cursor.getColumnIndex(DBscheme.NUMBER_MOBILE)));
+
+                statementsToReturn.add(passangerStatement);
+            } while (cursor.moveToNext());
+        }
         return statementsToReturn;
     }
 

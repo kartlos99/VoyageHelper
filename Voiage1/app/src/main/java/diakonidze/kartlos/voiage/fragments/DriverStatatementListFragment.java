@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import diakonidze.kartlos.voiage.DetailPageDriver;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
+import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
@@ -60,7 +61,7 @@ public class DriverStatatementListFragment extends Fragment {
             }
         });
 
-        location = getArguments().getString("location");
+
 
         return v;
     }
@@ -69,8 +70,18 @@ public class DriverStatatementListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        location = getArguments().getString("location"); // vin gamoiZaxa es forma
+
         driverStatements = new ArrayList<>();
-        getDriversStatements();
+
+        if(location.equals(Constantebi.MY_OWN_STAT)){
+            DBmanager.initialaize(getActivity());
+            DBmanager.openReadable();
+            driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
+            DBmanager.close();
+        }else {
+            getDriversStatements();
+        }
 
         driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
         driverStatementList.setAdapter(driverListAdapter);
@@ -166,10 +177,19 @@ public class DriverStatatementListFragment extends Fragment {
                             }
                         }
 
-                        if (newData.size() > 0) {           // tu erti mowyobiloba mainc aris mashin vaxarisxebt lists
+                        if (newData.size() > 0) {
                             driverStatements = newData;
                             driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
                             driverStatementList.setAdapter(driverListAdapter);
+
+                            DBmanager.initialaize(getActivity());
+                            DBmanager.openWritable();
+                            for (int i = 0; i < newData.size(); i++){
+                                if(newData.get(i).getUserID() == 2){
+                                    DBmanager.insertIntoDriver(newData.get(i), Constantebi.MY_STATEMENT);
+                                }
+                            }
+                            DBmanager.close();
                         }
                         progress.dismiss();
                     }

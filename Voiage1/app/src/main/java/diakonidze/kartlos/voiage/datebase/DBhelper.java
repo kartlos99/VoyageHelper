@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBhelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "VoiagerDB";
-    private static final int DB_VERSION = 1;
+    private static final String DB_NAME = "VoiagerDB1";
+    private static final int DB_VERSION = 2;
 
     public DBhelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -20,13 +20,47 @@ public class DBhelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createDriverTable(db);
         createPassangerTable(db);
+        createMarkaTable(db);
+        createModelTable(db);
+        createCityTable(db);
+    }
+
+    private void createCityTable(SQLiteDatabase db) {
+        String query = "create table if not exists " +
+                DBscheme.CITY_TABLE_NAME + "(" +
+                DBscheme.ID + " integer primary key autoincrement, " +
+                DBscheme.CITY_ID + " integer not null, " +
+                DBscheme.CITY_PHOTO + " text, " +
+                DBscheme.NAME_EN + " text, " +
+                DBscheme.NAME + " text);";
+        db.execSQL(query);
+    }
+
+    private void createModelTable(SQLiteDatabase db) {
+        String query = "create table if not exists " +
+                DBscheme.MODEL_TABLE_NAME + "(" +
+                DBscheme.ID + " integer primary key autoincrement, " +
+                DBscheme.MARKA_ID + " integer not null, " +
+                DBscheme.MODEL_ID + " integer not null, " +
+                DBscheme.NAME + " text);";
+        db.execSQL(query);
+    }
+
+    private void createMarkaTable(SQLiteDatabase db) {
+        String query = "create table if not exists " +
+                DBscheme.MARKA_TABLE_NAME + "(" +
+                DBscheme.ID + " integer primary key autoincrement, " +
+                DBscheme.MARKA_ID + " integer not null, " +
+                DBscheme.NAME + " text);";
+        db.execSQL(query);
     }
 
     private void createPassangerTable(SQLiteDatabase db) {
         String query = "create table if not exists " +
                 DBscheme.PASSANGER_TABLE_NAME + "(" +
-                DBscheme.ID + " integer primary, " +
+                DBscheme.ID + " integer primary key autoincrement, " +
                 DBscheme.USER_ID + " integer not null, " +
+                DBscheme.S_ID + " integer not null, " +
                 DBscheme.PLACE_X + " text not null, " +
                 DBscheme.PLACE_Y + " text, " +
                 DBscheme.FREESPACE + " integer, " +
@@ -41,7 +75,7 @@ public class DBhelper extends SQLiteOpenHelper {
                 DBscheme.DATE + " text, " +
                 DBscheme.TIME + " text, " +
                 DBscheme.COMMENT + " text, " +
-                DBscheme.LOCATION + " integer, " +       //********* favritebshia tu chem gancxadebebshi
+                DBscheme.MANU_LOCATION + " integer, " +       //********* favritebshia tu chem gancxadebebshi
                 DBscheme.NUMBER_MOBILE + " text, " +
                 DBscheme.NAME + " text, " +
                 DBscheme.SURMANE + " text);";
@@ -51,8 +85,9 @@ public class DBhelper extends SQLiteOpenHelper {
     private void createDriverTable(SQLiteDatabase db) {
         String query = "create table if not exists " +
                 DBscheme.DRIVER_TABLE_NAME + "(" +
-                DBscheme.ID + " integer primary, " +
+                DBscheme.ID + " integer primary key autoincrement, " +
                 DBscheme.USER_ID + " integer not null, " +
+                DBscheme.S_ID + " integer not null, " +
                 DBscheme.PLACE_X + " text, " +
                 DBscheme.PLACE_Y + " text, " +
                 DBscheme.FREESPACE + " integer, " +
@@ -74,7 +109,7 @@ public class DBhelper extends SQLiteOpenHelper {
                 DBscheme.DATE + " text, " +
                 DBscheme.TIME + " text, " +
                 DBscheme.COMMENT + " text, " +
-                DBscheme.LOCATION + " integer, " +
+                DBscheme.MANU_LOCATION + " integer, " +
                 DBscheme.NUMBER_MOBILE + " text, " +
                 DBscheme.NAME + " text, " +
                 DBscheme.SURMANE + " text);";
@@ -83,6 +118,8 @@ public class DBhelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        createMarkaTable(db);
+        createModelTable(db);
+        createCityTable(db);
     }
 }
