@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -226,17 +227,20 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/add_statement_inline_padding">
 
-                <CheckBox
-                    android:id="@+id/driver_comfort_checkBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="სხვა პირობები" />
+                <Button
+                    android:id="@+id/driver_pirobebi_btn"
+                    android:layout_width="match_parent"
+                    android:text="პირობები"
+                    android:layout_height="50dp"
+                    android:background="@drawable/greenbtn_dark"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
 
                 <RelativeLayout
                     android:id="@+id/comfort1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/driver_comfort_checkBox"
+                    android:layout_below="@+id/driver_pirobebi_btn"
                     android:animateLayoutChanges="true"
                     android:visibility="gone">
 
@@ -295,11 +299,14 @@
                 android:orientation="vertical"
                 android:padding="@dimen/add_statement_inline_padding">
 
-                <CheckBox
-                    android:id="@+id/driver_passanger_restrict_checkBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="შეზღუდვა მგზავრზე" />
+                <Button
+                    android:id="@+id/driver_limit_btn"
+                    android:layout_width="match_parent"
+                    android:text="შეზღუდვა მგზავრზე"
+                    android:layout_height="50dp"
+                    android:background="@drawable/greenbtn_dark"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/driver_passanger_restrict_box"

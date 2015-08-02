@@ -51,11 +51,12 @@ public class AddDriverStatementF extends Fragment {
     private Calendar runTimeC;
     private TextView runDateText;
     private TextView runTimeText;
-    private Button driverDonebtn;
+    private TextView passAgeText;
+    private Button driverDonebtn, pirobebiBtn, limitBtn;
     private DriverStatement driverStatement, getetDriverStatement;
 
     Spinner freeSpaceSpinner, priceSpinner, markaSpinner, modelSpinner, genderSpinner, colorSpinner;
-    CheckBox pirobebi, passengerLimit, condicionerCK, atplaceCK, cigarCK, baggageCK, animalCK;
+    CheckBox condicionerCK, atplaceCK, cigarCK, baggageCK, animalCK;
     EditText commentText;
     RelativeLayout comfort1;
     LinearLayout passangerLimitBox;
@@ -83,6 +84,7 @@ public class AddDriverStatementF extends Fragment {
     private Spinner runTimeSpinner;
 
     String setedDate, setedtime;
+    Boolean pirobebi, passengerLimit;
 
 
     DatePickerDialog.OnDateSetListener datelistener = new DatePickerDialog.OnDateSetListener() {
@@ -117,89 +119,11 @@ public class AddDriverStatementF extends Fragment {
     };
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
-        cityFromAdapret = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, citylist);
-        cityToAdapret = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, citylist);
-
-        cityFrom.setAdapter(cityFromAdapret);
-        cityFrom.setThreshold(0);
-        cityTo.setAdapter(cityToAdapret);
-        cityTo.setThreshold(0);
-
-        cityFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    cityFrom.showDropDown();
-                    cityFrom.setTextColor(Color.BLACK);
-                } else {
-                    Boolean inCityes = false;
-                    for (int i = 0; i < citylist.size(); i++) {
-
-                        if (cityFrom.getText().toString().equalsIgnoreCase(citylist.get(i))) {
-                            inCityes = true;
-                        }
-                    }
-                    if (!inCityes) cityFrom.setTextColor(Color.RED);
-                }
-            }
-        });
-
-        cityTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    cityTo.showDropDown();
-                    cityTo.setTextColor(Color.BLACK);
-                } else {
-                    Boolean inCityes = false;
-
-                    for (int i = 0; i < citylist.size(); i++) {
-
-                        if (cityTo.getText().toString().equalsIgnoreCase(citylist.get(i))) {
-                            inCityes = true;
-                        }
-                    }
-                    if (!inCityes) cityTo.setTextColor(Color.RED);
-                }
-            }
-        });
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.add_driver_statement_layout, container, false);
-
-        freeSpaceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
-        priceSpinner = (Spinner) view.findViewById(R.id.driver_price_spiner);
-        markaSpinner = (Spinner) view.findViewById(R.id.driver_marka_spiner);
-        modelSpinner = (Spinner) view.findViewById(R.id.driver_model_spiner);
-        condicionerCK = (CheckBox) view.findViewById(R.id.driver_conditioner_checkBox);
-        atplaceCK = (CheckBox) view.findViewById(R.id.driver_atplace_checkBox);
-        cigarCK = (CheckBox) view.findViewById(R.id.driver_cigar_checkBox);
-        baggageCK = (CheckBox) view.findViewById(R.id.driver_baggage_checkBox);
-        animalCK = (CheckBox) view.findViewById(R.id.driver_animal_checkBox);
-        commentText = (EditText) view.findViewById(R.id.driver_comment);
-        genderSpinner = (Spinner) view.findViewById(R.id.driver_sex_spiner);
-        cityFrom = (AutoCompleteTextView) view.findViewById(R.id.driver_cityfrom);
-        cityTo = (AutoCompleteTextView) view.findViewById(R.id.driver_cityto);
-        runDateSpinner = (Spinner) view.findViewById(R.id.driver_date_spiner);
-        runTimeSpinner = (Spinner) view.findViewById(R.id.driver_time_spiner);
-        pirobebi = (CheckBox) view.findViewById(R.id.driver_comfort_checkBox);
-        comfort1 = (RelativeLayout) view.findViewById(R.id.comfort1);
-        passengerLimit = (CheckBox) view.findViewById(R.id.driver_passanger_restrict_checkBox);
-        passangerLimitBox = (LinearLayout) view.findViewById(R.id.driver_passanger_restrict_box);
-        seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
-        driverDonebtn = (Button) view.findViewById(R.id.done_driver);
-        colorSpinner = (Spinner) view.findViewById(R.id.driver_color_spiner);
-
-        seekBar.setMax(80);
-
-        runTimeC = Calendar.getInstance();
         initialazeAll();
+
 
         if (savedInstanceState != null) {
             // tu reCreate moxda grafebshi vabrumebt ra mdgomareobac iyo
@@ -222,8 +146,6 @@ public class AddDriverStatementF extends Fragment {
 
 
         // დროის დაყენება
-
-
         runDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -275,25 +197,8 @@ public class AddDriverStatementF extends Fragment {
         markaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String br = brendlist.get(position).toString();
-                int br_id = 0;
-                for (int i=0; i<Constantebi.brendList.size(); i++){
-                    if(br.equals(Constantebi.brendList.get(i).getMarka())){
-                        br_id=Constantebi.brendList.get(i).getId();
-                    }
-                }
-                modellist.clear();
-                for (int i = 0; i < Constantebi.modelList.size(); i++) {
-                    if (Constantebi.modelList.get(i).getBrendID() == br_id) {
-                        if (!Constantebi.modelList.get(i).getModel().equals(""))
-                            modellist.add(Constantebi.modelList.get(i).getModel());
-                    }
-                }
-                if (modellist.size() == 0) {
-                    modellist.add("-");
-                }
-                ((ArrayAdapter<String>) modelSpinner.getAdapter()).notifyDataSetChanged();
-                modelSpinner.setSelection(0);
+                modelebisListisDayeneba(position);
+//                modelSpinner.setSelection(0);
             }
 
             @Override
@@ -305,28 +210,33 @@ public class AddDriverStatementF extends Fragment {
 
 // damatebiti pirobebis manipulaciebi
 
-
-        pirobebi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        pirobebiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                pirobebi = !pirobebi;
+                if (pirobebi) {
                     comfort1.setVisibility(View.VISIBLE);
+                    pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_lite);
                 } else {
                     comfort1.setVisibility(View.GONE);
+                    pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_dark);
                 }
             }
         });
 
+
 // mgzavrze shezgudvebis dayeneba
 
-
-        passengerLimit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        limitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                passengerLimit = !passengerLimit;
+                if (passengerLimit) {
                     passangerLimitBox.setVisibility(View.VISIBLE);
+                    limitBtn.setBackgroundResource(R.drawable.greenbtn_lite);
                 } else {
                     passangerLimitBox.setVisibility(View.GONE);
+                    limitBtn.setBackgroundResource(R.drawable.greenbtn_dark);
                 }
             }
         });
@@ -334,8 +244,7 @@ public class AddDriverStatementF extends Fragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                TextView textView = (TextView) view.findViewById(R.id.driver_pass_age_text);
-                textView.setText("მაქს. ასაკი " + i);
+                passAgeText.setText("მაქს. ასაკი " + i);
             }
 
             @Override
@@ -349,84 +258,155 @@ public class AddDriverStatementF extends Fragment {
             }
         });
 
-
 // chawera / gagzavna bazashi
-
 
         driverDonebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                driverStatement = readForm();
 
+                if (!citylist.contains(cityTo.getText().toString()) || !citylist.contains(cityTo.getText().toString())) {
+                    Toast.makeText(getActivity(), "ქალაქი არასწორადაა მითითებული!", Toast.LENGTH_LONG).show();
+                } else {
+                    driverStatement = readForm();
 
-                if (runDateSpinner.getSelectedItemPosition() < 3) {
-                    Calendar calendar = Calendar.getInstance();
-                    setedDate = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + (calendar.get(Calendar.DAY_OF_MONTH) + runDateSpinner.getSelectedItemPosition());
-                }
-
-
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("cityFrom", driverStatement.getCityFrom());
-                    jsonObject.put("cityTo", driverStatement.getCityTo());
-                    jsonObject.put("cityPath", "AA__BB");
-                    jsonObject.put("date", setedDate);
-                    jsonObject.put("time", setedtime);
-                    jsonObject.put("freespace", driverStatement.getFreeSpace());
-                    jsonObject.put("price", driverStatement.getPrice());
-                    jsonObject.put("mark", driverStatement.getMarka());
-                    jsonObject.put("model", driverStatement.getModeli());
-                    jsonObject.put("color", driverStatement.getColor());
-                    jsonObject.put("kondincioneri", driverStatement.getKondencioneri());
-                    jsonObject.put("sigareti", driverStatement.getSigareti());
-                    jsonObject.put("sabarguli", driverStatement.getSabarguli());
-                    jsonObject.put("adgilzemisvla", driverStatement.getAtHome());
-                    jsonObject.put("cxoveli", driverStatement.getCxovelebi());
-                    jsonObject.put("placex", "555");
-                    jsonObject.put("placey", "555");
-                    jsonObject.put("ageFrom", 1);
-                    jsonObject.put("ageTo", driverStatement.getAgeTo());
-                    jsonObject.put("gender", driverStatement.getGender());
-                    jsonObject.put("comment", driverStatement.getComment());
-                    jsonObject.put("firstname", "KARTLOS");
-                    jsonObject.put("lastname", "DIAKO");
-                    jsonObject.put("mobile", "577987006");
-                    jsonObject.put("birth_date", "1999");
-                    jsonObject.put("status", 1);
-                    jsonObject.put("sex", 1);
-                    jsonObject.put("photo", "NON");
-                    jsonObject.put("user_id", Constantebi.MY_ID);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                RequestQueue queue = Volley.newRequestQueue(getActivity());
-                String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
-
-                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject jsonObject) {
-
-                        Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                    if (runDateSpinner.getSelectedItemPosition() < 3) {
+                        Calendar calendar = Calendar.getInstance();
+                        setedDate = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + (calendar.get(Calendar.DAY_OF_MONTH) + runDateSpinner.getSelectedItemPosition());
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
 
-                queue.add(jsonRequest);
+
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("cityFrom", driverStatement.getCityFrom());
+                        jsonObject.put("cityTo", driverStatement.getCityTo());
+                        jsonObject.put("cityPath", "AA__BB");
+                        jsonObject.put("date", setedDate);
+                        jsonObject.put("time", setedtime);
+                        jsonObject.put("freespace", driverStatement.getFreeSpace());
+                        jsonObject.put("price", driverStatement.getPrice());
+                        jsonObject.put("mark", driverStatement.getMarka());
+                        jsonObject.put("model", driverStatement.getModeli());
+                        jsonObject.put("color", driverStatement.getColor());
+                        jsonObject.put("kondincioneri", driverStatement.getKondencioneri());
+                        jsonObject.put("sigareti", driverStatement.getSigareti());
+                        jsonObject.put("sabarguli", driverStatement.getSabarguli());
+                        jsonObject.put("adgilzemisvla", driverStatement.getAtHome());
+                        jsonObject.put("cxoveli", driverStatement.getCxovelebi());
+                        jsonObject.put("placex", "555");
+                        jsonObject.put("placey", "555");
+                        jsonObject.put("ageFrom", 1);
+                        jsonObject.put("ageTo", driverStatement.getAgeTo());
+                        jsonObject.put("gender", driverStatement.getGender());
+                        jsonObject.put("comment", driverStatement.getComment());
+                        jsonObject.put("firstname", "KARTLOS");
+                        jsonObject.put("lastname", "DIAKO");
+                        jsonObject.put("mobile", "577987006");
+                        jsonObject.put("birth_date", "1999");
+                        jsonObject.put("status", 1);
+                        jsonObject.put("sex", 1);
+                        jsonObject.put("photo", "NON");
+                        jsonObject.put("user_id", Constantebi.MY_ID);
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
+                    String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
+
+                    JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject jsonObject) {
+
+                            Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    queue.add(jsonRequest);
+                }
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        cityFromAdapret = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, citylist);
+        cityToAdapret = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, citylist);
+
+        cityFrom.setAdapter(cityFromAdapret);
+        cityFrom.setThreshold(0);
+        cityTo.setAdapter(cityToAdapret);
+        cityTo.setThreshold(0);
+
+        cityFrom.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    cityFrom.showDropDown();
+                    cityFrom.setTextColor(Color.BLACK);
+                } else {
+                    if (!citylist.contains(cityFrom.getText().toString()))
+                        cityFrom.setTextColor(Color.RED);
+                }
+            }
+        });
+
+        cityTo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    cityTo.showDropDown();
+                    cityTo.setTextColor(Color.BLACK);
+                } else {
+                    if (!citylist.contains(cityTo.getText().toString()))
+                        cityTo.setTextColor(Color.RED);
+                }
+            }
+        });
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.add_driver_statement_layout, container, false);
+
+        freeSpaceSpinner = (Spinner) view.findViewById(R.id.driver_freespace_spiner);
+        priceSpinner = (Spinner) view.findViewById(R.id.driver_price_spiner);
+        markaSpinner = (Spinner) view.findViewById(R.id.driver_marka_spiner);
+        modelSpinner = (Spinner) view.findViewById(R.id.driver_model_spiner);
+        condicionerCK = (CheckBox) view.findViewById(R.id.driver_conditioner_checkBox);
+        atplaceCK = (CheckBox) view.findViewById(R.id.driver_atplace_checkBox);
+        cigarCK = (CheckBox) view.findViewById(R.id.driver_cigar_checkBox);
+        baggageCK = (CheckBox) view.findViewById(R.id.driver_baggage_checkBox);
+        animalCK = (CheckBox) view.findViewById(R.id.driver_animal_checkBox);
+        commentText = (EditText) view.findViewById(R.id.driver_comment);
+        genderSpinner = (Spinner) view.findViewById(R.id.driver_sex_spiner);
+        cityFrom = (AutoCompleteTextView) view.findViewById(R.id.driver_cityfrom);
+        cityTo = (AutoCompleteTextView) view.findViewById(R.id.driver_cityto);
+        runDateSpinner = (Spinner) view.findViewById(R.id.driver_date_spiner);
+        runTimeSpinner = (Spinner) view.findViewById(R.id.driver_time_spiner);
+        comfort1 = (RelativeLayout) view.findViewById(R.id.comfort1);
+        passangerLimitBox = (LinearLayout) view.findViewById(R.id.driver_passanger_restrict_box);
+        seekBar = (SeekBar) view.findViewById(R.id.driver_pass_age_seek);
+        driverDonebtn = (Button) view.findViewById(R.id.done_driver);
+        colorSpinner = (Spinner) view.findViewById(R.id.driver_color_spiner);
+        passAgeText = (TextView) view.findViewById(R.id.driver_pass_age_text);
+        limitBtn = (Button) view.findViewById(R.id.driver_limit_btn);
+        pirobebiBtn = (Button) view.findViewById(R.id.driver_pirobebi_btn);
+
 
         return view;
     }
-
 
     private void fillForm(DriverStatement statement) {
 
@@ -448,32 +428,45 @@ public class AddDriverStatementF extends Fragment {
         freeSpaceSpinner.setSelection(statement.getFreeSpace() - 1);
         priceSpinner.setSelection(statement.getPrice());
 
-        markaSpinner.setSelection(statement.getMarka());
-        modelSpinner.setSelection(statement.getModeli());
+//        markaSpinner.setSelection(statement.getMarka());
+        modelebisListisDayeneba(statement.getMarka());
+//        modelSpinner.setSelection(statement.getModeli());
         colorSpinner.setSelection(statement.getColor());
-        if(statement.getAtHome() != -1){
-            if(statement.getKondencioneri()==1) condicionerCK.setChecked(true);
-                else condicionerCK.setChecked(false);
-            if(statement.getSigareti()==1) cigarCK.setChecked(true);
-                else cigarCK.setChecked(false);
-            if(statement.getAtHome()==1) atplaceCK.setChecked(true);
-                else atplaceCK.setChecked(false);
-            if(statement.getCxovelebi()==1) animalCK.setChecked(true);
-                else animalCK.setChecked(false);
-            if(statement.getSabarguli()==1) baggageCK.setChecked(true);
-                else baggageCK.setChecked(false);
+        if (statement.getAtHome() != -1) {
+            pirobebi= true;
+            pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_lite);
+            comfort1.setVisibility(View.VISIBLE);
+            if (statement.getKondencioneri() == 1) condicionerCK.setChecked(true);
+            else condicionerCK.setChecked(false);
+            if (statement.getSigareti() == 1) cigarCK.setChecked(true);
+            else cigarCK.setChecked(false);
+            if (statement.getAtHome() == 1) atplaceCK.setChecked(true);
+            else atplaceCK.setChecked(false);
+            if (statement.getCxovelebi() == 1) animalCK.setChecked(true);
+            else animalCK.setChecked(false);
+            if (statement.getSabarguli() == 1) baggageCK.setChecked(true);
+            else baggageCK.setChecked(false);
+        } else {
+            pirobebi = false;
+            pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_dark);
+            comfort1.setVisibility(View.GONE);
         }
 
-        if(statement.getAgeTo() != 1000){
+        if (statement.getAgeTo() != 1000) {
             seekBar.setProgress(statement.getAgeTo());
             genderSpinner.setSelection(statement.getGender());
-        }else{
+            passAgeText.setText("მაქს. ასაკი " + statement.getAgeTo());
+            passangerLimitBox.setVisibility(View.VISIBLE);
+            limitBtn.setBackgroundResource(R.drawable.greenbtn_lite);
+            passengerLimit = true;
+        } else {
             seekBar.setProgress(1);
             genderSpinner.setSelection(0);
+            passangerLimitBox.setVisibility(View.GONE);
+            limitBtn.setBackgroundResource(R.drawable.greenbtn_dark);
+            passengerLimit = false;
         }
-
         commentText.setText(statement.getComment());
-
     }
 
 
@@ -487,6 +480,12 @@ public class AddDriverStatementF extends Fragment {
 
     // formistvis sachiro monacemebis chatvirtva
     private void initialazeAll() {
+
+        pirobebi = false;
+        passengerLimit = false;
+
+        seekBar.setMax(80);
+        runTimeC = Calendar.getInstance();
 
         citylist.add("თბილისი");
         citylist.add("ქუთაისი");
@@ -572,15 +571,17 @@ public class AddDriverStatementF extends Fragment {
         DriverStatement statement = new DriverStatement(Constantebi.MY_ID,
                 freeSpaceSpinner.getSelectedItemPosition() + 1,
                 Integer.valueOf(priceSpinner.getSelectedItem().toString()),
-                setedDate,
+                runDateSpinner.getSelectedItem().toString(),
                 cityFrom.getText().toString(),
                 cityTo.getText().toString());
 
+        statement.setTime(runTimeSpinner.getSelectedItem().toString());
 
         statement.setMarka(markaSpinner.getSelectedItemPosition());
         statement.setModeli(modelSpinner.getSelectedItemPosition());
         statement.setColor(colorSpinner.getSelectedItemPosition());
-        if (pirobebi.isChecked()) {
+
+        if (pirobebi) {
             statement.setKondencioneri(BoolToInt(condicionerCK.isChecked()));
             statement.setAtHome(BoolToInt(atplaceCK.isChecked()));
             statement.setSigareti(BoolToInt(cigarCK.isChecked()));
@@ -594,7 +595,7 @@ public class AddDriverStatementF extends Fragment {
             statement.setCxovelebi(-1);
         }
 
-        if (passengerLimit.isChecked()) {
+        if (passengerLimit) {
             statement.setAgeTo(seekBar.getProgress());
             statement.setGender(genderSpinner.getSelectedItemPosition());
         } else {
@@ -605,5 +606,27 @@ public class AddDriverStatementF extends Fragment {
 
 
         return statement;
+    }
+
+    private void modelebisListisDayeneba(int position) {
+        String br = brendlist.get(position).toString();
+        int br_id = 0;
+        for (int i = 0; i < Constantebi.brendList.size(); i++) {
+            if (br.equals(Constantebi.brendList.get(i).getMarka())) {
+                br_id = Constantebi.brendList.get(i).getId();
+            }
+        }
+        modellist.clear();
+        for (int i = 0; i < Constantebi.modelList.size(); i++) {
+            if (Constantebi.modelList.get(i).getBrendID() == br_id) {
+                if (!Constantebi.modelList.get(i).getModel().equals(""))
+                    modellist.add(Constantebi.modelList.get(i).getModel());
+            }
+        }
+        if (modellist.size() == 0) {
+            modellist.add("-");
+        }
+        modelSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modellist);
+        ((ArrayAdapter<String>) modelSpinner.getAdapter()).notifyDataSetChanged();
     }
 }
