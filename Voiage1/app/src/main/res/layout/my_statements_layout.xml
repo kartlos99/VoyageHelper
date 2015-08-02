@@ -19,7 +19,7 @@
             android:id="@+id/list_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00ccdd"
+            android:background="@color/ColorPrimary"
             android:paddingBottom="6dp"
             android:paddingTop="6dp">
 

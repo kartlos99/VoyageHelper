@@ -23,6 +23,8 @@ public class MyStatements extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+toolbar.setTitle("ჩემი განცხ.");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pager = (ViewPager) findViewById(R.id.pageView);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();

@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
@@ -116,6 +118,8 @@ public class DriverStatatementListFragment extends Fragment {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
 
+        DefaultRetryPolicy myPolicy = new DefaultRetryPolicy(5000, 3, 1.0f);
+
         JsonArrayRequest request = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -181,13 +185,21 @@ public class DriverStatatementListFragment extends Fragment {
                             driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
                             driverStatementList.setAdapter(driverListAdapter);
 
-                            DBmanager.initialaize(getActivity());
-                            DBmanager.openWritable();
-                            for (int i = 0; i < newData.size(); i++){
-                                if(newData.get(i).getUserID() == 2){
-                                    DBmanager.insertIntoDriver(newData.get(i), Constantebi.MY_STATEMENT);
-                                }
-                            }
+//                            DBmanager.initialaize(getActivity());
+//                            DBmanager.openWritable();
+//                            for (int i = 0; i < newData.size(); i++){
+//                                if(newData.get(i).getUserID() == 2){
+//                                    DBmanager.insertIntoDriver(newData.get(i), Constantebi.MY_STATEMENT);
+//                                }
+//                            }
+//
+//                            driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
+//                            for (int i = 0; i < driverStatements.size(); i++){
+//
+//                                    DBmanager.deleteDriverStatement(driverStatements.get(i).getId());
+//
+//                            }
+
                             DBmanager.close();
                         }
                         progress.dismiss();
@@ -201,6 +213,8 @@ public class DriverStatatementListFragment extends Fragment {
                     }
                 }
         );
+
+        request.setRetryPolicy(myPolicy);
 
         progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
         queue.add(request);

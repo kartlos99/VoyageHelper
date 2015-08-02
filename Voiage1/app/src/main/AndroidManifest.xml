@@ -32,7 +32,7 @@
         </activity>
         <activity
             android:name=".MyStatements"
-            android:label="@string/title_activity_my_statements"
+            android:label="ჩემი განცხ."
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

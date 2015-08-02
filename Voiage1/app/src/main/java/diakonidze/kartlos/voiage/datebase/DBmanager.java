@@ -80,6 +80,71 @@ public class DBmanager {
         return markaList;
     }
 
+    public static long updatePassangerStatement (PassangerStatement passangerStatement){
+        ContentValues values = new ContentValues();
+        values.put(DBscheme.S_ID, passangerStatement.getId());
+        values.put(DBscheme.USER_ID, passangerStatement.getUserID());
+        values.put(DBscheme.PLACE_X, passangerStatement.getPlaceX());
+        values.put(DBscheme.PLACE_Y, passangerStatement.getPlaceY());
+        values.put(DBscheme.FREESPACE, passangerStatement.getFreeSpace());
+        values.put(DBscheme.PRICE, passangerStatement.getPrice());
+        values.put(DBscheme.CONDICIONERI, passangerStatement.getKondencioneri());
+        values.put(DBscheme.SIGAR, passangerStatement.getSigareti());
+        values.put(DBscheme.SABARGULI, passangerStatement.getSabarguli());
+        values.put(DBscheme.CXOVELEBI, passangerStatement.getCxovelebi());
+        values.put(DBscheme.ATHOME, passangerStatement.getAtHome());
+        values.put(DBscheme.CITY_FROM, passangerStatement.getCityFrom());
+        values.put(DBscheme.CITY_TO, passangerStatement.getCityTo());
+        values.put(DBscheme.DATE, passangerStatement.getDate());
+        values.put(DBscheme.TIME, passangerStatement.getTime());
+        values.put(DBscheme.COMMENT, passangerStatement.getComment());
+        values.put(DBscheme.NUMBER_MOBILE, passangerStatement.getNumber());
+        values.put(DBscheme.NAME, passangerStatement.getName());
+        values.put(DBscheme.SURMANE, passangerStatement.getSurname());
+
+        return db.update(DBscheme.PASSANGER_TABLE_NAME, values, DBscheme.S_ID + " = " + passangerStatement.getId(), null);
+    }
+
+    public static void deletePassangerStatement(long id){
+        db.delete(DBscheme.PASSANGER_TABLE_NAME, DBscheme.S_ID + " = " + id, null);
+    }
+
+    public static long updateDriverStatement (DriverStatement driverStatement){
+        ContentValues values = new ContentValues();
+        values.put(DBscheme.S_ID, driverStatement.getId());
+        values.put(DBscheme.USER_ID, driverStatement.getUserID());
+        values.put(DBscheme.PLACE_X, driverStatement.getPlaceX());
+        values.put(DBscheme.PLACE_Y, driverStatement.getPlaceY());
+        values.put(DBscheme.FREESPACE, driverStatement.getFreeSpace());
+        values.put(DBscheme.PRICE, driverStatement.getPrice());
+        values.put(DBscheme.CONDICIONERI, driverStatement.getKondencioneri());
+        values.put(DBscheme.SIGAR, driverStatement.getSigareti());
+        values.put(DBscheme.SABARGULI, driverStatement.getSabarguli());
+        values.put(DBscheme.CXOVELEBI, driverStatement.getCxovelebi());
+        values.put(DBscheme.ATHOME, driverStatement.getAtHome());
+        values.put(DBscheme.MARKA, driverStatement.getMarka());
+        values.put(DBscheme.MODELI, driverStatement.getModeli());
+        values.put(DBscheme.COLOR, driverStatement.getColor());
+        values.put(DBscheme.PHOTO_ST, driverStatement.getCarpicture());
+        values.put(DBscheme.AGE_TO, driverStatement.getAgeTo());
+        values.put(DBscheme.GENDER_ST, driverStatement.getGender());
+        values.put(DBscheme.CITY_FROM, driverStatement.getCityFrom());
+        values.put(DBscheme.CITY_PATH, driverStatement.getCityPath());
+        values.put(DBscheme.CITY_TO, driverStatement.getCityTo());
+        values.put(DBscheme.DATE, driverStatement.getDate());
+        values.put(DBscheme.TIME, driverStatement.getTime());
+        values.put(DBscheme.COMMENT, driverStatement.getComment());
+        values.put(DBscheme.NUMBER_MOBILE, driverStatement.getNumber());
+        values.put(DBscheme.NAME, driverStatement.getName());
+        values.put(DBscheme.SURMANE, driverStatement.getSurname());
+
+        return db.update(DBscheme.DRIVER_TABLE_NAME, values, DBscheme.S_ID + " = " + driverStatement.getId(), null);
+    }
+
+    public static void deleteDriverStatement(long id){
+        db.delete(DBscheme.DRIVER_TABLE_NAME, DBscheme.S_ID + " = " + id, null);
+    }
+
     public static long insertIntoDriver(DriverStatement driverStatement, int location) {
         ContentValues values = new ContentValues();
 

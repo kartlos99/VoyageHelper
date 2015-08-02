@@ -41,6 +41,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import diakonidze.kartlos.voiage.R;
+import diakonidze.kartlos.voiage.datebase.DBhelper;
+import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
@@ -83,7 +85,7 @@ public class AddDriverStatementF extends Fragment {
     private Spinner runDateSpinner;
     private Spinner runTimeSpinner;
 
-    String setedDate, setedtime;
+    String setedDate, setedtime, workState;
     Boolean pirobebi, passengerLimit;
 
 
@@ -123,7 +125,7 @@ public class AddDriverStatementF extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         initialazeAll();
-
+        workState = getArguments().getString("action");
 
         if (savedInstanceState != null) {
             // tu reCreate moxda grafebshi vabrumebt ra mdgomareobac iyo
@@ -132,7 +134,7 @@ public class AddDriverStatementF extends Fragment {
         } else {  // pirvelad chaitvirta es forma
             driverStatement = (DriverStatement) getArguments().getSerializable("statement");
             // chemi gancxadebis gaxsna redaqtirebisatvis
-            if (getArguments().getString("action").equals(Constantebi.REASON_EDIT)) {
+            if (workState.equals(Constantebi.REASON_EDIT)) {
                 fillForm(driverStatement);
             }
             // axali gancxadebis chawera
@@ -208,7 +210,7 @@ public class AddDriverStatementF extends Fragment {
         });
 
 
-// damatebiti pirobebis manipulaciebi
+        // damatebiti pirobebis manipulaciebi
 
         pirobebiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +227,7 @@ public class AddDriverStatementF extends Fragment {
         });
 
 
-// mgzavrze shezgudvebis dayeneba
+        // mgzavrze shezgudvebis dayeneba
 
         limitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,31 +260,26 @@ public class AddDriverStatementF extends Fragment {
             }
         });
 
-// chawera / gagzavna bazashi
+        // chawera / gagzavna bazashi
 
         driverDonebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                if (!citylist.contains(cityTo.getText().toString()) || !citylist.contains(cityTo.getText().toString())) {
+                if (!citylist.contains(cityFrom.getText().toString()) || !citylist.contains(cityTo.getText().toString())) {
                     Toast.makeText(getActivity(), "ქალაქი არასწორადაა მითითებული!", Toast.LENGTH_LONG).show();
                 } else {
                     driverStatement = readForm();
-
-                    if (runDateSpinner.getSelectedItemPosition() < 3) {
-                        Calendar calendar = Calendar.getInstance();
-                        setedDate = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + (calendar.get(Calendar.DAY_OF_MONTH) + runDateSpinner.getSelectedItemPosition());
-                    }
-
+                    driverStatement.setUserID(Constantebi.MY_ID);
 
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("cityFrom", driverStatement.getCityFrom());
                         jsonObject.put("cityTo", driverStatement.getCityTo());
                         jsonObject.put("cityPath", "AA__BB");
-                        jsonObject.put("date", setedDate);
-                        jsonObject.put("time", setedtime);
+                        jsonObject.put("date", driverStatement.getDate());
+                        jsonObject.put("time", driverStatement.getTime());
                         jsonObject.put("freespace", driverStatement.getFreeSpace());
                         jsonObject.put("price", driverStatement.getPrice());
                         jsonObject.put("mark", driverStatement.getMarka());
@@ -306,7 +303,7 @@ public class AddDriverStatementF extends Fragment {
                         jsonObject.put("status", 1);
                         jsonObject.put("sex", 1);
                         jsonObject.put("photo", "NON");
-                        jsonObject.put("user_id", Constantebi.MY_ID);
+                        jsonObject.put("user_id", driverStatement.getUserID());
 
 
                     } catch (JSONException e) {
@@ -314,22 +311,70 @@ public class AddDriverStatementF extends Fragment {
                     }
 
                     RequestQueue queue = Volley.newRequestQueue(getActivity());
-                    String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
 
-                    JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject jsonObject) {
+                    if(workState.equals(Constantebi.REASON_ADD)) {
 
-                            Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
 
-                    queue.add(jsonRequest);
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+
+                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
+
+                                try {
+                                    int id = jsonObject.getInt("insert_id");
+                                    driverStatement.setId(id);
+
+                                    DBmanager.initialaize(getActivity());
+                                    DBmanager.openWritable();
+                                    DBmanager.insertIntoDriver(driverStatement, Constantebi.MY_STATEMENT);
+                                    DBmanager.close();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        queue.add(jsonRequest);
+
+                    }else{
+                        // **** aq modis ganaxlebis dros ******
+
+                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
+
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+
+                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
+
+                                    DBmanager.initialaize(getActivity());
+                                    DBmanager.openWritable();
+                                    DBmanager.updateDriverStatement(driverStatement);
+                                    DBmanager.close();
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        queue.add(jsonRequest);
+
+                    }
+
+
+
                 }
 
             }
@@ -428,9 +473,9 @@ public class AddDriverStatementF extends Fragment {
         freeSpaceSpinner.setSelection(statement.getFreeSpace() - 1);
         priceSpinner.setSelection(statement.getPrice());
 
-//        markaSpinner.setSelection(statement.getMarka());
+        markaSpinner.setSelection(statement.getMarka());
         modelebisListisDayeneba(statement.getMarka());
-//        modelSpinner.setSelection(statement.getModeli());
+        modelSpinner.setSelection(statement.getModeli());
         colorSpinner.setSelection(statement.getColor());
         if (statement.getAtHome() != -1) {
             pirobebi= true;
@@ -567,11 +612,15 @@ public class AddDriverStatementF extends Fragment {
 
     private DriverStatement readForm() {
 
+        if (runDateSpinner.getSelectedItemPosition() < 3) {
+            Calendar calendar = Calendar.getInstance();
+            setedDate = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + (calendar.get(Calendar.DAY_OF_MONTH) + runDateSpinner.getSelectedItemPosition());
+        }
 
         DriverStatement statement = new DriverStatement(Constantebi.MY_ID,
                 freeSpaceSpinner.getSelectedItemPosition() + 1,
                 Integer.valueOf(priceSpinner.getSelectedItem().toString()),
-                runDateSpinner.getSelectedItem().toString(),
+                setedDate,
                 cityFrom.getText().toString(),
                 cityTo.getText().toString());
 
