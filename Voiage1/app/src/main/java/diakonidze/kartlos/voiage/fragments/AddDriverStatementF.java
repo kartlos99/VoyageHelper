@@ -51,11 +51,9 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
  */
 public class AddDriverStatementF extends Fragment {
     private Calendar runTimeC;
-    private TextView runDateText;
-    private TextView runTimeText;
     private TextView passAgeText;
     private Button driverDonebtn, pirobebiBtn, limitBtn;
-    private DriverStatement driverStatement, getetDriverStatement;
+    private DriverStatement driverStatement;
 
     Spinner freeSpaceSpinner, priceSpinner, markaSpinner, modelSpinner, genderSpinner, colorSpinner;
     CheckBox condicionerCK, atplaceCK, cigarCK, baggageCK, animalCK;
@@ -320,7 +318,7 @@ public class AddDriverStatementF extends Fragment {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
 
-                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "OK insert" + jsonObject.toString(), Toast.LENGTH_SHORT).show();
                                 // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
 
                                 try {
@@ -348,20 +346,25 @@ public class AddDriverStatementF extends Fragment {
                     }else{
                         // **** aq modis ganaxlebis dros ******
 
+                        try {
+                            jsonObject.put("s_id", driverStatement.getId());
+                        } catch (JSONException e) {
+                            Toast.makeText(getActivity(), "mdzgolis gancxadebis ganaxleba - id aramaqvs rom gavagzavno serverze", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+
                         String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
 
                         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
 
-                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "OK update" + jsonObject.toString(), Toast.LENGTH_SHORT).show();
                                 // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
-
                                     DBmanager.initialaize(getActivity());
                                     DBmanager.openWritable();
                                     DBmanager.updateDriverStatement(driverStatement);
                                     DBmanager.close();
-
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -370,13 +373,8 @@ public class AddDriverStatementF extends Fragment {
                             }
                         });
                         queue.add(jsonRequest);
-
                     }
-
-
-
                 }
-
             }
         });
     }
@@ -461,6 +459,7 @@ public class AddDriverStatementF extends Fragment {
         if (!datelist.contains(statement.getDate())) {
             datelist.add(statement.getDate());
             ((ArrayAdapter<String>) runDateSpinner.getAdapter()).notifyDataSetChanged();
+            setedDate = statement.getDate();
         }
         runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, statement.getDate()));
 

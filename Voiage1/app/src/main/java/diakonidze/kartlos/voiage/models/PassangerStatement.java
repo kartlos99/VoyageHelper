@@ -23,11 +23,11 @@ public class PassangerStatement implements Serializable {
                 id=0;
                 placeX=0;
                 placeY=0;
-                kondencioneri=2;
-                sigareti=2;
-                sabarguli=2;
-                cxovelebi=2;
-                atHome=2;
+                kondencioneri=-1;
+                sigareti=-1;
+                sabarguli=-1;
+                cxovelebi=-1;
+                atHome=-1;
                 time="";
                 comment="";
                 number=""; name=""; surname="";

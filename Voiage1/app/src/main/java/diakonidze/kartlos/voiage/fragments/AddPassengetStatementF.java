@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import diakonidze.kartlos.voiage.R;
+import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
 import diakonidze.kartlos.voiage.utils.Constantebi;
@@ -50,13 +51,12 @@ import diakonidze.kartlos.voiage.utils.Constantebi;
 public class AddPassengetStatementF extends Fragment {
 
     private Calendar runTimeC;
-    private TextView runDateText;
-    private TextView runTimeText;
-    private TextView passAgeText;
-    private Button passangerDonebtn, pirobebiBtn, limitBtn;
-    private PassangerStatement passangerStatement, getetpassangerStatement;
+    private Button passangerDonebtn, pirobebiBtn;
 
-    Spinner freeSpaceSpinner, priceSpinner, markaSpinner, modelSpinner, genderSpinner, colorSpinner;
+    private PassangerStatement passangerStatement;
+
+
+    Spinner freeSpaceSpinner, priceSpinner;
     CheckBox condicionerCK, atplaceCK, cigarCK, baggageCK, animalCK;
     EditText commentText;
     RelativeLayout comfort1;
@@ -71,8 +71,6 @@ public class AddPassengetStatementF extends Fragment {
     private ArrayAdapter<String> timeSpinnerAdapter;
     private ArrayAdapter<String> freeSpaceSpinnerAdapter;
     private ArrayAdapter<String> priceSpinnerAdapter;
-    private ArrayAdapter<String> brendSpinerAdapter;
-    private ArrayAdapter<String> modelSpinnerAdapter;
 
     private List<String> brendlist = new ArrayList<>();
     private List<String> modellist = new ArrayList<>();
@@ -86,6 +84,7 @@ public class AddPassengetStatementF extends Fragment {
 
     String setedDate, setedtime, workState;
     Boolean pirobebi, passengerLimit;
+
 
 
     DatePickerDialog.OnDateSetListener datelistener = new DatePickerDialog.OnDateSetListener() {
@@ -118,7 +117,7 @@ public class AddPassengetStatementF extends Fragment {
             }
         }
     };
-    private Button passangerDoneBtn;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -213,39 +212,6 @@ public class AddPassengetStatementF extends Fragment {
         });
 
 
-        // mgzavrze shezgudvebis dayeneba
-
-        limitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passengerLimit = !passengerLimit;
-                if (passengerLimit) {
-                    passangerLimitBox.setVisibility(View.VISIBLE);
-                    limitBtn.setBackgroundResource(R.drawable.greenbtn_lite);
-                } else {
-                    passangerLimitBox.setVisibility(View.GONE);
-                    limitBtn.setBackgroundResource(R.drawable.greenbtn_dark);
-                }
-            }
-        });
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                passAgeText.setText("მაქს. ასაკი " + i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
         // chawera / gagzavna bazashi
     }
 
@@ -270,55 +236,113 @@ public class AddPassengetStatementF extends Fragment {
         passangerDonebtn = (Button) view.findViewById(R.id.done_passanger);
         pirobebiBtn = (Button) view.findViewById(R.id.passanger_pirobebi_btn);
 
-        passangerDoneBtn = (Button) view.findViewById(R.id.done_passanger);
-        passangerDoneBtn.setOnClickListener(new View.OnClickListener() {
+        passangerDonebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("CityFrom", "TB-1");
-                    jsonObject.put("CityTo", "BA-1");
-                    jsonObject.put("date", "2009-11-11");
-                    jsonObject.put("time", "0");
-                    jsonObject.put("freespace", 9);
-                    jsonObject.put("price", 10);
-                    jsonObject.put("kondincioneri", 2);
-                    jsonObject.put("sigareti", 2);
-                    jsonObject.put("sabarguli", 2);
-                    jsonObject.put("adgilzemisvla", 2);
-                    jsonObject.put("cxovelebi", 2);
-                    jsonObject.put("placex", "555");
-                    jsonObject.put("placey", "555");
-                    jsonObject.put("comment", "cccooooommm");
-                    jsonObject.put("status", 1);
-                    jsonObject.put("sex", 1);
-                    jsonObject.put("photo", "NON");
-                    jsonObject.put("user_id", "1");
+
+                if (!citylist.contains(cityFrom.getText().toString()) || !citylist.contains(cityTo.getText().toString())) {
+                    Toast.makeText(getActivity(), "ქალაქი არასწორადაა მითითებული!", Toast.LENGTH_LONG).show();
+                } else {
+
+                    passangerStatement = readForm();
+                    passangerStatement.setUserID(Constantebi.MY_ID);
+
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("CityFrom", passangerStatement.getCityFrom());
+                        jsonObject.put("CityTo", passangerStatement.getCityTo());
+                        jsonObject.put("date", passangerStatement.getDate());
+                        jsonObject.put("time", passangerStatement.getTime());
+                        jsonObject.put("freespace", passangerStatement.getFreeSpace());
+                        jsonObject.put("price", passangerStatement.getPrice());
+                        jsonObject.put("kondincioneri", passangerStatement.getKondencioneri());
+                        jsonObject.put("sigareti", passangerStatement.getSigareti());
+                        jsonObject.put("sabarguli", passangerStatement.getSabarguli());
+                        jsonObject.put("adgilzemisvla", passangerStatement.getAtHome());
+                        jsonObject.put("cxovelebi", passangerStatement.getCxovelebi());
+                        jsonObject.put("placex", "555");
+                        jsonObject.put("placey", "555");
+                        jsonObject.put("comment", passangerStatement.getComment());
+                        jsonObject.put("status", 1);
+                        jsonObject.put("sex", 1);
+                        jsonObject.put("photo", "NON");
+                        jsonObject.put("user_id", passangerStatement.getUserID());
 //
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    RequestQueue queue = Volley.newRequestQueue(getActivity());
 
-                RequestQueue queue = Volley.newRequestQueue(getActivity());
-                String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
+                    if (workState.equals(Constantebi.REASON_ADD)) {
+                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
 //                String url = "http://back.meet.ge/get.php?type=my&sub_type=2";
 
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
 
-                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST ,url, jsonObject, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject jsonObject) {
+                                try {
+                                    int id = jsonObject.getInt("insert_id");
+                                    passangerStatement.setId(id);
 
-                        Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                    DBmanager.initialaize(getActivity());
+                                    DBmanager.openWritable();
+                                    DBmanager.insertIntoPassanger(passangerStatement, Constantebi.MY_STATEMENT);
+                                    DBmanager.close();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        queue.add(jsonRequest);
+                    } else {
+                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
+//                String url = "http://back.meet.ge/get.php?type=my&sub_type=2";
+                        try {
+                            jsonObject.put("s_id", passangerStatement.getId());
+                        } catch (JSONException e) {
+                            Toast.makeText(getActivity(), "mgzavris gancxadebis ganaxleba - id aramaqvs rom gavagzavno serverze", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+
+                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    int id = jsonObject.getInt("insert_id");
+                                    passangerStatement.setId(id);
+
+                                    DBmanager.initialaize(getActivity());
+                                    DBmanager.openWritable();
+                                    DBmanager.insertIntoPassanger(passangerStatement, Constantebi.MY_STATEMENT);
+                                    DBmanager.close();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        queue.add(jsonRequest);
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(getActivity(),volleyError.toString()+"   -   "+volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                queue.add(jsonRequest);
+                }
             }
         });
 
@@ -371,6 +395,7 @@ public class AddPassengetStatementF extends Fragment {
         if (!datelist.contains(statement.getDate())) {
             datelist.add(statement.getDate());
             ((ArrayAdapter<String>) runDateSpinner.getAdapter()).notifyDataSetChanged();
+            setedDate = statement.getDate();
         }
         runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, statement.getDate()));
 
@@ -419,9 +444,7 @@ public class AddPassengetStatementF extends Fragment {
     private void initialazeAll() {
 
         pirobebi = false;
-        passengerLimit = false;
 
-        seekBar.setMax(80);
         runTimeC = Calendar.getInstance();
 
         citylist.add("თბილისი");
@@ -453,16 +476,12 @@ public class AddPassengetStatementF extends Fragment {
         }
 
 
-        modelSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modellist);
-        brendSpinerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, brendlist);
         dateSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, datelist);
         timeSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, timelist);
         freeSpaceSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, freespacelist);
         priceSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, pricelist);
 
 
-        modelSpinner.setAdapter(modelSpinnerAdapter);
-        markaSpinner.setAdapter(brendSpinerAdapter);
         freeSpaceSpinner.setAdapter(freeSpaceSpinnerAdapter);
         priceSpinner.setAdapter(priceSpinnerAdapter);
         runDateSpinner.setAdapter(dateSpinnerAdapter);

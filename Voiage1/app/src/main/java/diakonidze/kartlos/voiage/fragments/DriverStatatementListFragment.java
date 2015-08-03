@@ -53,17 +53,15 @@ public class DriverStatatementListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_a, container, false);
 
         driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
-        driverStatementList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                PopupMenu pManu = new PopupMenu(getActivity(), view);
-                pManu.getMenuInflater().inflate(R.menu.popup_manu, pManu.getMenu());
-                pManu.show();
-                return false;
-            }
-        });
-
-
+//        driverStatementList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                PopupMenu pManu = new PopupMenu(getActivity(), view);
+//                pManu.getMenuInflater().inflate(R.menu.popup_manu, pManu.getMenu());
+//                pManu.show();
+//                return false;
+//            }
+//        });
         return v;
     }
 
@@ -72,7 +70,6 @@ public class DriverStatatementListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         location = getArguments().getString("location"); // vin gamoiZaxa es forma
-
         driverStatements = new ArrayList<>();
 
         if(location.equals(Constantebi.MY_OWN_STAT)){
@@ -195,12 +192,9 @@ public class DriverStatatementListFragment extends Fragment {
 //
 //                            driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
 //                            for (int i = 0; i < driverStatements.size(); i++){
-//
 //                                    DBmanager.deleteDriverStatement(driverStatements.get(i).getId());
-//
 //                            }
-
-                            DBmanager.close();
+//                            DBmanager.close();
                         }
                         progress.dismiss();
                     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
 import diakonidze.kartlos.voiage.utils.Constantebi;
@@ -23,7 +24,8 @@ public class MyStatements extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-toolbar.setTitle("ჩემი განცხ.");
+        toolbar.setTitle("ჩემი განცხ.");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pager = (ViewPager) findViewById(R.id.pageView);
@@ -31,6 +33,9 @@ toolbar.setTitle("ჩემი განცხ.");
         StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.MY_OWN_STAT);
         pager.setAdapter(myadapter);
 
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
     }
 
     @Override

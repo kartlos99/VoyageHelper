@@ -1,12 +1,14 @@
 package diakonidze.kartlos.voiage.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,8 +25,10 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import diakonidze.kartlos.voiage.DetailPagePassanger;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.PassangerListAdapter;
+import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
 
@@ -35,6 +39,7 @@ public class PassengerStatatementListFragment extends Fragment {
 
     private ArrayList<PassangerStatement> passangerStatements;
     private ListView passangerStatementList;
+    private PassangerListAdapter passangerListAdapter;
     private ProgressDialog progress;
     private JSONObject myobj;
     private String location = "";
@@ -44,9 +49,6 @@ public class PassengerStatatementListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_b, container,false);
         passangerStatementList = (ListView) v.findViewById(R.id.statement_2_list);
-        passangerStatements = new ArrayList<>();
-        passangerStatementList.setDivider(null);
-        location = getArguments().getString("location");
 
         return v;
     }
@@ -55,14 +57,40 @@ public class PassengerStatatementListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getPassengersStatements();
+        location = getArguments().getString("location"); // vin gamoiZaxa es forma
+        passangerStatements = new ArrayList<>();
 
+        if(location.equals(Constantebi.MY_OWN_STAT)){
+            DBmanager.initialaize(getActivity());
+            DBmanager.openReadable();
+            passangerStatements = DBmanager.getPassangerList(Constantebi.MY_STATEMENT);
+            DBmanager.close();
+        }else {
+            getPassengersStatements();
+        }
+
+        passangerListAdapter = new PassangerListAdapter(getActivity(), passangerStatements);
+        passangerStatementList.setAdapter(passangerListAdapter);
+        passangerStatementList.setDivider(null);
+
+        passangerStatementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), DetailPagePassanger.class);
+
+                PassangerStatement currStatement = (PassangerStatement) parent.getItemAtPosition(position);
+                intent.putExtra("driver_st", currStatement);
+                intent.putExtra("from", location);
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void getPassengersStatements() {
 
         String url = "";
-// romeli info wamovigo serveridan
+        // romeli info wamovigo serveridan
         switch (location){
             case Constantebi.ALL_STAT:  url = "http://back.meet.ge/get.php?type=2";
                 break;
@@ -128,7 +156,7 @@ public class PassengerStatatementListFragment extends Fragment {
 
                         if (newData.size() > 0) {           // tu erti mowyobiloba mainc aris mashin vaxarisxebt lists
                             passangerStatements = newData;
-                            PassangerListAdapter passangerListAdapter = new PassangerListAdapter(getActivity(),passangerStatements);
+                            passangerListAdapter = new PassangerListAdapter(getActivity(),passangerStatements);
                             passangerStatementList.setAdapter(passangerListAdapter);
                         }
                         progress.dismiss();
@@ -147,17 +175,17 @@ public class PassengerStatatementListFragment extends Fragment {
         queue.add(request);
     }
 
-    private ArrayList<PassangerStatement> getStatementData() {
-        ArrayList<PassangerStatement> data = new ArrayList<>();
-//        Calendar now = Calendar.getInstance();
-//        for (int i = 0; i < 14; i++)
-//        {
-//            PassangerStatement newStatment = new PassangerStatement(1, 1, 10, "ბორჯომი", "ბაკურიანი", "");
-//            newStatment.setName("მარგარიტა");
-//            newStatment.setSurname("აბდუშელაშვილი");
-//            newStatment.setNumber("577987__6");
-//            data.add(newStatment);
-//        }
-        return data;
-    }
+//    private ArrayList<PassangerStatement> getStatementData() {
+//        ArrayList<PassangerStatement> data = new ArrayList<>();
+////        Calendar now = Calendar.getInstance();
+////        for (int i = 0; i < 14; i++)
+////        {
+////            PassangerStatement newStatment = new PassangerStatement(1, 1, 10, "ბორჯომი", "ბაკურიანი", "");
+////            newStatment.setName("მარგარიტა");
+////            newStatment.setSurname("აბდუშელაშვილი");
+////            newStatment.setNumber("577987__6");
+////            data.add(newStatment);
+////        }
+//        return data;
+//    }
 }

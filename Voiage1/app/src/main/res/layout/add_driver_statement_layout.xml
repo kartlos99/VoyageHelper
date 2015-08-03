@@ -41,6 +41,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
+                    android:singleLine="true"
+                    android:focusableInTouchMode="true"
                     android:hint="საიდან" />
 
 
@@ -49,21 +51,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
+                    android:singleLine="true"
+                    android:focusableInTouchMode="true"
                     android:hint="საით" />
-
-                <!--<Spinner-->
-                <!--android:id="@+id/driver_cityfrom"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="5"-->
-                <!--android:entries="@array/cityes" />-->
-
-                <!--<Spinner-->
-                <!--android:id="@+id/driver_cityto"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="5"-->
-                <!--android:entries="@array/cityes" />-->
 
             </LinearLayout>
 

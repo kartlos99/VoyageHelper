@@ -3,8 +3,10 @@ package diakonidze.kartlos.voiage;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import diakonidze.kartlos.voiage.adapters.AddStatementAdapter;
 
@@ -12,18 +14,26 @@ import diakonidze.kartlos.voiage.adapters.AddStatementAdapter;
 public class AddStatement extends ActionBarActivity {
 
     private ViewPager viewPager;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_statement);
 
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         viewPager = (ViewPager) findViewById(R.id.add_statement_pager);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         AddStatementAdapter addStatementAdapter = new AddStatementAdapter(fragmentManager);
         viewPager.setAdapter(addStatementAdapter);
 
-
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
 //
 //        driverDonebtn.setOnClickListener(new View.OnClickListener() {
 //            @Override

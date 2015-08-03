@@ -253,7 +253,7 @@ public class DBmanager {
 
     public static ArrayList<PassangerStatement> getPassangerList(int location) {
         ArrayList<PassangerStatement> statementsToReturn = new ArrayList<>();
-        Cursor cursor = db.query(DBscheme.DRIVER_TABLE_NAME, null, DBscheme.MANU_LOCATION + " = " + location, null, null, null, null);
+        Cursor cursor = db.query(DBscheme.PASSANGER_TABLE_NAME, null, DBscheme.MANU_LOCATION + " = " + location, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 int user_id = cursor.getInt(cursor.getColumnIndex(DBscheme.USER_ID));
