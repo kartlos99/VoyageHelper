@@ -112,14 +112,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                Toast.makeText(getApplicationContext(),"daiketa",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"daiketa",Toast.LENGTH_SHORT).show();
                 // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                Toast.makeText(getApplicationContext(),"gaigo",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"gaigo",Toast.LENGTH_SHORT).show();
                 // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
 
                 super.onDrawerOpened(drawerView);
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                     }
             );
 
-            progress = ProgressDialog.show(this, "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+            progress = ProgressDialog.show(this, "ჩამოტვირთვა cars", "გთხოვთ დაიცადოთ");
             queue.add(requestMarka);
             queue.add(requestModel);
 

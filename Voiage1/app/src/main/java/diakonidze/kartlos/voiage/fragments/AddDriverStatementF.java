@@ -1,12 +1,20 @@
 package diakonidze.kartlos.voiage.fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +26,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -32,10 +41,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -52,8 +64,12 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
 public class AddDriverStatementF extends Fragment {
     private Calendar runTimeC;
     private TextView passAgeText;
-    private Button driverDonebtn, pirobebiBtn, limitBtn;
+    private Button driverDonebtn, pirobebiBtn, limitBtn, takePhotoBtn;
     private DriverStatement driverStatement;
+    private ImageView carImageView;
+
+    private Uri uri;
+    private File imagefile;
 
     Spinner freeSpaceSpinner, priceSpinner, markaSpinner, modelSpinner, genderSpinner, colorSpinner;
     CheckBox condicionerCK, atplaceCK, cigarCK, baggageCK, animalCK;
@@ -118,6 +134,43 @@ public class AddDriverStatementF extends Fragment {
         }
     };
 
+    public String convertImigToSrt(String teUri){
+//        System.out.print("______________");
+        Bitmap bitmap= BitmapFactory.decodeFile(teUri);
+        ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        byte [] bytes=outputStream.toByteArray();
+
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if(requestCode == 0){
+            if(resultCode == Activity.RESULT_OK){
+                if(imagefile.exists()){
+                    Toast.makeText(getActivity(), "sheinaxa "+imagefile.getAbsolutePath(), Toast.LENGTH_LONG ).show();
+//                    imageView.setImageURI(uri);
+                    carImageView.clearAnimation();
+                    Picasso.with(getActivity())
+                            .load(imagefile)
+                            .resize(500,200)
+                            .centerCrop()
+                            .into(carImageView);
+                }else{
+                    Toast.makeText(getActivity(), "imagefile Error", Toast.LENGTH_LONG ).show();
+                }
+
+            }
+            if(resultCode == Activity.RESULT_CANCELED){
+                Toast.makeText(getActivity(), "uari fotoze", Toast.LENGTH_LONG ).show();
+            }
+        }
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -144,6 +197,20 @@ public class AddDriverStatementF extends Fragment {
 
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+        // suratis gadageba ************************************************
+
+        takePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent imageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                imagefile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"my1photo.jpg");
+
+                uri = Uri.fromFile(imagefile);
+                imageIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                imageIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0.1);
+                startActivityForResult(imageIntent, 0);
+            }
+        });
 
         // დროის დაყენება
         runDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -303,7 +370,9 @@ public class AddDriverStatementF extends Fragment {
                         jsonObject.put("photo", "NON");
                         jsonObject.put("user_id", driverStatement.getUserID());
 
+                        jsonObject.put("image", convertImigToSrt(uri.getPath()));
 
+int w =1;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -353,6 +422,7 @@ public class AddDriverStatementF extends Fragment {
                             e.printStackTrace();
                         }
 
+                        // აქ უპდატეს ლინკია ცჰასაწერი!!!!!!!!!!!!!!!!!!*************************************
                         String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
 
                         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
@@ -365,6 +435,7 @@ public class AddDriverStatementF extends Fragment {
                                     DBmanager.openWritable();
                                     DBmanager.updateDriverStatement(driverStatement);
                                     DBmanager.close();
+
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -446,6 +517,8 @@ public class AddDriverStatementF extends Fragment {
         passAgeText = (TextView) view.findViewById(R.id.driver_pass_age_text);
         limitBtn = (Button) view.findViewById(R.id.driver_limit_btn);
         pirobebiBtn = (Button) view.findViewById(R.id.driver_pirobebi_btn);
+        takePhotoBtn = (Button) view.findViewById(R.id.take_photo_btn);
+        carImageView = (ImageView) view.findViewById(R.id.car_image);
 
 
         return view;

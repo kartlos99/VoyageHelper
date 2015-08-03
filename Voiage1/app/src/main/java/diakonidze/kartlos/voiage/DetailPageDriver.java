@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
@@ -79,7 +80,15 @@ public class DetailPageDriver extends ActionBarActivity {
         }
         if (id == R.id.del_dr_manu) {
             // serverze gaushvebt gancx ID-s wasashlelad
-            Toast.makeText(getApplicationContext(),"ar unda waishalos es gancxadeba", Toast.LENGTH_SHORT).show();
+            // da dadebiti pasuxis shemtxvevashi lokaluradac wavshlit
+            DBmanager.initialaize(this);
+            DBmanager.openWritable();
+            DBmanager.deleteDriverStatement(driverStatement.getId());
+            DBmanager.close();
+            Toast.makeText(getApplicationContext(),"განცხადება წაიშალა", Toast.LENGTH_SHORT).show();
+
+            Intent toMyPage = new Intent(getApplicationContext(), MyStatements.class);
+            startActivity(toMyPage);
             return true;
         }
         if (id == R.id.edit_dr_manu) {

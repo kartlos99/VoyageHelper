@@ -12,6 +12,7 @@ import diakonidze.kartlos.voiage.models.CarModel;
 public class Constantebi {
 
     public static int MY_ID = 2;
+    public static String MY_MOBILE = "";
 
     public final static String MY_OWN_STAT = "chemi";
     public final static String ALL_STAT = "yvela";

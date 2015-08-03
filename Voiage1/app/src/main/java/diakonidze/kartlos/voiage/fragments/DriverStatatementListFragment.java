@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
@@ -69,17 +70,30 @@ public class DriverStatatementListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         location = getArguments().getString("location"); // vin gamoiZaxa es forma
         driverStatements = new ArrayList<>();
 
-        if(location.equals(Constantebi.MY_OWN_STAT)){
-            DBmanager.initialaize(getActivity());
-            DBmanager.openReadable();
-            driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
-            DBmanager.close();
-        }else {
-            getDriversStatements();
+        switch (location){
+            case Constantebi.MY_OWN_STAT:
+                DBmanager.initialaize(getActivity());
+                DBmanager.openReadable();
+                driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
+                DBmanager.close();
+                break;
+            case Constantebi.FAVORIT_STAT:
+                DBmanager.initialaize(getActivity());
+                DBmanager.openReadable();
+                driverStatements = DBmanager.getDriverList(Constantebi.FAV_STATEMENT);
+                DBmanager.close();
+                break;
+            case Constantebi.ALL_STAT:
+                getDriversStatements();
+                break;
+            default:
+                Toast.makeText(getActivity(), "Nothing to show", Toast.LENGTH_LONG).show();
         }
+
 
         driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
         driverStatementList.setAdapter(driverListAdapter);
@@ -102,7 +116,7 @@ public class DriverStatatementListFragment extends Fragment {
     private void getDriversStatements() {
 
         String url="";
-// romeli info wamovigo serveridan
+        // romeli info wamovigo serveridan
         switch (location){
             case Constantebi.ALL_STAT:  url = "http://back.meet.ge/get.php?type=1";
                 break;
@@ -122,20 +136,11 @@ public class DriverStatatementListFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
 
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         ArrayList<DriverStatement> newData = new ArrayList<>();
-
 
                         if(jsonArray.length()>0){
                             for(int i=0; i<jsonArray.length(); i++){
                                 try {
-//                                    String stringDate = jsonArray.getJSONObject(i).getString("date");
-//                                    Calendar calendar = Calendar.getInstance();
-//                                    try {
-//                                        calendar.setTime(format.parse(stringDate));
-//                                    } catch (ParseException e) {
-//                                        e.printStackTrace();
-//                                    }
 
                                     DriverStatement newDriverStatement = new DriverStatement( 1,
                                             jsonArray.getJSONObject(i).getInt("freespace"),
@@ -213,25 +218,4 @@ public class DriverStatatementListFragment extends Fragment {
         progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
         queue.add(request);
     }
-
-
-
-    private ArrayList<DriverStatement> getStatementData() {
-        ArrayList<DriverStatement> data = new ArrayList<>();
-//        Calendar now = Calendar.getInstance();
-//        for (int i = 0; i < 14; i++)
-//        {
-//            DriverStatement newStatment = new DriverStatement(1, 3, 12+i, "", "ქუთაისი", "ზესტაფონი");
-//            newStatment.setName("მალზახ");
-//            newStatment.setSurname("აბდუშელაშვილი");
-//            newStatment.setNumber("577987006");
-//            newStatment.setMarka(1+i);
-//            newStatment.setAgeTo(55);
-//
-//            data.add(newStatment);
-//        }
-        return data;
-    }
-
-
 }
