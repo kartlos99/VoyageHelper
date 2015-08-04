@@ -92,7 +92,9 @@ public class PassengerStatatementListFragment extends Fragment {
         String url = "";
         // romeli info wamovigo serveridan
         switch (location){
-            case Constantebi.ALL_STAT:  url = "http://back.meet.ge/get.php?type=2";
+            case Constantebi.ALL_STAT:
+//                url = "http://back.meet.ge/get.php?type=2";
+                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=2&start=0&end=1";
                 break;
             case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
                 break;

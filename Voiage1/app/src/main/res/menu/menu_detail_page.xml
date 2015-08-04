@@ -17,5 +17,12 @@
         android:orderInCategory="200"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/fav_dr_manu"
+        android:title="favor"
+        android:icon="@drawable/ic_star_white_24dp"
+        android:orderInCategory="400"
+        app:showAsAction="always" />
+
 
 </menu>

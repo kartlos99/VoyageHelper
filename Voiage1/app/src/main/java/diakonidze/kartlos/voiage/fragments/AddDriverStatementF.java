@@ -373,7 +373,7 @@ public class AddDriverStatementF extends Fragment {
                         jsonObject.put("photo", "NON");
                         jsonObject.put("user_id", driverStatement.getUserID());
 
-                        jsonObject.put("cityPath", convertImigToSrt(uri.getPath()));
+//                        jsonObject.put("image", convertImigToSrt(uri.getPath()));
 
 int w =1;
                     } catch (JSONException e) {
@@ -418,6 +418,15 @@ int w =1;
                     }else{
                         // **** aq modis ganaxlebis dros ******
 
+//                        JSONObject givi = new JSONObject();
+//
+//                        try {
+//                            givi.put("user_id", 1);
+//                            givi.put("s_id", 121);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+
                         try {
                             jsonObject.put("s_id", driverStatement.getId());
                         } catch (JSONException e) {
@@ -426,7 +435,7 @@ int w =1;
                         }
 
                         // აქ უპდატეს ლინკია ცჰასაწერი!!!!!!!!!!!!!!!!!!*************************************
-                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
+                        String url = "http://back.meet.ge/get.php?type=UPDATE&sub_type=1";
 
                         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
                             @Override

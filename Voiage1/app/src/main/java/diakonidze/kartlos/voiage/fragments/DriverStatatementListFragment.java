@@ -118,11 +118,17 @@ public class DriverStatatementListFragment extends Fragment {
         String url="";
         // romeli info wamovigo serveridan
         switch (location){
-            case Constantebi.ALL_STAT:  url = "http://back.meet.ge/get.php?type=1";
+//            http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=0&end=10
+
+            case Constantebi.ALL_STAT:
+//            url = "http://back.meet.ge/get.php?type=1";
+                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start="+15+"&end="+5;
                 break;
-            case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=1";
+            case Constantebi.MY_OWN_STAT:
+                url = "http://back.meet.ge/get.php?type=1";
                 break;
-            case Constantebi.FAVORIT_STAT:  url = "http://back.meet.ge/get.php?type=1";
+            case Constantebi.FAVORIT_STAT:
+                url = "http://back.meet.ge/get.php?type=1";
                 break;
         }
 
@@ -172,7 +178,7 @@ public class DriverStatatementListFragment extends Fragment {
 
                                     newDriverStatement.setId(jsonArray.getJSONObject(i).getInt("s_id"));
                                     newDriverStatement.setUserID(jsonArray.getJSONObject(i).getInt("user_id"));
-
+                                    newDriverStatement.setCarpicture(jsonArray.getJSONObject(i).getString("image"));
 
                                     newData.add(newDriverStatement);
 
