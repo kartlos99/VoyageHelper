@@ -28,7 +28,7 @@
 
 
         <item
-            android:id="@+id/manuPivit"
+            android:id="@+id/manuPrivit"
             android:checked="false"
             android:icon="@drawable/ic_info_outline_black_24dp"
             android:title="@string/manu_privit_info" />

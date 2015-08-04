@@ -137,8 +137,11 @@ public class AddDriverStatementF extends Fragment {
     public String convertImigToSrt(String teUri){
 //        System.out.print("______________");
         Bitmap bitmap= BitmapFactory.decodeFile(teUri);
+
         ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
+
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte [] bytes=outputStream.toByteArray();
 
         return Base64.encodeToString(bytes, Base64.DEFAULT);
@@ -370,7 +373,7 @@ public class AddDriverStatementF extends Fragment {
                         jsonObject.put("photo", "NON");
                         jsonObject.put("user_id", driverStatement.getUserID());
 
-                        jsonObject.put("image", convertImigToSrt(uri.getPath()));
+                        jsonObject.put("cityPath", convertImigToSrt(uri.getPath()));
 
 int w =1;
                     } catch (JSONException e) {

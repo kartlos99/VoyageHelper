@@ -11,7 +11,13 @@
     <item
         android:id="@+id/add_statement"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:title="add" />
+    <item
+        android:id="@+id/manu_filter"
+        android:orderInCategory="300"
+        app:showAsAction="always"
+        android:title="Filter"
+        android:icon="@drawable/ic_filter_list_white_24dp"/>
 
 </menu>

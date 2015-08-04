@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -27,20 +26,19 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
+import diakonidze.kartlos.voiage.dialogs.FilterDialog;
+import diakonidze.kartlos.voiage.dialogs.PrivateInfo;
 import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
 import diakonidze.kartlos.voiage.models.CarBrend;
 import diakonidze.kartlos.voiage.models.CarModel;
-import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    FragmentManager manager ;
     private ProgressDialog progress;
     public final Context mainctx = this;
     private Toolbar toolbar;
@@ -55,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        manager = getSupportFragmentManager();
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -76,10 +76,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
+
                 drawerLayout.closeDrawers();
 
                 switch (menuItem.getItemId()) {
                     case R.id.manuFilter:
+
+                        FilterDialog filterDialog= new FilterDialog();
+                        filterDialog.show(manager, "filter");
+
                         Toast.makeText(getApplicationContext(),"filtri",Toast.LENGTH_SHORT).show();
                         return true;
 
@@ -98,8 +103,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(toMyfav);
                         return true;
 
-                    case R.id.manuExit:
-                        Toast.makeText(getApplicationContext(),"exit",Toast.LENGTH_SHORT).show();
+                    case R.id.manuPrivit:
+
+                        PrivateInfo infoDialog = new PrivateInfo();
+                        infoDialog.show(manager, "info");
+
+                        Toast.makeText(getApplicationContext(),"info",Toast.LENGTH_SHORT).show();
                         return true;
                 }
 
@@ -271,11 +280,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if(id == R.id.add_statement){
-
             Intent intent = new Intent(getApplicationContext(), AddStatement.class);
-
             startActivity(intent);
-
+            return true;
+        }
+        if(id == R.id.manu_filter){
+            FilterDialog filterDialog= new FilterDialog();
+            filterDialog.show(manager, "filter");
             return true;
         }
 
