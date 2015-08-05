@@ -122,7 +122,7 @@ public class DriverStatatementListFragment extends Fragment {
 
             case Constantebi.ALL_STAT:
 //            url = "http://back.meet.ge/get.php?type=1";
-                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start="+15+"&end="+5;
+                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start="+0+"&end="+50;
                 break;
             case Constantebi.MY_OWN_STAT:
                 url = "http://back.meet.ge/get.php?type=1";

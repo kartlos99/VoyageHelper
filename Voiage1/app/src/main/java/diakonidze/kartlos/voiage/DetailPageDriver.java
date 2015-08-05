@@ -98,7 +98,7 @@ public class DetailPageDriver extends ActionBarActivity {
 
         Picasso.with(this)
                 .load(driverStatement.getCarpicture())
-                .resize(500, 200)
+                .resize(600 , 500)
                 .centerCrop()
                 .into(carImage);
 

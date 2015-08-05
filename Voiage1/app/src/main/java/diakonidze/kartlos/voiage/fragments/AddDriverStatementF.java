@@ -48,6 +48,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -109,7 +110,9 @@ public class AddDriverStatementF extends Fragment {
             runTimeC.set(Calendar.YEAR, year);
             runTimeC.set(Calendar.MONTH, monthOfYear);
             runTimeC.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setedDate = runTimeC.get(Calendar.YEAR) + "-" + (runTimeC.get(Calendar.MONTH) + 1) + "-" + runTimeC.get(Calendar.DAY_OF_MONTH);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            setedDate = dateFormat.format(runTimeC.getTime());
+//            setedDate = runTimeC.get(Calendar.YEAR) + "-" + (runTimeC.get(Calendar.MONTH) + 1) + "-" + runTimeC.get(Calendar.DAY_OF_MONTH);
 
             if (!datelist.contains(setedDate)) {
                 datelist.add(setedDate);
@@ -373,7 +376,7 @@ public class AddDriverStatementF extends Fragment {
                         jsonObject.put("photo", "NON");
                         jsonObject.put("user_id", driverStatement.getUserID());
 
-//                        jsonObject.put("image", convertImigToSrt(uri.getPath()));
+                        jsonObject.put("image", convertImigToSrt(uri.getPath()));
 
 int w =1;
                     } catch (JSONException e) {
@@ -737,6 +740,8 @@ int w =1;
         }
         statement.setComment(commentText.getText().toString());
 
+        statement.setId(driverStatement.getId());
+        statement.setUserID(driverStatement.getUserID());
 
         return statement;
     }
