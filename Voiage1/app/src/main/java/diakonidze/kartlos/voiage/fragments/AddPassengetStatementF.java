@@ -35,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -93,13 +94,14 @@ public class AddPassengetStatementF extends Fragment {
             runTimeC.set(Calendar.YEAR, year);
             runTimeC.set(Calendar.MONTH, monthOfYear);
             runTimeC.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setedDate = runTimeC.get(Calendar.YEAR) + "-" + (runTimeC.get(Calendar.MONTH) + 1) + "-" + runTimeC.get(Calendar.DAY_OF_MONTH);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            setedDate = dateFormat.format(runTimeC.getTime());
 
             if (!datelist.contains(setedDate)) {
                 datelist.add(setedDate);
                 ((ArrayAdapter<String>) runDateSpinner.getAdapter()).notifyDataSetChanged();
-                runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
             }
+            runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
         }
     };
 
@@ -108,13 +110,14 @@ public class AddPassengetStatementF extends Fragment {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             runTimeC.set(Calendar.HOUR_OF_DAY, hourOfDay);
             runTimeC.set(Calendar.MINUTE, minute);
-            setedtime = runTimeC.get(Calendar.HOUR_OF_DAY) + ":" + runTimeC.get(Calendar.MINUTE);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            setedtime = dateFormat.format(runTimeC.getTime());
 
             if (!timelist.contains(setedtime)) {
                 timelist.add(setedtime);
                 ((ArrayAdapter<String>) runTimeSpinner.getAdapter()).notifyDataSetChanged();
-                runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
             }
+            runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
         }
     };
 
@@ -408,7 +411,7 @@ public class AddPassengetStatementF extends Fragment {
         freeSpaceSpinner.setSelection(statement.getFreeSpace() - 1);
         priceSpinner.setSelection(statement.getPrice());
 
-        if (statement.getAtHome() != -1) {
+        if (statement.getAtHome() != 2) {
             pirobebi= true;
             pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_lite);
             comfort1.setVisibility(View.VISIBLE);
@@ -514,7 +517,9 @@ public class AddPassengetStatementF extends Fragment {
 
         if (runDateSpinner.getSelectedItemPosition() < 3) {
             Calendar calendar = Calendar.getInstance();
-            setedDate = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + (calendar.get(Calendar.DAY_OF_MONTH) + runDateSpinner.getSelectedItemPosition());
+            calendar.add(Calendar.DAY_OF_MONTH, runDateSpinner.getSelectedItemPosition());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            setedDate = dateFormat.format(runTimeC.getTime());
         }
 
         PassangerStatement statement = new PassangerStatement(Constantebi.MY_ID,
@@ -533,11 +538,11 @@ public class AddPassengetStatementF extends Fragment {
             statement.setSabarguli(BoolToInt(baggageCK.isChecked()));
             statement.setCxovelebi(BoolToInt(animalCK.isChecked()));
         } else {
-            statement.setKondencioneri(-1);
-            statement.setAtHome(-1);
-            statement.setSigareti(-1);
-            statement.setSabarguli(-1);
-            statement.setCxovelebi(-1);
+            statement.setKondencioneri(2);
+            statement.setAtHome(2);
+            statement.setSigareti(2);
+            statement.setSabarguli(2);
+            statement.setCxovelebi(2);
         }
 
         statement.setComment(commentText.getText().toString());

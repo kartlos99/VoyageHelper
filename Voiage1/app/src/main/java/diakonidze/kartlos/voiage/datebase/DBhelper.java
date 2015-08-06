@@ -65,11 +65,11 @@ public class DBhelper extends SQLiteOpenHelper {
                 DBscheme.PLACE_Y + " text, " +
                 DBscheme.FREESPACE + " integer, " +
                 DBscheme.PRICE + " integer, " +
-                DBscheme.CONDICIONERI + " integer default -1, " +
-                DBscheme.SIGAR + " integer default -1, " +
-                DBscheme.SABARGULI + " integer default -1, " +
-                DBscheme.CXOVELEBI + " integer default -1, " +
-                DBscheme.ATHOME + " integer default -1, " +
+                DBscheme.CONDICIONERI + " integer default 2, " +
+                DBscheme.SIGAR + " integer default 2, " +
+                DBscheme.SABARGULI + " integer default 2, " +
+                DBscheme.CXOVELEBI + " integer default 2, " +
+                DBscheme.ATHOME + " integer default 2, " +
                 DBscheme.CITY_FROM + " text, " +
                 DBscheme.CITY_TO + " text, " +
                 DBscheme.DATE + " text, " +
@@ -92,11 +92,11 @@ public class DBhelper extends SQLiteOpenHelper {
                 DBscheme.PLACE_Y + " text, " +
                 DBscheme.FREESPACE + " integer, " +
                 DBscheme.PRICE + " integer, " +
-                DBscheme.CONDICIONERI + " integer default -1, " +
-                DBscheme.SIGAR + " integer default -1, " +
-                DBscheme.SABARGULI + " integer default -1, " +
-                DBscheme.CXOVELEBI + " integer default -1, " +
-                DBscheme.ATHOME + " integer default -1, " +
+                DBscheme.CONDICIONERI + " integer default 2, " +
+                DBscheme.SIGAR + " integer default 2, " +
+                DBscheme.SABARGULI + " integer default 2, " +
+                DBscheme.CXOVELEBI + " integer default 2, " +
+                DBscheme.ATHOME + " integer default 2, " +
                 DBscheme.MARKA + " integer, " +
                 DBscheme.MODELI + " integer, " +
                 DBscheme.COLOR + " integer, " +

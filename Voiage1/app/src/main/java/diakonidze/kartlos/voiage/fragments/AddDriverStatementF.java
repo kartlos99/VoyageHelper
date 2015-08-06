@@ -112,13 +112,12 @@ public class AddDriverStatementF extends Fragment {
             runTimeC.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             setedDate = dateFormat.format(runTimeC.getTime());
-//            setedDate = runTimeC.get(Calendar.YEAR) + "-" + (runTimeC.get(Calendar.MONTH) + 1) + "-" + runTimeC.get(Calendar.DAY_OF_MONTH);
 
             if (!datelist.contains(setedDate)) {
                 datelist.add(setedDate);
                 ((ArrayAdapter<String>) runDateSpinner.getAdapter()).notifyDataSetChanged();
-                runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
             }
+            runDateSpinner.setSelection(getIndexInSpinner(runDateSpinner, setedDate));
         }
     };
 
@@ -127,13 +126,14 @@ public class AddDriverStatementF extends Fragment {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             runTimeC.set(Calendar.HOUR_OF_DAY, hourOfDay);
             runTimeC.set(Calendar.MINUTE, minute);
-            setedtime = runTimeC.get(Calendar.HOUR_OF_DAY) + ":" + runTimeC.get(Calendar.MINUTE);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            setedtime = dateFormat.format(runTimeC.getTime());
 
             if (!timelist.contains(setedtime)) {
                 timelist.add(setedtime);
                 ((ArrayAdapter<String>) runTimeSpinner.getAdapter()).notifyDataSetChanged();
-                runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
             }
+            runTimeSpinner.setSelection(getIndexInSpinner(runTimeSpinner, setedtime));
         }
     };
 
@@ -141,13 +141,18 @@ public class AddDriverStatementF extends Fragment {
 //        System.out.print("______________");
         Bitmap bitmap= BitmapFactory.decodeFile(teUri);
 
-        ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
+        if(bitmap == null){
+            return "";
+        }else {
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        byte [] bytes=outputStream.toByteArray();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 2, outputStream);
 
-        return Base64.encodeToString(bytes, Base64.DEFAULT);
+            byte[] bytes = outputStream.toByteArray();
+
+            return Base64.encodeToString(bytes, Base64.DEFAULT);
+        }
     }
 
     @Override
@@ -376,7 +381,11 @@ public class AddDriverStatementF extends Fragment {
                         jsonObject.put("photo", "NON");
                         jsonObject.put("user_id", driverStatement.getUserID());
 
-                        jsonObject.put("image", convertImigToSrt(uri.getPath()));
+                        if(uri !=null) {
+                            jsonObject.put("image", convertImigToSrt(uri.getPath()));
+                        }else{
+                            jsonObject.put("image", "");
+                        }
 
 int w =1;
                     } catch (JSONException e) {
@@ -564,7 +573,7 @@ int w =1;
         modelebisListisDayeneba(statement.getMarka());
         modelSpinner.setSelection(statement.getModeli());
         colorSpinner.setSelection(statement.getColor());
-        if (statement.getAtHome() != -1) {
+        if (statement.getAtHome() != 2) {
             pirobebi= true;
             pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_lite);
             comfort1.setVisibility(View.VISIBLE);
@@ -701,7 +710,9 @@ int w =1;
 
         if (runDateSpinner.getSelectedItemPosition() < 3) {
             Calendar calendar = Calendar.getInstance();
-            setedDate = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + (calendar.get(Calendar.DAY_OF_MONTH) + runDateSpinner.getSelectedItemPosition());
+            calendar.add(Calendar.DAY_OF_MONTH, runDateSpinner.getSelectedItemPosition());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            setedDate = dateFormat.format(runTimeC.getTime());
         }
 
         DriverStatement statement = new DriverStatement(Constantebi.MY_ID,
@@ -724,11 +735,11 @@ int w =1;
             statement.setSabarguli(BoolToInt(baggageCK.isChecked()));
             statement.setCxovelebi(BoolToInt(animalCK.isChecked()));
         } else {
-            statement.setKondencioneri(-1);
-            statement.setAtHome(-1);
-            statement.setSigareti(-1);
-            statement.setSabarguli(-1);
-            statement.setCxovelebi(-1);
+            statement.setKondencioneri(2);
+            statement.setAtHome(2);
+            statement.setSigareti(2);
+            statement.setSabarguli(2);
+            statement.setCxovelebi(2);
         }
 
         if (passengerLimit) {
@@ -736,7 +747,7 @@ int w =1;
             statement.setGender(genderSpinner.getSelectedItemPosition());
         } else {
             statement.setAgeTo(1000);
-            statement.setGender(-1);
+            statement.setGender(2);
         }
         statement.setComment(commentText.getText().toString());
 

@@ -21,11 +21,11 @@ public class DriverStatement implements Serializable {
         this.cityTo = cityTo;
 
         id=0; placeX=0; placeY=0;
-        kondencioneri=-1;
-        sigareti=-1;
-        sabarguli=-1;
-        cxovelebi=-1;
-        atHome=-1;
+        kondencioneri=2;
+        sigareti=2;
+        sabarguli=2;
+        cxovelebi=2;
+        atHome=2;
         marka=0; modeli=0; color=0;
         ageFrom=0; ageTo=100; gender=2;
         cityPath="";
