@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import diakonidze.kartlos.voiage.models.CarBrend;
 import diakonidze.kartlos.voiage.models.CarModel;
+import diakonidze.kartlos.voiage.models.Cities;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
 
@@ -38,6 +39,15 @@ public class DBmanager {
         db.close();
     }
 
+    public static long insertCity(Cities city) {
+        ContentValues values = new ContentValues();
+        values.put(DBscheme.CITY_ID, city.getC_id());
+        values.put(DBscheme.NAME, city.getNameGE());
+        values.put(DBscheme.NAME_EN, city.getNameEN());
+        values.put(DBscheme.CITY_PHOTO, city.getImage());
+        return db.insert(DBscheme.CITY_TABLE_NAME, null, values);
+    }
+
     public static long insertToModel(CarModel carModel) {
         ContentValues values = new ContentValues();
         values.put(DBscheme.MODEL_ID, carModel.getId());
@@ -51,6 +61,21 @@ public class DBmanager {
             values.put(DBscheme.MARKA_ID, carBrend.getId());
             values.put(DBscheme.NAME, carBrend.getMarka());
         return db.insert(DBscheme.MARKA_TABLE_NAME, null, values);
+    }
+
+    public static ArrayList<Cities> getCityList() {
+        ArrayList<Cities> cityList = new ArrayList<>();
+        Cursor cursor = db.query(DBscheme.MODEL_TABLE_NAME, null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Cities newCity = new Cities(cursor.getInt(cursor.getColumnIndex(DBscheme.CITY_ID)),
+                        cursor.getString(cursor.getColumnIndex(DBscheme.NAME)));
+                newCity.setImage(cursor.getString(cursor.getColumnIndex(DBscheme.CITY_PHOTO)));
+                newCity.setNameEN(cursor.getString(cursor.getColumnIndex(DBscheme.NAME_EN)));
+                cityList.add(newCity);
+            } while (cursor.moveToNext());
+        }
+        return cityList;
     }
 
     public static ArrayList<CarModel> getModelList() {

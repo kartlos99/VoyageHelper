@@ -5,6 +5,7 @@ import java.util.List;
 
 import diakonidze.kartlos.voiage.models.CarBrend;
 import diakonidze.kartlos.voiage.models.CarModel;
+import diakonidze.kartlos.voiage.models.Cities;
 
 /**
  * Created by kartlos on 7/28/2015.
@@ -29,4 +30,5 @@ public class Constantebi {
 
     public static ArrayList<CarBrend> brendList = new ArrayList<>();
     public static ArrayList<CarModel> modelList = new ArrayList<>();
+    public static ArrayList<Cities> cityList = new ArrayList<>();
 }

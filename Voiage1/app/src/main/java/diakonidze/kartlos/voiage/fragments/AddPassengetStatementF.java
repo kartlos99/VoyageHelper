@@ -308,8 +308,8 @@ public class AddPassengetStatementF extends Fragment {
 
                         queue.add(jsonRequest);
                     } else {
-                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
-//                String url = "http://back.meet.ge/get.php?type=my&sub_type=2";
+
+                        String url = "http://back.meet.ge/get.php?type=UPDATE&sub_type=2";
                         try {
                             jsonObject.put("s_id", passangerStatement.getId());
                         } catch (JSONException e) {
@@ -513,6 +513,7 @@ public class AddPassengetStatementF extends Fragment {
         outState.putSerializable("statement", passangerStatement);
     }
 
+    // formidan informaciis wakitxva ***************************************
     private PassangerStatement readForm() {
 
         if (runDateSpinner.getSelectedItemPosition() < 3) {
@@ -546,6 +547,9 @@ public class AddPassengetStatementF extends Fragment {
         }
 
         statement.setComment(commentText.getText().toString());
+
+        statement.setId(passangerStatement.getId());
+        statement.setUserID(passangerStatement.getUserID());
 
         return statement;
     }

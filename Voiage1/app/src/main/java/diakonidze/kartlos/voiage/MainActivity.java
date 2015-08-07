@@ -71,11 +71,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
 
                 drawerLayout.closeDrawers();
 
@@ -169,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
         DBmanager.initialaize(this);
         DBmanager.openReadable();
+        Constantebi.cityList = DBmanager.getCityList();
         Constantebi.brendList = DBmanager.getMarkaList();
         Constantebi.modelList = DBmanager.getModelList();
         DBmanager.close();

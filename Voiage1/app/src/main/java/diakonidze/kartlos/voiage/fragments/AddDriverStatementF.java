@@ -706,6 +706,7 @@ int w =1;
         outState.putSerializable("statement", driverStatement);
     }
 
+    // formidan informaciis wakitxva ***************************************
     private DriverStatement readForm() {
 
         if (runDateSpinner.getSelectedItemPosition() < 3) {
