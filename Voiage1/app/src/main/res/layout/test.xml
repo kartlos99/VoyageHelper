@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:divider="@drawable/ic_list_black_24dp"
+        android:dividerPadding="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="მარშუტი" />
+
+            <TextView
+                android:id="@+id/detiles_city_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="დრო" />
+
+            <TextView
+                android:id="@+id/detiles_time_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="თავისუფალი ადგილები" />
+
+            <TextView
+                android:id="@+id/detiles_freespace_text"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="ფასი" />
+
+            <TextView
+                android:id="@+id/detiles_price_text"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="6dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/carDetailImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="ა/მანქანა" />
+
+            <TextView
+                android:id="@+id/detiles_car_text"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="პირობები" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:text="-- iconebi unda iyos "
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="შეზღუდვა მგზავრზე" />
+
+            <TextView
+                android:id="@+id/detiles_limit_text"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/linedivider"
+            android:dividerPadding="4dp"
+            android:orientation="horizontal"
+            android:padding="@dimen/add_statement_inline_padding"
+            android:showDividers="middle"
+            android:elevation="4dp">
+
+            <TextView
+                android:id="@+id/detiles_comment_text"
+                android:layout_width="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

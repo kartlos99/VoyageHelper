@@ -94,7 +94,7 @@ public class PassengerStatatementListFragment extends Fragment {
         switch (location){
             case Constantebi.ALL_STAT:
 //                url = "http://back.meet.ge/get.php?type=2";
-                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=2&start=0&end=1";
+                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=2&start=0&end=50";
                 break;
             case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
                 break;
@@ -173,7 +173,7 @@ public class PassengerStatatementListFragment extends Fragment {
                 }
         );
 
-        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა2", "გთხოვთ დაიცადოთ");
         queue.add(request);
     }
 

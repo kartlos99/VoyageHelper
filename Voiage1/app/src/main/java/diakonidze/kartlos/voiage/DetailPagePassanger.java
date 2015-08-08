@@ -1,17 +1,53 @@
 package diakonidze.kartlos.voiage;
 
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+import diakonidze.kartlos.voiage.adapters.RecyclerAdapter;
 
 
 public class DetailPagePassanger extends ActionBarActivity {
+    CollapsingToolbarLayout collapsingToolbar;
+    int mutedColor = R.attr.colorPrimary;
+    RecyclerAdapter simpleRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_layout_passanger);
+
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle("წამიყვანეთ");
+        ImageView header = (ImageView) findViewById(R.id.header);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
+
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        if (simpleRecyclerAdapter == null) {
+            simpleRecyclerAdapter = new RecyclerAdapter(this);
+            recyclerView.setAdapter(simpleRecyclerAdapter);
+        }
+
+
     }
 
     @Override

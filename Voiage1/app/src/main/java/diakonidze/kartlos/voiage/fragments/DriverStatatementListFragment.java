@@ -221,7 +221,7 @@ public class DriverStatatementListFragment extends Fragment {
 
         request.setRetryPolicy(myPolicy);
 
-        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა1", "გთხოვთ დაიცადოთ");
         queue.add(request);
     }
 }
