@@ -1,8 +1,11 @@
 package diakonidze.kartlos.voiage; // v 25-07-2015
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -27,18 +30,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
+import diakonidze.kartlos.voiage.datebase.DBhelper;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
+import diakonidze.kartlos.voiage.datebase.DBscheme;
 import diakonidze.kartlos.voiage.dialogs.FilterDialog;
 import diakonidze.kartlos.voiage.dialogs.PrivateInfo;
 import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
 import diakonidze.kartlos.voiage.models.CarBrend;
 import diakonidze.kartlos.voiage.models.CarModel;
+import diakonidze.kartlos.voiage.models.Cities;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    FragmentManager manager ;
+    private int movida = 0;
+    FragmentManager manager;
     private ProgressDialog progress;
     public final Context mainctx = this;
     private Toolbar toolbar;
@@ -60,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.manuFilter:
 
-                        FilterDialog filterDialog= new FilterDialog();
+                        FilterDialog filterDialog = new FilterDialog();
                         filterDialog.show(manager, "filter");
 
-                        Toast.makeText(getApplicationContext(),"filtri",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "filtri", Toast.LENGTH_SHORT).show();
                         return true;
 
                     case R.id.manuAdd:
@@ -106,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                         PrivateInfo infoDialog = new PrivateInfo();
                         infoDialog.show(manager, "info");
 
-                        Toast.makeText(getApplicationContext(),"info",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "info", Toast.LENGTH_SHORT).show();
                         return true;
                 }
 
@@ -115,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.openDrawer, R.string.closeDrawer){
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -139,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
         pager = (ViewPager) findViewById(R.id.pageView);
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.ALL_STAT);
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.ALL_STAT);
         pager.setAdapter(myadapter);
 
 
@@ -165,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 //        http://back.meet.ge/get.php?type=mark
 //        http://back.meet.ge/get.php?type=model
 
+
         DBmanager.initialaize(this);
         DBmanager.openReadable();
         Constantebi.cityList = DBmanager.getCityList();
@@ -172,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
         Constantebi.modelList = DBmanager.getModelList();
         DBmanager.close();
 
-        if(Constantebi.brendList.size() == 0 ) {
+        // aq sxva kriteriumia chasasmeli, es droebitia
+        if (Constantebi.cityList.size() == 0) {
 
             RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -193,23 +201,15 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-                            progress.dismiss();
-
-                            if (Constantebi.brendList.size() > 0) {           // bazashi shebivaxot
-                                DBmanager.initialaize(getApplication());
-                                DBmanager.openWritable();
-                                for (int i = 0 ; i< Constantebi.brendList.size(); i++){
-                                    DBmanager.insertToMarka(Constantebi.brendList.get(i));
-                                }
-                                DBmanager.close();
-                            }
+                            movida++;
+                            writeToDB();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
-                            //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
                             progress.dismiss();
+                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
             );
@@ -231,23 +231,48 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-                            progress.dismiss();
-
-                            if (Constantebi.modelList.size() > 0) {           // bazashi shebivaxot
-                                DBmanager.initialaize(getApplication());
-                                DBmanager.openWritable();
-                                for (int i = 0 ; i< Constantebi.modelList.size(); i++){
-                                    DBmanager.insertToModel(Constantebi.modelList.get(i));
-                                }
-                                DBmanager.close();
-                            }
+                            movida++;
+                            writeToDB();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
-                            //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
                             progress.dismiss();
+                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+            );
+
+
+            url = "http://back.meet.ge/get.php?type=cities";
+            JsonArrayRequest requestCities = new JsonArrayRequest(url,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray jsonArray) {
+
+                            if (jsonArray.length() > 0) {
+                                Constantebi.cityList.clear();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    try {
+                                        Cities newCity = new Cities(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("nameGE"));
+                                        newCity.setNameEN(jsonArray.getJSONObject(i).getString("nameEN"));
+                                        newCity.setNameEN(jsonArray.getJSONObject(i).getString("image"));
+                                        Constantebi.cityList.add(newCity);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            movida++;
+                            writeToDB();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            progress.dismiss();
+                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
             );
@@ -255,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
             progress = ProgressDialog.show(this, "ჩამოტვირთვა cars", "გთხოვთ დაიცადოთ");
             queue.add(requestMarka);
             queue.add(requestModel);
+            queue.add(requestCities);
 
             Toast.makeText(this, "INtidan chamotvirtva", Toast.LENGTH_LONG).show();
         }
@@ -278,18 +304,90 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id == R.id.add_statement){
+        if (id == R.id.add_statement) {
             Intent intent = new Intent(getApplicationContext(), AddStatement.class);
             startActivity(intent);
             return true;
         }
-        if(id == R.id.manu_filter){
-            FilterDialog filterDialog= new FilterDialog();
+        if (id == R.id.manu_filter) {
+            FilterDialog filterDialog = new FilterDialog();
             filterDialog.show(manager, "filter");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void writeToDB() {
+        if (movida == 3) {
+
+            progress.dismiss();
+
+            AsyncWrite writedb = new AsyncWrite(new DBhelper(this));
+            writedb.execute();
+
+//            DBmanager.initialaize(getApplication());
+//            DBmanager.openWritable();
+//            for (int i = 0; i < Constantebi.brendList.size(); i++) {
+//                DBmanager.insertToMarka(Constantebi.brendList.get(i));
+//            }
+//            for (int i = 0; i < Constantebi.modelList.size(); i++) {
+//                DBmanager.insertToModel(Constantebi.modelList.get(i));
+//            }
+//            for (int i = 0; i < Constantebi.cityList.size(); i++) {
+//                DBmanager.insertCity(Constantebi.cityList.get(i));
+//            }
+//            DBmanager.close();
+
+        }
+    }
+
+    private class AsyncWrite extends AsyncTask<DBhelper, String, String> {
+        private DBhelper dbhelper;
+        private SQLiteDatabase db;
+
+        public AsyncWrite(DBhelper dbhelper) {
+            this.dbhelper = dbhelper;
+        }
+
+        @Override
+        protected String doInBackground(DBhelper... params) {
+
+            db = dbhelper.getWritableDatabase();
+
+            for (int i = 0; i < Constantebi.cityList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(DBscheme.CITY_ID, Constantebi.cityList.get(i).getC_id());
+                values.put(DBscheme.NAME, Constantebi.cityList.get(i).getNameGE());
+                values.put(DBscheme.NAME_EN, Constantebi.cityList.get(i).getNameEN());
+                values.put(DBscheme.CITY_PHOTO, Constantebi.cityList.get(i).getImage());
+                db.insert(DBscheme.CITY_TABLE_NAME, null, values);
+            }
+
+            for (int i = 0; i < Constantebi.modelList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(DBscheme.MODEL_ID, Constantebi.modelList.get(i).getId());
+                values.put(DBscheme.MARKA_ID, Constantebi.modelList.get(i).getBrendID());
+                values.put(DBscheme.NAME, Constantebi.modelList.get(i).getModel());
+                db.insert(DBscheme.MODEL_TABLE_NAME, null, values);
+            }
+
+            for (int i = 0; i < Constantebi.brendList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(DBscheme.MARKA_ID, Constantebi.brendList.get(i).getId());
+                values.put(DBscheme.NAME, Constantebi.brendList.get(i).getMarka());
+                db.insert(DBscheme.MARKA_TABLE_NAME, null, values);
+            }
+
+            db.close();
+
+            return "saved in DB";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(MainActivity.this, s, Toast.LENGTH_LONG).show();
+        }
     }
 
 }

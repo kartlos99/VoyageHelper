@@ -3,6 +3,7 @@ package diakonidze.kartlos.voiage.datebase;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 /**
  * Created by k.diakonidze on 7/31/2015.
@@ -10,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBhelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "VoiagerDB1";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 10;
 
     public DBhelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -118,8 +119,9 @@ public class DBhelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        createMarkaTable(db);
-        createModelTable(db);
-        createCityTable(db);
+//        createMarkaTable(db);
+//        createModelTable(db);
+//        createCityTable(db);
+int i =1;
     }
 }

@@ -58,14 +58,15 @@ public class DBmanager {
 
     public static long insertToMarka(CarBrend carBrend) {
         ContentValues values = new ContentValues();
-            values.put(DBscheme.MARKA_ID, carBrend.getId());
-            values.put(DBscheme.NAME, carBrend.getMarka());
+        values.put(DBscheme.MARKA_ID, carBrend.getId());
+        values.put(DBscheme.NAME, carBrend.getMarka());
         return db.insert(DBscheme.MARKA_TABLE_NAME, null, values);
     }
 
     public static ArrayList<Cities> getCityList() {
         ArrayList<Cities> cityList = new ArrayList<>();
-        Cursor cursor = db.query(DBscheme.MODEL_TABLE_NAME, null, null, null, null, null, null);
+
+        Cursor cursor = db.query(DBscheme.CITY_TABLE_NAME, null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 Cities newCity = new Cities(cursor.getInt(cursor.getColumnIndex(DBscheme.CITY_ID)),
@@ -105,7 +106,7 @@ public class DBmanager {
         return markaList;
     }
 
-    public static long updatePassangerStatement (PassangerStatement passangerStatement){
+    public static long updatePassangerStatement(PassangerStatement passangerStatement) {
         ContentValues values = new ContentValues();
         values.put(DBscheme.S_ID, passangerStatement.getId());
         values.put(DBscheme.USER_ID, passangerStatement.getUserID());
@@ -130,11 +131,11 @@ public class DBmanager {
         return db.update(DBscheme.PASSANGER_TABLE_NAME, values, DBscheme.S_ID + " = " + passangerStatement.getId(), null);
     }
 
-    public static void deletePassangerStatement(long id){
+    public static void deletePassangerStatement(long id) {
         db.delete(DBscheme.PASSANGER_TABLE_NAME, DBscheme.S_ID + " = " + id, null);
     }
 
-    public static long updateDriverStatement (DriverStatement driverStatement){
+    public static long updateDriverStatement(DriverStatement driverStatement) {
         ContentValues values = new ContentValues();
         values.put(DBscheme.S_ID, driverStatement.getId());
         values.put(DBscheme.USER_ID, driverStatement.getUserID());
@@ -166,7 +167,7 @@ public class DBmanager {
         return db.update(DBscheme.DRIVER_TABLE_NAME, values, DBscheme.S_ID + " = " + driverStatement.getId(), null);
     }
 
-    public static void deleteDriverStatement(long id){
+    public static void deleteDriverStatement(long id) {
         db.delete(DBscheme.DRIVER_TABLE_NAME, DBscheme.S_ID + " = " + id, null);
     }
 

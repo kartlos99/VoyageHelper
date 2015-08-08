@@ -628,13 +628,11 @@ int w =1;
         seekBar.setMax(80);
         runTimeC = Calendar.getInstance();
 
-        citylist.add("თბილისი");
-        citylist.add("ქუთაისი");
-        citylist.add("ბათუმი");
-        citylist.add("ფოთი");
-        citylist.add("სამტრედია");
-        citylist.add("ბორჯომი");
-        citylist.add("სტეფანწმინდა");
+        citylist.clear();
+        for (int i = 0; i < Constantebi.cityList.size(); i++) {
+            citylist.add(Constantebi.cityList.get(i).getNameGE());
+        }
+
 
         timelist.add("დილით");
         timelist.add("შუადღეს");
