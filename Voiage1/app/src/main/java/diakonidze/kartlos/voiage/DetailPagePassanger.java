@@ -1,6 +1,7 @@
 package diakonidze.kartlos.voiage;
 
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,11 +37,13 @@ public class DetailPagePassanger extends ActionBarActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
 
+//        NestedScrollView nScrollView = (NestedScrollView) findViewById(R.id.nScrollView);
 
 
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
 
         recyclerView.setLayoutManager(linearLayoutManager);
 

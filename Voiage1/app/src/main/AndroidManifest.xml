@@ -29,7 +29,8 @@
         </activity>
         <activity
             android:name=".DetailPagePassanger"
-            android:label="@string/title_activity_detail_page_passanger" >
+            android:label="@string/title_activity_detail_page_passanger"
+            android:parentActivityName=".MainActivity" >
         </activity>
         <activity
             android:name=".MyStatements"

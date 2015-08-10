@@ -5,9 +5,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private ViewPager pager = null;
-    private SlidingTabLayout tabs;
+    private TabLayout tabs;
 
 
     @Override
@@ -150,19 +152,28 @@ public class MainActivity extends AppCompatActivity {
         StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.ALL_STAT);
         pager.setAdapter(myadapter);
 
-        tabs = (SlidingTabLayout) findViewById(R.id.tabs_indetal);
+        tabs = (TabLayout) findViewById(R.id.tabs_indetal);
 
-        tabs.setDistributeEvenly(true);
-        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.fab_color);
-            }
-        });
+
+//        tabs.setTabGravity(TabLayout.GRAVITY_FILL);
+//        tabs.setTabTextColors(Color.WHITE, getResources().getColor(R.color.fab_color));
+
+
+//        tabs.setDistributeEvenly(true);
+//        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+//            @Override
+//            public int getIndicatorColor(int position) {
+//                return getResources().getColor(R.color.fab_color);
+//            }
+//        });
 //        tabs.setCustomTabView(R.layout.tab_layout, R.id.tab_text);
 
-        tabs.setViewPager(pager);
+        tabs.setupWithViewPager(pager);
+//        tabs.setViewPager(pager);
+        tabs.getTabAt(0).setIcon(R.drawable.ic_directions_car_white_24dp);
+        tabs.getTabAt(1).setIcon(R.drawable.ic_people_outline_white_24dp);
 
+//        tabs.isSelected();
 
 
         LoadVehicles();
