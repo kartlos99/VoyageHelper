@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private ViewPager pager = null;
-    SlidingTabLayout tabs;
+    private SlidingTabLayout tabs;
 
 
     @Override
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("PeckMeApp");
 
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
@@ -149,18 +150,20 @@ public class MainActivity extends AppCompatActivity {
         StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.ALL_STAT);
         pager.setAdapter(myadapter);
 
+        tabs = (SlidingTabLayout) findViewById(R.id.tabs_indetal);
 
-        // meniu gancxadebis monishvnaze (didi xnit dacheraze)
+        tabs.setDistributeEvenly(true);
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.fab_color);
+            }
+        });
+//        tabs.setCustomTabView(R.layout.tab_layout, R.id.tab_text);
+
+        tabs.setViewPager(pager);
 
 
-//        Constantebi.brendList.add(new CarBrend(1, "mers"));
-//        Constantebi.brendList.add(new CarBrend(2, "toyota"));
-//        Constantebi.brendList.add(new CarBrend(3, "BMW"));
-//        Constantebi.modelList.add(new CarModel(1, 1, "cls"));
-//        Constantebi.modelList.add(new CarModel(2, 1, "E class"));
-//        Constantebi.modelList.add(new CarModel(3, 2, "prado"));
-//        Constantebi.modelList.add(new CarModel(4, 2, "camry"));
-//        Constantebi.modelList.add(new CarModel(5, 3, "730i"));
 
         LoadVehicles();
 

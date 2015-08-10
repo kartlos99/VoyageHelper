@@ -36,6 +36,8 @@ public class DetailPagePassanger extends ActionBarActivity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
 
+
+
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

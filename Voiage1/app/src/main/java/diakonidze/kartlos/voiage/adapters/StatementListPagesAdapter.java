@@ -1,10 +1,13 @@
 package diakonidze.kartlos.voiage.adapters;
 
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.fragments.DriverStatatementListFragment;
 import diakonidze.kartlos.voiage.fragments.PassengerStatatementListFragment;
 
@@ -13,6 +16,8 @@ import diakonidze.kartlos.voiage.fragments.PassengerStatatementListFragment;
  */
 public class StatementListPagesAdapter extends FragmentPagerAdapter {
 
+    int icons[] = {R.drawable.ic_filter_list_white_24dp, R.drawable.ic_account_circle_white_48dp};
+    String titles[] = {"წავიყვან","წამიყვანეთ"};
     private String location="";
 
     public StatementListPagesAdapter(FragmentManager fm, String location) {
@@ -44,10 +49,9 @@ public class StatementListPagesAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(position == 0){
-            return "წავიყვან";
-        }else{
-            return "წამიყვანეთ";
-        }
+
+//        Drawable drawable = getResources().getDraweble
+
+        return titles[position];
     }
 }
