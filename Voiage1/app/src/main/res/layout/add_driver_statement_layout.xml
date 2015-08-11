@@ -41,9 +41,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:singleLine="true"
                     android:focusableInTouchMode="true"
-                    android:hint="საიდან" />
+                    android:hint="საიდან"
+                    android:singleLine="true" />
 
 
                 <AutoCompleteTextView
@@ -51,9 +51,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
-                    android:singleLine="true"
                     android:focusableInTouchMode="true"
-                    android:hint="საით" />
+                    android:hint="საით"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
@@ -168,9 +168,9 @@
 
                     <Button
                         android:id="@+id/take_photo_btn"
-                        android:background="@android:color/transparent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
                         android:text="add photo" />
                 </LinearLayout>
 
@@ -179,11 +179,12 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_corner"
                     android:padding="8dp">
+
                     <ImageView
                         android:id="@+id/car_image"
-                        android:background="@drawable/round_corner"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/round_corner" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -223,9 +224,9 @@
                 <Button
                     android:id="@+id/driver_pirobebi_btn"
                     android:layout_width="match_parent"
-                    android:text="პირობები"
                     android:layout_height="50dp"
                     android:background="@drawable/greenbtn_dark"
+                    android:text="პირობები"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
 
@@ -295,9 +296,9 @@
                 <Button
                     android:id="@+id/driver_limit_btn"
                     android:layout_width="match_parent"
-                    android:text="შეზღუდვა მგზავრზე"
                     android:layout_height="50dp"
                     android:background="@drawable/greenbtn_dark"
+                    android:text="შეზღუდვა მგზავრზე"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
 
@@ -374,11 +375,20 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/add_statement_inline_padding">
 
-                <EditText
-                    android:id="@+id/driver_comment"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="კომენტარი" />
+                    android:layout_margin="4dp">
+
+                    <EditText
+                        android:id="@+id/driver_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="კომენტარი" />
+
+                </android.support.design.widget.TextInputLayout>
+
             </LinearLayout>
 
             <LinearLayout

@@ -35,22 +35,23 @@ public class DetailPagePassanger extends ActionBarActivity {
         collapsingToolbar.setTitle("წამიყვანეთ");
         ImageView header = (ImageView) findViewById(R.id.header);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
 
-//        NestedScrollView nScrollView = (NestedScrollView) findViewById(R.id.nScrollView);
-
-
-        recyclerView.setHasFixedSize(true);
+//        NestedScrollView nScrollView = (NestedScrollView) findViewById(R.id.scroll);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
 
-        recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(linearLayoutManager);
 
-        if (simpleRecyclerAdapter == null) {
-            simpleRecyclerAdapter = new RecyclerAdapter(this);
-            recyclerView.setAdapter(simpleRecyclerAdapter);
-        }
+//        nScrollView.setNestedScrollingEnabled(true);
+
+
+//        if (simpleRecyclerAdapter == null) {
+//            simpleRecyclerAdapter = new RecyclerAdapter(this);
+//            recyclerView.setAdapter(simpleRecyclerAdapter);
+//        }
 
 
     }

@@ -2,9 +2,12 @@ package diakonidze.kartlos.voiage.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +49,7 @@ public class DriverStatatementListFragment extends Fragment {
     private DriverListAdapter driverListAdapter;
     private ListView driverStatementList;
     private String location = "";
+    SwipeRefreshLayout swRefresh;
 
 
     @Nullable
@@ -53,6 +57,7 @@ public class DriverStatatementListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_a, container, false);
 
+        swRefresh = (SwipeRefreshLayout) v.findViewById(R.id.driverRefresh);
         driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
 //        driverStatementList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
@@ -74,7 +79,7 @@ public class DriverStatatementListFragment extends Fragment {
         location = getArguments().getString("location"); // vin gamoiZaxa es forma
         driverStatements = new ArrayList<>();
 
-        switch (location){
+        switch (location) {
             case Constantebi.MY_OWN_STAT:
                 DBmanager.initialaize(getActivity());
                 DBmanager.openReadable();
@@ -94,6 +99,16 @@ public class DriverStatatementListFragment extends Fragment {
                 Toast.makeText(getActivity(), "Nothing to show", Toast.LENGTH_LONG).show();
         }
 
+        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
+
+        swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDriversStatements();
+
+                Snackbar.make(swRefresh, "OK refresh", Snackbar.LENGTH_LONG).show();
+            }
+        });
 
         driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
         driverStatementList.setAdapter(driverListAdapter);
@@ -115,14 +130,14 @@ public class DriverStatatementListFragment extends Fragment {
 
     private void getDriversStatements() {
 
-        String url="";
+        String url = "";
         // romeli info wamovigo serveridan
-        switch (location){
+        switch (location) {
 //            http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=0&end=10
 
             case Constantebi.ALL_STAT:
 //            url = "http://back.meet.ge/get.php?type=1";
-                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start="+0+"&end="+50;
+                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=" + 0 + "&end=" + 50;
                 break;
             case Constantebi.MY_OWN_STAT:
                 url = "http://back.meet.ge/get.php?type=1";
@@ -144,11 +159,11 @@ public class DriverStatatementListFragment extends Fragment {
 
                         ArrayList<DriverStatement> newData = new ArrayList<>();
 
-                        if(jsonArray.length()>0){
-                            for(int i=0; i<jsonArray.length(); i++){
+                        if (jsonArray.length() > 0) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 try {
 
-                                    DriverStatement newDriverStatement = new DriverStatement( 1,
+                                    DriverStatement newDriverStatement = new DriverStatement(1,
                                             jsonArray.getJSONObject(i).getInt("freespace"),
                                             jsonArray.getJSONObject(i).getInt("price"),
                                             jsonArray.getJSONObject(i).getString("date"),
@@ -193,6 +208,8 @@ public class DriverStatatementListFragment extends Fragment {
                             driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
                             driverStatementList.setAdapter(driverListAdapter);
 
+                            if(swRefresh.isRefreshing()) swRefresh.setRefreshing(false);
+
 //                            DBmanager.initialaize(getActivity());
 //                            DBmanager.openWritable();
 //                            for (int i = 0; i < newData.size(); i++){
@@ -213,7 +230,7 @@ public class DriverStatatementListFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                      //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
                         progress.dismiss();
                     }
                 }
