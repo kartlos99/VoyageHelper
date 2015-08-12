@@ -17,7 +17,7 @@ import diakonidze.kartlos.voiage.fragments.PassengerStatatementListFragment;
 public class StatementListPagesAdapter extends FragmentPagerAdapter {
 
     int icons[] = {R.drawable.ic_filter_list_white_24dp, R.drawable.ic_account_circle_white_48dp};
-    String titles[] = {"წავიყვან","წამიყვანეთ"};
+    String titles[] = {"   წავიყვან   ","   წამიყვანეთ   "};
     private String location="";
 
     public StatementListPagesAdapter(FragmentManager fm, String location) {

@@ -155,28 +155,10 @@ public class MainActivity extends AppCompatActivity {
         pager.setAdapter(myadapter);
 
         tabs = (TabLayout) findViewById(R.id.tabs_indetal);
-
+        tabs.setupWithViewPager(pager);
 
 //        tabs.setTabGravity(TabLayout.GRAVITY_FILL);
 //        tabs.setTabTextColors(Color.WHITE, getResources().getColor(R.color.fab_color));
-
-
-//        tabs.setDistributeEvenly(true);
-//        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-//            @Override
-//            public int getIndicatorColor(int position) {
-//                return getResources().getColor(R.color.fab_color);
-//            }
-//        });
-//        tabs.setCustomTabView(R.layout.tab_layout, R.id.tab_text);
-
-        tabs.setupWithViewPager(pager);
-//        tabs.setViewPager(pager);
-        tabs.getTabAt(0).setIcon(R.drawable.ic_directions_car_white_24dp);
-        tabs.getTabAt(1).setIcon(R.drawable.ic_people_outline_white_24dp);
-
-//        tabs.isSelected();
-
 
         LoadVehicles();
 

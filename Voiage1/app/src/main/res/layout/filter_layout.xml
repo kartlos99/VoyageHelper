@@ -9,6 +9,41 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:text="განცხადების ტიპი" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <AutoCompleteTextView
+            android:id="@+id/filter1_cityfrom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:hint="ტრანსპორტი"
+            android:gravity="center"
+            android:singleLine="true" />
+
+
+        <AutoCompleteTextView
+            android:id="@+id/filter1_cityto"
+            android:singleLine="true"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="მგზავრი" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:text="ქალაქები" />
 
     <LinearLayout

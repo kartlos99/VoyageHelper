@@ -63,7 +63,6 @@ public class DriverListAdapter extends BaseAdapter {
             viewholder.date = (TextView) itemToShow.findViewById(R.id.list1_date);
             viewholder.name = (TextView) itemToShow.findViewById(R.id.list1_name_text);
             viewholder.cost = (TextView) itemToShow.findViewById(R.id.list1_price);
-//            viewholder.freeSpace = (TextView) itemToShow.findViewById(R.id.list1_freespace_text);
             viewholder.kacunebiConteiner = (LinearLayout) itemToShow.findViewById(R.id.list1_kacunebi);
 
             itemToShow.setTag(viewholder);
@@ -97,7 +96,7 @@ public class DriverListAdapter extends BaseAdapter {
     }
 
     private class Viewholder {
-        TextView city, date, name, cost, freeSpace;
+        TextView city, date, name, cost;
         ImageView imig;
         LinearLayout kacunebiConteiner;
     }

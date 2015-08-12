@@ -9,11 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/statement_1_list"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerList1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="0dp" />
+            android:layout_height="match_parent"/>
+
+        <!--<ListView-->
+            <!--android:id="@+id/statement_1_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:dividerHeight="0dp" />-->
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -9,7 +9,9 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ import diakonidze.kartlos.voiage.DetailPageDriver;
 import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
+import diakonidze.kartlos.voiage.adapters.DriverListAdapterRc;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
@@ -50,9 +53,11 @@ public class DriverStatatementListFragment extends Fragment {
     private ProgressDialog progress;
     private ArrayList<DriverStatement> driverStatements;
     private DriverListAdapter driverListAdapter;
-    private ListView driverStatementList;
+//    private ListView driverStatementList;
     private String location = "";
-    SwipeRefreshLayout swRefresh;
+    private SwipeRefreshLayout swRefresh;
+    private RecyclerView statementListView;
+    private DriverListAdapterRc driverListAdapterRc;
 
 
     @Nullable
@@ -60,8 +65,10 @@ public class DriverStatatementListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_a, container, false);
 
+        statementListView = (RecyclerView) v.findViewById(R.id.recyclerList1);
         swRefresh = (SwipeRefreshLayout) v.findViewById(R.id.driverRefresh);
-        driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
+//        driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
+
 //        driverStatementList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 //            @Override
 //            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -78,8 +85,10 @@ public class DriverStatatementListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
 
-        location = getArguments().getString("location"); // vin gamoiZaxa es forma
+        // vin gamoiZaxa es forma
+        location = getArguments().getString("location");
         driverStatements = new ArrayList<>();
 
         switch (location) {
@@ -102,11 +111,8 @@ public class DriverStatatementListFragment extends Fragment {
                 Toast.makeText(getActivity(), "Nothing to show", Toast.LENGTH_LONG).show();
         }
 
-        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
-
+        // snakbarma fab Button -i rom ar dafaros
         final View v = getActivity().findViewById(R.id.main_content);
-//        final CoordinatorLayout coordLayout = (CoordinatorLayout) v.findViewById(R.id.main_content);
-
         swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -115,22 +121,16 @@ public class DriverStatatementListFragment extends Fragment {
             }
         });
 
-        driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
-        driverStatementList.setAdapter(driverListAdapter);
-        driverStatementList.setDivider(null);
 
-        driverStatementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), DetailPageDriver.class);
 
-                DriverStatement currStatement = (DriverStatement) parent.getItemAtPosition(position);
-                intent.putExtra("driver_st", currStatement);
-                intent.putExtra("from", location);
+        // Listis gaketeba
+        statementListView.setHasFixedSize(true);
+        driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+        statementListView.setAdapter(driverListAdapterRc);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        statementListView.setLayoutManager(linearLayoutManager);
 
-                startActivity(intent);
-            }
-        });
+
     }
 
     private void getDriversStatements() {
@@ -210,25 +210,17 @@ public class DriverStatatementListFragment extends Fragment {
 
                         if (newData.size() > 0) {
                             driverStatements = newData;
-                            driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
-                            driverStatementList.setAdapter(driverListAdapter);
 
-                            if(swRefresh.isRefreshing()) swRefresh.setRefreshing(false);
-
-//                            DBmanager.initialaize(getActivity());
-//                            DBmanager.openWritable();
-//                            for (int i = 0; i < newData.size(); i++){
-//                                if(newData.get(i).getUserID() == 2){
-//                                    DBmanager.insertIntoDriver(newData.get(i), Constantebi.MY_STATEMENT);
-//                                }
-//                            }
-//
-//                            driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
-//                            for (int i = 0; i < driverStatements.size(); i++){
-//                                    DBmanager.deleteDriverStatement(driverStatements.get(i).getId());
-//                            }
-//                            DBmanager.close();
+                            statementListView.setHasFixedSize(true);
+                            driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+                            statementListView.setAdapter(driverListAdapterRc);
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                            statementListView.setLayoutManager(linearLayoutManager);
+//                            driverStatements = newData;
+//                            driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
+//                            driverStatementList.setAdapter(driverListAdapter);
                         }
+                        swRefresh.setRefreshing(false);
                         progress.dismiss();
                     }
                 },
@@ -243,7 +235,9 @@ public class DriverStatatementListFragment extends Fragment {
 
         request.setRetryPolicy(myPolicy);
 
-        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა1", "გთხოვთ დაიცადოთ");
+        if(!swRefresh.isRefreshing()) {
+            progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა1", "გთხოვთ დაიცადოთ");
+        }
         queue.add(request);
     }
 }

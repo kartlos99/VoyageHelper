@@ -60,15 +60,13 @@
                     android:layout_gravity="bottom|right|end"
                     app:rippleColor="@color/ColorPrimary"
                     app:backgroundTint="@color/fab_color"
-                    app:elevation="6dp"
+                    app:elevation="4dp"
                     app:borderWidth="0dp"
-                    app:pressedTranslationZ="12dp"
+                    app:pressedTranslationZ="6dp"
                     android:layout_marginRight="@dimen/fab_marg_right"
                     android:layout_marginEnd="@dimen/fab_marg_bottom"
                     android:layout_marginBottom="@dimen/fab_marg_bottom"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                     />
 
             </android.support.design.widget.CoordinatorLayout>
 
