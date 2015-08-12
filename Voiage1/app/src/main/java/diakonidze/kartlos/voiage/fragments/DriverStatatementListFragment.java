@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -32,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import diakonidze.kartlos.voiage.DetailPageDriver;
+import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.DriverListAdapter;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
@@ -101,12 +104,14 @@ public class DriverStatatementListFragment extends Fragment {
 
         swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
 
+        final View v = getActivity().findViewById(R.id.main_content);
+//        final CoordinatorLayout coordLayout = (CoordinatorLayout) v.findViewById(R.id.main_content);
+
         swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getDriversStatements();
-
-                Snackbar.make(swRefresh, "OK refresh", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(v, "OK refresh", Snackbar.LENGTH_LONG).show();
             }
         });
 

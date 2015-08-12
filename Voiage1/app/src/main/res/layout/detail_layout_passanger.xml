@@ -42,39 +42,39 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<android.support.v4.widget.NestedScrollView-->
-        <!--android:id="@+id/scroll"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:clipToPadding="false"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--<LinearLayout-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <!--<TextView-->
-                <!--android:text="sdsdsdsd"-->
-                <!--android:padding="115dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
+            <TextView
+                android:text="sdsdsdsd"
+                android:padding="115dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <!--<TextView-->
-                <!--android:text="sdsdsdsd"-->
-                <!--android:padding="115dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
+            <TextView
+                android:text="sdsdsdsd"
+                android:padding="115dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <!--<TextView-->
-                <!--android:text="sdsdsdsd"-->
-                <!--android:padding="115dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
+            <TextView
+                android:text="sdsdsdsd"
+                android:padding="115dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <!--</LinearLayout>-->
+        </LinearLayout>
 
-    <!--</android.support.v4.widget.NestedScrollView>-->
+    </android.support.v4.widget.NestedScrollView>
 
     <!--<android.support.v7.widget.RecyclerView-->
         <!--android:id="@+id/scrollableview"-->
