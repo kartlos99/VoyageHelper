@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import diakonidze.kartlos.voiage.DetailPageDriver;
 import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
+import diakonidze.kartlos.voiage.fragments.DriverStatatementListFragment;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 
 /**

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -53,13 +54,19 @@ public class DriverStatatementListFragment extends Fragment {
     private ProgressDialog progress;
     private ArrayList<DriverStatement> driverStatements;
     private DriverListAdapter driverListAdapter;
-//    private ListView driverStatementList;
+    //    private ListView driverStatementList;
     private String location = "";
     private SwipeRefreshLayout swRefresh;
     private RecyclerView statementListView;
     private DriverListAdapterRc driverListAdapterRc;
+    private LinearLayoutManager linearLayoutManager;
 
-    int dataStartPoint = 0, dataPageSize = 5;
+    private RequestQueue queue;
+    private JsonArrayRequest request;
+
+    private int dataStartPoint = 0, dataPageSize = 5;
+    private Boolean loading = false;
+    private Boolean loadneeding = true;
 
     @Nullable
     @Override
@@ -77,6 +84,8 @@ public class DriverStatatementListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         driverStatements = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+
         swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
         final View v;
 
@@ -113,51 +122,61 @@ public class DriverStatatementListFragment extends Fragment {
         swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                dataStartPoint = 0;
+                dataStartPoint = 0;
+                driverStatements.clear();
                 getDriversStatements();
-                Snackbar.make(v, "OK refresh", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(v, "Reload", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.CYAN)
+                        .setAction("cancel", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                queue.cancelAll("stList");
+                            }
+                        })
+                        .show();
             }
         });
-
 
 
         // Listis gaketeba
         statementListView.setHasFixedSize(true);
         driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
         statementListView.setAdapter(driverListAdapterRc);
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
         statementListView.setLayoutManager(linearLayoutManager);
 
-linearLayoutManager.onItemsChanged(statementListView);
+//linearLayoutManager.onItemsChanged(statementListView);
 
-        statementListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==driverStatements.size()-1){
-                    Snackbar.make(v, "BOLOSHIA!!", Snackbar.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
 
         statementListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==driverStatements.size()-1){
-                    Snackbar.make(v, "BOLOSHIA!!", Snackbar.LENGTH_LONG).show();
+
+                int lastVisibleItemIndex = linearLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = driverListAdapterRc.getItemCount();
+
+                if(totalItemCount-lastVisibleItemIndex > 1) loadneeding=true;
+
+                if (lastVisibleItemIndex >= totalItemCount-1 && !loading && loadneeding) {
+                    loading = true;
+                    loadneeding = false;
+                    Snackbar.make(v, "Loading...", Snackbar.LENGTH_LONG)
+                            .setActionTextColor(Color.CYAN)
+                            .setAction("STOP", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    queue.cancelAll("stList");
+                                }
+                            })
+                            .show();
+                    getDriversStatements();
                 }
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-//                Snackbar.make(v, "BOLOSHIA!!", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -174,7 +193,6 @@ linearLayoutManager.onItemsChanged(statementListView);
             case Constantebi.ALL_STAT:
 //            url = "http://back.meet.ge/get.php?type=1";
                 url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=" + dataStartPoint + "&end=" + dataPageSize;
-
                 break;
             case Constantebi.MY_OWN_STAT:
                 url = "http://back.meet.ge/get.php?type=1";
@@ -185,11 +203,11 @@ linearLayoutManager.onItemsChanged(statementListView);
         }
 
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue = Volley.newRequestQueue(getActivity());
 
         DefaultRetryPolicy myPolicy = new DefaultRetryPolicy(5000, 3, 1.0f);
 
-        JsonArrayRequest request = new JsonArrayRequest(url,
+        request = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
@@ -242,42 +260,50 @@ linearLayoutManager.onItemsChanged(statementListView);
                         }
 
                         if (newData.size() > 0) {
-                            if(location.equals(Constantebi.ALL_STAT)) {
-                                for (int i = 0; i< newData.size(); i++){
+                            if (location.equals(Constantebi.ALL_STAT)) {
+                                for (int i = 0; i < newData.size(); i++) {
                                     driverStatements.add(newData.get(i));
                                 }
                                 dataStartPoint += dataPageSize;
+                                if (dataStartPoint > driverStatements.size())
+                                    dataStartPoint = driverStatements.size();
                             }
-                            if(location.equals(Constantebi.FAVORIT_STAT)) {
+                            if (location.equals(Constantebi.FAVORIT_STAT)) {
                                 driverStatements = newData;
                             }
 
                             statementListView.setHasFixedSize(true);
+
                             driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+//                            linearLayoutManager = new LinearLayoutManager(getActivity());
+
                             statementListView.setAdapter(driverListAdapterRc);
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                             statementListView.setLayoutManager(linearLayoutManager);
+
 //                            driverStatements = newData;
 //                            driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
 //                            driverStatementList.setAdapter(driverListAdapter);
                         }
+                        loading=false;
                         swRefresh.setRefreshing(false);
-                        progress.dismiss();
+//                        progress.dismiss();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                        progress.dismiss();
+                        loading=false;
+//                        progress.dismiss();
+                        swRefresh.setRefreshing(false);
                     }
                 }
         );
 
         request.setRetryPolicy(myPolicy);
-
-        if(!swRefresh.isRefreshing()) {
-            progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა1", "გთხოვთ დაიცადოთ");
+        request.setTag("stList");
+        if (!swRefresh.isRefreshing()) {
+//            progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა1", "გთხოვთ დაიცადოთ");
         }
         queue.add(request);
     }

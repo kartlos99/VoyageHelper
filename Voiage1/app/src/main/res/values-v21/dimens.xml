@@ -14,4 +14,5 @@
     <dimen name="man_width">15dp</dimen>
     <dimen name="cardCorner">4dp</dimen>
     <dimen name="header_hiegth">180dp</dimen>
+    <dimen name="cardViewMargin">4dp</dimen>
 </resources>
