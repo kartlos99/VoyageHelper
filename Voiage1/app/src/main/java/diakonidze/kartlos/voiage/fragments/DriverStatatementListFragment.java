@@ -59,6 +59,7 @@ public class DriverStatatementListFragment extends Fragment {
     private RecyclerView statementListView;
     private DriverListAdapterRc driverListAdapterRc;
 
+    int dataStartPoint = 0, dataPageSize = 5;
 
     @Nullable
     @Override
@@ -67,17 +68,7 @@ public class DriverStatatementListFragment extends Fragment {
 
         statementListView = (RecyclerView) v.findViewById(R.id.recyclerList1);
         swRefresh = (SwipeRefreshLayout) v.findViewById(R.id.driverRefresh);
-//        driverStatementList = (ListView) v.findViewById(R.id.statement_1_list);
 
-//        driverStatementList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                PopupMenu pManu = new PopupMenu(getActivity(), view);
-//                pManu.getMenuInflater().inflate(R.menu.popup_manu, pManu.getMenu());
-//                pManu.show();
-//                return false;
-//            }
-//        });
         return v;
     }
 
@@ -85,11 +76,12 @@ public class DriverStatatementListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        driverStatements = new ArrayList<>();
         swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
+        final View v;
 
         // vin gamoiZaxa es forma
         location = getArguments().getString("location");
-        driverStatements = new ArrayList<>();
 
         switch (location) {
             case Constantebi.MY_OWN_STAT:
@@ -97,25 +89,31 @@ public class DriverStatatementListFragment extends Fragment {
                 DBmanager.openReadable();
                 driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
                 DBmanager.close();
+                v = statementListView;
                 break;
             case Constantebi.FAVORIT_STAT:
                 DBmanager.initialaize(getActivity());
                 DBmanager.openReadable();
                 driverStatements = DBmanager.getDriverList(Constantebi.FAV_STATEMENT);
                 DBmanager.close();
+                v = statementListView;
                 break;
             case Constantebi.ALL_STAT:
                 getDriversStatements();
+                v = getActivity().findViewById(R.id.main_content);
                 break;
             default:
                 Toast.makeText(getActivity(), "Nothing to show", Toast.LENGTH_LONG).show();
+                v = statementListView;
         }
 
         // snakbarma fab Button -i rom ar dafaros
-        final View v = getActivity().findViewById(R.id.main_content);
+
+
         swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+//                dataStartPoint = 0;
                 getDriversStatements();
                 Snackbar.make(v, "OK refresh", Snackbar.LENGTH_LONG).show();
             }
@@ -127,8 +125,41 @@ public class DriverStatatementListFragment extends Fragment {
         statementListView.setHasFixedSize(true);
         driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
         statementListView.setAdapter(driverListAdapterRc);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         statementListView.setLayoutManager(linearLayoutManager);
+
+linearLayoutManager.onItemsChanged(statementListView);
+
+        statementListView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==driverStatements.size()-1){
+                    Snackbar.make(v, "BOLOSHIA!!", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        statementListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(linearLayoutManager.findLastCompletelyVisibleItemPosition()==driverStatements.size()-1){
+                    Snackbar.make(v, "BOLOSHIA!!", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+//                Snackbar.make(v, "BOLOSHIA!!", Snackbar.LENGTH_LONG).show();
+            }
+        });
 
 
     }
@@ -142,7 +173,8 @@ public class DriverStatatementListFragment extends Fragment {
 
             case Constantebi.ALL_STAT:
 //            url = "http://back.meet.ge/get.php?type=1";
-                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=" + 0 + "&end=" + 50;
+                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=" + dataStartPoint + "&end=" + dataPageSize;
+
                 break;
             case Constantebi.MY_OWN_STAT:
                 url = "http://back.meet.ge/get.php?type=1";
@@ -202,6 +234,7 @@ public class DriverStatatementListFragment extends Fragment {
 
                                     newData.add(newDriverStatement);
 
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -209,7 +242,15 @@ public class DriverStatatementListFragment extends Fragment {
                         }
 
                         if (newData.size() > 0) {
-                            driverStatements = newData;
+                            if(location.equals(Constantebi.ALL_STAT)) {
+                                for (int i = 0; i< newData.size(); i++){
+                                    driverStatements.add(newData.get(i));
+                                }
+                                dataStartPoint += dataPageSize;
+                            }
+                            if(location.equals(Constantebi.FAVORIT_STAT)) {
+                                driverStatements = newData;
+                            }
 
                             statementListView.setHasFixedSize(true);
                             driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);

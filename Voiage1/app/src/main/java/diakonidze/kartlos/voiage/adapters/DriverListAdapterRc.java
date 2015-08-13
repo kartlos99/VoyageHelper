@@ -78,7 +78,6 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
         TextView city, date, name, cost;
         ImageView imig;
         LinearLayout kacunebiConteiner;
-        CardView cardView;
 
         public DriverViewHolder(View itemToShow) {
             super(itemToShow);
@@ -88,9 +87,8 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
             name = (TextView) itemToShow.findViewById(R.id.list1_name_text);
             cost = (TextView) itemToShow.findViewById(R.id.list1_price);
             kacunebiConteiner = (LinearLayout) itemToShow.findViewById(R.id.list1_kacunebi);
-            cardView = (CardView) itemToShow.findViewById(R.id.card_view_driver);
 
-            cardView.setOnClickListener(this);
+            itemToShow.setOnClickListener(this);
         }
 
 
