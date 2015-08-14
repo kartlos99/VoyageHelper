@@ -1,5 +1,8 @@
 package diakonidze.kartlos.voiage;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -26,32 +30,25 @@ public class DetailPagePassanger extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_layout_passanger);
 
+        ImageView callerImage = (ImageView) findViewById(R.id.caller);
+        callerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:577987006"));
+                startActivity(callIntent);
+            }
+        });
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("წამიყვანეთ");
+        collapsingToolbar.setTitle("diakonidze kartlos");
+        collapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.ColorPrimary));
+        collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
+
         ImageView header = (ImageView) findViewById(R.id.header);
-
-//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.scrollableview);
-
-//        NestedScrollView nScrollView = (NestedScrollView) findViewById(R.id.scroll);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-
-//        nScrollView.setNestedScrollingEnabled(true);
-
-
-//        if (simpleRecyclerAdapter == null) {
-//            simpleRecyclerAdapter = new RecyclerAdapter(this);
-//            recyclerView.setAdapter(simpleRecyclerAdapter);
-//        }
 
 
     }

@@ -77,7 +77,7 @@ public class DetailPageDriver extends ActionBarActivity {
 
 
 
-        TextView nameT = (TextView) findViewById(R.id.detiles_name_text);
+//        TextView nameT = (TextView) findViewById(R.id.detiles_name_text);
         TextView cityT = (TextView) findViewById(R.id.detiles_city_text);
         TextView timeT = (TextView) findViewById(R.id.detiles_time_text);
         TextView freespaceT = (TextView) findViewById(R.id.detiles_freespace_text);
@@ -87,7 +87,7 @@ public class DetailPageDriver extends ActionBarActivity {
         TextView commentT = (TextView) findViewById(R.id.detiles_comment_text);
         ImageView carImage = (ImageView) findViewById(R.id.carDetailImage);
 
-        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
+//        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
         cityT.setText(driverStatement.getCityFrom()+" - "+driverStatement.getCityTo());
         timeT.setText(driverStatement.getDate()+" "+driverStatement.getTime());
         freespaceT.setText(String.valueOf(driverStatement.getFreeSpace()));

@@ -65,14 +65,14 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
         }
     }
 
+    public void deleteItem(int position){
+        this.data.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public int getItemCount() {
         return this.data.size();
-    }
-
-    public void delete(int position) {
-        data.remove(position);
-        notifyItemRemoved(position);
     }
 
     class DriverViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -96,7 +96,6 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(context, DetailPageDriver.class);
-//            DriverStatement currStatement = (DriverStatement) parent.getItemAtPosition(position);
             intent.putExtra("driver_st", data.get(getAdapterPosition()));
             intent.putExtra("from", location);
             context.startActivity(intent);

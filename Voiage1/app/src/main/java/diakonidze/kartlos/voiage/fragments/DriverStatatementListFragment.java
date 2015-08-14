@@ -92,6 +92,12 @@ public class DriverStatatementListFragment extends Fragment {
         // vin gamoiZaxa es forma
         location = getArguments().getString("location");
 
+        // Listis gaketeba
+        statementListView.setHasFixedSize(true);
+        driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+        statementListView.setAdapter(driverListAdapterRc);
+        statementListView.setLayoutManager(linearLayoutManager);
+
         switch (location) {
             case Constantebi.MY_OWN_STAT:
                 DBmanager.initialaize(getActivity());
@@ -122,41 +128,24 @@ public class DriverStatatementListFragment extends Fragment {
         swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                int oldsize = driverStatements.size();
                 dataStartPoint = 0;
                 driverStatements.clear();
-                getDriversStatements();
-                Snackbar.make(v, "Reload", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(Color.CYAN)
-                        .setAction("cancel", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                queue.cancelAll("stList");
-                            }
-                        })
-                        .show();
+                driverListAdapterRc.notifyItemRangeRemoved(0, oldsize);
             }
         });
 
 
-        // Listis gaketeba
-        statementListView.setHasFixedSize(true);
-        driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
-        statementListView.setAdapter(driverListAdapterRc);
-
-        statementListView.setLayoutManager(linearLayoutManager);
-
-//linearLayoutManager.onItemsChanged(statementListView);
-
-
+        // აქ ვარკვევთ ლისტის ბოლოში ვართ თუარა და ინფო წამოვიგოტ ტუ არა
         statementListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                int lastVisibleItemIndex = linearLayoutManager.findLastVisibleItemPosition();
+                int lastVisibleItemIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                 int totalItemCount = driverListAdapterRc.getItemCount();
 
-                if(totalItemCount-lastVisibleItemIndex > 1) loadneeding=true;
+                if(totalItemCount-lastVisibleItemIndex > 2) loadneeding=true;
 
                 if (lastVisibleItemIndex >= totalItemCount-1 && !loading && loadneeding) {
                     loading = true;
@@ -183,6 +172,7 @@ public class DriverStatatementListFragment extends Fragment {
 
     }
 
+    //8******************************************************************
     private void getDriversStatements() {
 
         String url = "";
@@ -261,24 +251,28 @@ public class DriverStatatementListFragment extends Fragment {
 
                         if (newData.size() > 0) {
                             if (location.equals(Constantebi.ALL_STAT)) {
+
+//                                driverListAdapterRc.insertItems(newData);
+
                                 for (int i = 0; i < newData.size(); i++) {
                                     driverStatements.add(newData.get(i));
                                 }
                                 dataStartPoint += dataPageSize;
                                 if (dataStartPoint > driverStatements.size())
                                     dataStartPoint = driverStatements.size();
+
+                                driverListAdapterRc.notifyItemRangeInserted(driverStatements.size()-newData.size(), newData.size());
                             }
                             if (location.equals(Constantebi.FAVORIT_STAT)) {
                                 driverStatements = newData;
+                                driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
                             }
 
-                            statementListView.setHasFixedSize(true);
-
-                            driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+//                            driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
 //                            linearLayoutManager = new LinearLayoutManager(getActivity());
 
-                            statementListView.setAdapter(driverListAdapterRc);
-                            statementListView.setLayoutManager(linearLayoutManager);
+//                            statementListView.setAdapter(driverListAdapterRc);
+//                            statementListView.setLayoutManager(linearLayoutManager);
 
 //                            driverStatements = newData;
 //                            driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
