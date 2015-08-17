@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -32,16 +31,17 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.ArrayList;
+
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
 import diakonidze.kartlos.voiage.datebase.DBhelper;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.datebase.DBscheme;
 import diakonidze.kartlos.voiage.dialogs.FilterDialog;
 import diakonidze.kartlos.voiage.dialogs.PrivateInfo;
-import diakonidze.kartlos.voiage.forTabs.SlidingTabLayout;
-import diakonidze.kartlos.voiage.models.CarBrend;
-import diakonidze.kartlos.voiage.models.CarModel;
 import diakonidze.kartlos.voiage.models.Cities;
+import diakonidze.kartlos.voiage.models.DriverStatement;
+import diakonidze.kartlos.voiage.models.PassangerStatement;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 
 
@@ -160,11 +160,28 @@ public class MainActivity extends AppCompatActivity {
 //        tabs.setTabGravity(TabLayout.GRAVITY_FILL);
 //        tabs.setTabTextColors(Color.WHITE, getResources().getColor(R.color.fab_color));
 
-        LoadVehicles();
+        LoadCities();
+
+        getFavoriteStatements();
 
     }
 
-    private void LoadVehicles() {
+    private void getFavoriteStatements() {
+        DBmanager.initialaize(this);
+        DBmanager.openReadable();
+        ArrayList<DriverStatement> driverStatements = DBmanager.getDriverList(Constantebi.FAV_STATEMENT);
+        ArrayList<PassangerStatement> passangerStatements = DBmanager.getPassangerList(Constantebi.FAV_STATEMENT);
+        DBmanager.close();
+
+        for (int i = 0; i < driverStatements.size(); i++) {
+            Constantebi.FAV_STAT_DRIVER.add(driverStatements.get(i).getId());
+        }
+        for (int i = 0; i < passangerStatements.size(); i++) {
+            Constantebi.FAV_STAT_PASSANGER.add(passangerStatements.get(i).getId());
+        }
+    }
+
+    private void LoadCities() {
 
 //        http://back.meet.ge/get.php?type=mark
 //        http://back.meet.ge/get.php?type=model

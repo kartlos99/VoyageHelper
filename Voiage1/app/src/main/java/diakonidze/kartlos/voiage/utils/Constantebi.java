@@ -32,5 +32,8 @@ public class Constantebi {
     public static ArrayList<CarModel> modelList = new ArrayList<>();
     public static ArrayList<Cities> cityList = new ArrayList<>();
 
+    public static List<Long> FAV_STAT_DRIVER = new ArrayList<>();
+    public static List<Long> FAV_STAT_PASSANGER = new ArrayList<>();
+
 
 }

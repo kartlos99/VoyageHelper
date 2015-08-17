@@ -103,9 +103,9 @@ public class DriverStatatementListFragment extends Fragment {
                 DBmanager.initialaize(getActivity());
                 DBmanager.openReadable();
                 driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
+                DBmanager.close();
                 driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
                 statementListView.setAdapter(driverListAdapterRc);
-                DBmanager.close();
                 v = statementListView;
                 break;
             case Constantebi.FAVORIT_STAT:
@@ -113,6 +113,8 @@ public class DriverStatatementListFragment extends Fragment {
                 DBmanager.openReadable();
                 driverStatements = DBmanager.getDriverList(Constantebi.FAV_STATEMENT);
                 DBmanager.close();
+                driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+                statementListView.setAdapter(driverListAdapterRc);
                 v = statementListView;
                 break;
             case Constantebi.ALL_STAT:
@@ -130,10 +132,17 @@ public class DriverStatatementListFragment extends Fragment {
         swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                int oldsize = driverStatements.size();
-                dataStartPoint = 0;
-                driverStatements.clear();
-                driverListAdapterRc.notifyItemRangeRemoved(0, oldsize);
+                switch (location) {
+                    case Constantebi.ALL_STAT:
+                        int oldsize = driverStatements.size();
+                        dataStartPoint = 0;
+                        driverStatements.clear();
+                        driverListAdapterRc.notifyItemRangeRemoved(0, oldsize);
+                        break;
+                    case Constantebi.FAVORIT_STAT:
+                        getDriversStatements();
+                        break;
+                }
             }
         });
 
@@ -147,9 +156,9 @@ public class DriverStatatementListFragment extends Fragment {
                 int lastVisibleItemIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                 int totalItemCount = driverListAdapterRc.getItemCount();
 
-                if(totalItemCount-lastVisibleItemIndex > 2) loadneeding=true;
+                if (totalItemCount - lastVisibleItemIndex > 2) loadneeding = true;
 
-                if (lastVisibleItemIndex >= totalItemCount-1 && !loading && loadneeding) {
+                if (lastVisibleItemIndex >= totalItemCount - 1 && !loading && loadneeding) {
                     loading = true;
                     loadneeding = false;
                     Snackbar.make(v, "Loading...", Snackbar.LENGTH_LONG)
@@ -190,7 +199,12 @@ public class DriverStatatementListFragment extends Fragment {
                 url = "http://back.meet.ge/get.php?type=1";
                 break;
             case Constantebi.FAVORIT_STAT:
-                url = "http://back.meet.ge/get.php?type=1";
+                // http://back.meet.ge/get.php?type=FAV&sub_type=1&id=158,161
+                url = "http://back.meet.ge/get.php?type=FAV&sub_type=1&id=";
+                for (int i = 0; i < Constantebi.FAV_STAT_DRIVER.size(); i++) {
+                    url += String.valueOf(Constantebi.FAV_STAT_DRIVER.get(i));
+                    if (i < Constantebi.FAV_STAT_DRIVER.size() - 1) url += ",";
+                }
                 break;
         }
 
@@ -263,11 +277,19 @@ public class DriverStatatementListFragment extends Fragment {
                                 if (dataStartPoint > driverStatements.size())
                                     dataStartPoint = driverStatements.size();
 
-                                driverListAdapterRc.notifyItemRangeInserted(driverStatements.size()-newData.size(), newData.size());
+                                driverListAdapterRc.notifyItemRangeInserted(driverStatements.size() - newData.size(), newData.size());
                             }
                             if (location.equals(Constantebi.FAVORIT_STAT)) {
+//                                driverStatements = newData;
+//                                driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+//                                statementListView.setAdapter(driverListAdapterRc);
+
+                                int oldsize = driverStatements.size();
+                                driverStatements.clear();
+                                driverListAdapterRc.notifyItemRangeRemoved(0, oldsize);
                                 driverStatements = newData;
-                                driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+                                driverListAdapterRc.notifyItemRangeInserted(0, driverStatements.size());
+
                             }
 
 //                            driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
@@ -280,7 +302,7 @@ public class DriverStatatementListFragment extends Fragment {
 //                            driverListAdapter = new DriverListAdapter(getActivity(), driverStatements);
 //                            driverStatementList.setAdapter(driverListAdapter);
                         }
-                        loading=false;
+                        loading = false;
                         swRefresh.setRefreshing(false);
 //                        progress.dismiss();
                     }
@@ -289,7 +311,7 @@ public class DriverStatatementListFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                        loading=false;
+                        loading = false;
 //                        progress.dismiss();
                         swRefresh.setRefreshing(false);
                     }

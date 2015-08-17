@@ -36,9 +36,13 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
 
 public class DetailPageDriver extends ActionBarActivity {
 
+    MenuItem menuItemedit;
+    MenuItem menuItemdel;
+    MenuItem menuItemfav;
+
     private CollapsingToolbarLayout collapsingToolbar;
     private DriverStatement driverStatement;
-    private String whereFrom="";
+    private String whereFrom = "";
     private Toolbar toolbar;
 
     private boolean favoriteState = false;
@@ -47,16 +51,22 @@ public class DetailPageDriver extends ActionBarActivity {
     protected void onPause() {
         super.onPause();
 
-        if(favoriteState) {
-            DBmanager.initialaize(this);
-            DBmanager.openWritable();
-            DBmanager.insertIntoDriver(driverStatement, Constantebi.FAV_STATEMENT);
-            DBmanager.close();
-        }else {
-//            DBmanager.initialaize(this);
-//            DBmanager.openWritable();
-//            DBmanager.deleteDriverStatement(driverStatement.getId());
-//            DBmanager.close();
+        if (favoriteState) {
+            if (!Constantebi.FAV_STAT_DRIVER.contains(driverStatement.getId())) {
+                DBmanager.initialaize(this);
+                DBmanager.openWritable();
+                DBmanager.insertIntoDriver(driverStatement, Constantebi.FAV_STATEMENT);
+                DBmanager.close();
+                Constantebi.FAV_STAT_DRIVER.add(driverStatement.getId());
+            }
+        } else {
+            if (Constantebi.FAV_STAT_DRIVER.contains(driverStatement.getId())) {
+                DBmanager.initialaize(this);
+                DBmanager.openWritable();
+                DBmanager.deleteDriverStatement(driverStatement.getId());
+                DBmanager.close();
+                Constantebi.FAV_STAT_DRIVER.remove((driverStatement.getId()));
+            }
         }
     }
 
@@ -64,6 +74,15 @@ public class DetailPageDriver extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         // bazidav amogeba
+
+
+        if (Constantebi.FAV_STAT_DRIVER.contains(driverStatement.getId())) {
+            favoriteState = true;
+        } else {
+            favoriteState = false;
+        }
+
+
     }
 
     @Override
@@ -88,10 +107,9 @@ public class DetailPageDriver extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(driverStatement.getName()+" "+driverStatement.getSurname());
+        collapsingToolbar.setTitle(driverStatement.getName() + " " + driverStatement.getSurname());
         collapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.ColorPrimary));
         collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
-
 
 
 //        TextView nameT = (TextView) findViewById(R.id.detiles_name_text);
@@ -107,8 +125,8 @@ public class DetailPageDriver extends ActionBarActivity {
         ImageView carTypeImage = (ImageView) findViewById(R.id.car_type_imig);
 
 //        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
-        cityT.setText(driverStatement.getCityFrom()+" - "+driverStatement.getCityTo());
-        timeT.setText(driverStatement.getDate()+" "+driverStatement.getTime());
+        cityT.setText(driverStatement.getCityFrom() + " - " + driverStatement.getCityTo());
+        timeT.setText(driverStatement.getDate() + " " + driverStatement.getTime());
         freespaceT.setText(String.valueOf(driverStatement.getFreeSpace()));
         priceT.setText(String.valueOf(driverStatement.getPrice()));
         carT.setText("ა/მანქანა " + driverStatement.getMarka());
@@ -123,43 +141,53 @@ public class DetailPageDriver extends ActionBarActivity {
 
         LinearLayout limit_detiles = (LinearLayout) findViewById(R.id.limit_detiles);
 
-        switch (driverStatement.getMarka()){
-            case 0: carTypeImage.setImageResource(R.drawable.car1);
+        switch (driverStatement.getMarka()) {
+            case 0:
+                carTypeImage.setImageResource(R.drawable.car1);
                 break;
-            case 1: carTypeImage.setImageResource(R.drawable.car2);
+            case 1:
+                carTypeImage.setImageResource(R.drawable.car2);
                 break;
-            case 2: carTypeImage.setImageResource(R.drawable.car3);
+            case 2:
+                carTypeImage.setImageResource(R.drawable.car3);
                 break;
-            case 3: carTypeImage.setImageResource(R.drawable.car4);
+            case 3:
+                carTypeImage.setImageResource(R.drawable.car4);
                 break;
-            case 4: carTypeImage.setImageResource(R.drawable.car5);
+            case 4:
+                carTypeImage.setImageResource(R.drawable.car5);
                 break;
         }
 
         Picasso.with(this)
                 .load(driverStatement.getCarpicture())
-                .resize(600 , 500)
+                .resize(600, 500)
                 .centerCrop()
                 .into(carImage);
 
-        if(driverStatement.getKondencioneri() != 2){
+        if (driverStatement.getKondencioneri() != 2) {
             pirobebi_detail.setVisibility(View.VISIBLE);
-            if(driverStatement.getKondencioneri()==1) kontCB.setChecked(true); else kontCB.setChecked(false);
-            if(driverStatement.getSigareti()==1) sigarCB.setChecked(true); else sigarCB.setChecked(false);
-            if(driverStatement.getAtHome()==1) athomeCB.setChecked(true); else athomeCB.setChecked(false);
-            if(driverStatement.getSabarguli()==1) bagCB.setChecked(true); else bagCB.setChecked(false);
-            if(driverStatement.getCxovelebi()==1) animalCB.setChecked(true); else animalCB.setChecked(false);
-        }else{
+            if (driverStatement.getKondencioneri() == 1) kontCB.setChecked(true);
+            else kontCB.setChecked(false);
+            if (driverStatement.getSigareti() == 1) sigarCB.setChecked(true);
+            else sigarCB.setChecked(false);
+            if (driverStatement.getAtHome() == 1) athomeCB.setChecked(true);
+            else athomeCB.setChecked(false);
+            if (driverStatement.getSabarguli() == 1) bagCB.setChecked(true);
+            else bagCB.setChecked(false);
+            if (driverStatement.getCxovelebi() == 1) animalCB.setChecked(true);
+            else animalCB.setChecked(false);
+        } else {
             pirobebi_detail.setVisibility(View.GONE);
         }
 
         String[] passanger_sex = getResources().getStringArray(R.array.passanger_sex);
 
-        if(driverStatement.getAgeTo() != 1000) {
+        if (driverStatement.getAgeTo() != 1000) {
             limit_detiles.setVisibility(View.VISIBLE);
             detiles_limit_age.setText("მაქს. ასაკი: " + driverStatement.getAgeTo());
             detiles_limit_gender.setText("სქესი: " + passanger_sex[driverStatement.getGender()]);
-        }else {
+        } else {
             limit_detiles.setVisibility(View.GONE);
         }
 
@@ -170,17 +198,19 @@ public class DetailPageDriver extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_page, menu);
 
-        MenuItem menuItemedit = (MenuItem) menu.findItem(R.id.edit_dr_manu);
-        MenuItem menuItemdel = (MenuItem) menu.findItem(R.id.del_dr_manu);
-        MenuItem menuItemfav = (MenuItem) menu.findItem(R.id.fav_dr_manu);
+        menuItemedit = (MenuItem) menu.findItem(R.id.edit_dr_manu);
+        menuItemdel = (MenuItem) menu.findItem(R.id.del_dr_manu);
+        menuItemfav = (MenuItem) menu.findItem(R.id.fav_dr_manu);
 
-        if(whereFrom.equals(Constantebi.ALL_STAT)) {
+        if (whereFrom.equals(Constantebi.ALL_STAT)) {
             menuItemedit.setVisible(false);
             menuItemdel.setVisible(false);
         }
-        if(whereFrom.equals(Constantebi.MY_OWN_STAT)){
+        if (whereFrom.equals(Constantebi.MY_OWN_STAT)) {
             menuItemfav.setVisible(false);
         }
+        if (favoriteState)
+            menuItemfav.setIcon(R.drawable.ic_star_white_24dp);
 
         return true;
     }
@@ -200,10 +230,10 @@ public class DetailPageDriver extends ActionBarActivity {
         if (id == R.id.fav_dr_manu) {
 
             favoriteState = !favoriteState;
-            if(favoriteState){
-                item.setIcon(R.drawable.ic_star_black_24dp);
-            }else{
+            if (favoriteState) {
                 item.setIcon(R.drawable.ic_star_white_24dp);
+            } else {
+                item.setIcon(R.drawable.ic_star_border_white_24dp);
             }
 
             return true;
@@ -213,16 +243,14 @@ public class DetailPageDriver extends ActionBarActivity {
             // serverze gaushvebt gancx ID-s wasashlelad
             // da dadebiti pasuxis shemtxvevashi lokaluradac wavshlit
 
-
-
             JSONObject givi = new JSONObject();
 
-                        try {
-                            givi.put("user_id", driverStatement.getUserID());
-                            givi.put("s_id", driverStatement.getId());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+            try {
+                givi.put("user_id", driverStatement.getUserID());
+                givi.put("s_id", driverStatement.getId());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -255,7 +283,7 @@ public class DetailPageDriver extends ActionBarActivity {
             DBmanager.openWritable();
             DBmanager.deleteDriverStatement(driverStatement.getId());
             DBmanager.close();
-            Toast.makeText(getApplicationContext(),"განცხადება წაიშალა", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "განცხადება წაიშალა", Toast.LENGTH_SHORT).show();
 
             Intent toMyPage = new Intent(getApplicationContext(), MyStatements.class);
             startActivity(toMyPage);
