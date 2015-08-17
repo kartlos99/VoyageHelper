@@ -50,8 +50,6 @@ public class EditMyStatement extends ActionBarActivity {
         }
 
 
-
-
         if(stType.equals("passanger")){
             // meore
         }

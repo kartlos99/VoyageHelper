@@ -1,13 +1,18 @@
 package diakonidze.kartlos.voiage;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +27,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
@@ -29,6 +36,7 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
 
 public class DetailPageDriver extends ActionBarActivity {
 
+    private CollapsingToolbarLayout collapsingToolbar;
     private DriverStatement driverStatement;
     private String whereFrom="";
     private Toolbar toolbar;
@@ -55,9 +63,7 @@ public class DetailPageDriver extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         // bazidav amogeba
-
     }
 
     @Override
@@ -65,15 +71,26 @@ public class DetailPageDriver extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_layout_driver);
 
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-//        toolbar.setVisibility(View.GONE);
-
         whereFrom = getIntent().getStringExtra("from");
-        if(whereFrom.equals(Constantebi.MY_OWN_STAT)){
-            toolbar.setVisibility(View.VISIBLE);
-        }
         driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
+
+        ImageView callerImage = (ImageView) findViewById(R.id.caller);
+        callerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + driverStatement.getNumber()));
+                startActivity(callIntent);
+            }
+        });
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.anim_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(driverStatement.getName()+" "+driverStatement.getSurname());
+        collapsingToolbar.setExpandedTitleColor(getResources().getColor(R.color.ColorPrimary));
+        collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
 
 
 
@@ -83,24 +100,68 @@ public class DetailPageDriver extends ActionBarActivity {
         TextView freespaceT = (TextView) findViewById(R.id.detiles_freespace_text);
         TextView priceT = (TextView) findViewById(R.id.detiles_price_text);
         TextView carT = (TextView) findViewById(R.id.detiles_car_text);
-        TextView limitT = (TextView) findViewById(R.id.detiles_limit_text);
+        TextView detiles_limit_age = (TextView) findViewById(R.id.detiles_limit_age);
+        TextView detiles_limit_gender = (TextView) findViewById(R.id.detiles_limit_gender);
         TextView commentT = (TextView) findViewById(R.id.detiles_comment_text);
         ImageView carImage = (ImageView) findViewById(R.id.carDetailImage);
+        ImageView carTypeImage = (ImageView) findViewById(R.id.car_type_imig);
 
 //        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
         cityT.setText(driverStatement.getCityFrom()+" - "+driverStatement.getCityTo());
         timeT.setText(driverStatement.getDate()+" "+driverStatement.getTime());
         freespaceT.setText(String.valueOf(driverStatement.getFreeSpace()));
         priceT.setText(String.valueOf(driverStatement.getPrice()));
-        carT.setText(driverStatement.getMarka()+" "+driverStatement.getModeli()+" "+driverStatement.getColor());
-        limitT.setText(driverStatement.getAgeTo()+"წ.  სქესი "+driverStatement.getGender());
+        carT.setText("ა/მანქანა " + driverStatement.getMarka());
         commentT.setText(driverStatement.getComment());
+
+        LinearLayout pirobebi_detail = (LinearLayout) findViewById(R.id.pirobebi_detail);
+        CheckBox kontCB = (CheckBox) findViewById(R.id.driver_conditioner_checkBox);
+        CheckBox athomeCB = (CheckBox) findViewById(R.id.driver_atplace_checkBox);
+        CheckBox sigarCB = (CheckBox) findViewById(R.id.driver_cigar_checkBox);
+        CheckBox bagCB = (CheckBox) findViewById(R.id.driver_baggage_checkBox);
+        CheckBox animalCB = (CheckBox) findViewById(R.id.driver_animal_checkBox);
+
+        LinearLayout limit_detiles = (LinearLayout) findViewById(R.id.limit_detiles);
+
+        switch (driverStatement.getMarka()){
+            case 0: carTypeImage.setImageResource(R.drawable.car1);
+                break;
+            case 1: carTypeImage.setImageResource(R.drawable.car2);
+                break;
+            case 2: carTypeImage.setImageResource(R.drawable.car3);
+                break;
+            case 3: carTypeImage.setImageResource(R.drawable.car4);
+                break;
+            case 4: carTypeImage.setImageResource(R.drawable.car5);
+                break;
+        }
 
         Picasso.with(this)
                 .load(driverStatement.getCarpicture())
                 .resize(600 , 500)
                 .centerCrop()
                 .into(carImage);
+
+        if(driverStatement.getKondencioneri() != 2){
+            pirobebi_detail.setVisibility(View.VISIBLE);
+            if(driverStatement.getKondencioneri()==1) kontCB.setChecked(true); else kontCB.setChecked(false);
+            if(driverStatement.getSigareti()==1) sigarCB.setChecked(true); else sigarCB.setChecked(false);
+            if(driverStatement.getAtHome()==1) athomeCB.setChecked(true); else athomeCB.setChecked(false);
+            if(driverStatement.getSabarguli()==1) bagCB.setChecked(true); else bagCB.setChecked(false);
+            if(driverStatement.getCxovelebi()==1) animalCB.setChecked(true); else animalCB.setChecked(false);
+        }else{
+            pirobebi_detail.setVisibility(View.GONE);
+        }
+
+        String[] passanger_sex = getResources().getStringArray(R.array.passanger_sex);
+
+        if(driverStatement.getAgeTo() != 1000) {
+            limit_detiles.setVisibility(View.VISIBLE);
+            detiles_limit_age.setText("მაქს. ასაკი: " + driverStatement.getAgeTo());
+            detiles_limit_gender.setText("სქესი: " + passanger_sex[driverStatement.getGender()]);
+        }else {
+            limit_detiles.setVisibility(View.GONE);
+        }
 
     }
 
@@ -109,7 +170,17 @@ public class DetailPageDriver extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_page, menu);
 
+        MenuItem menuItemedit = (MenuItem) menu.findItem(R.id.edit_dr_manu);
+        MenuItem menuItemdel = (MenuItem) menu.findItem(R.id.del_dr_manu);
+        MenuItem menuItemfav = (MenuItem) menu.findItem(R.id.fav_dr_manu);
 
+        if(whereFrom.equals(Constantebi.ALL_STAT)) {
+            menuItemedit.setVisible(false);
+            menuItemdel.setVisible(false);
+        }
+        if(whereFrom.equals(Constantebi.MY_OWN_STAT)){
+            menuItemfav.setVisible(false);
+        }
 
         return true;
     }
@@ -134,7 +205,6 @@ public class DetailPageDriver extends ActionBarActivity {
             }else{
                 item.setIcon(R.drawable.ic_star_white_24dp);
             }
-
 
             return true;
         }

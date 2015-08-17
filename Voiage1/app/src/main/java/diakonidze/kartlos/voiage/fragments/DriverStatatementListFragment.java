@@ -103,6 +103,8 @@ public class DriverStatatementListFragment extends Fragment {
                 DBmanager.initialaize(getActivity());
                 DBmanager.openReadable();
                 driverStatements = DBmanager.getDriverList(Constantebi.MY_STATEMENT);
+                driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+                statementListView.setAdapter(driverListAdapterRc);
                 DBmanager.close();
                 v = statementListView;
                 break;
@@ -217,8 +219,8 @@ public class DriverStatatementListFragment extends Fragment {
 
                                     newDriverStatement.setCityPath(jsonArray.getJSONObject(i).getString("cityPath"));
                                     newDriverStatement.setTime(jsonArray.getJSONObject(i).getString("time"));
-                                    newDriverStatement.setMarka(1); //int
-                                    newDriverStatement.setModeli(1); //int
+                                    newDriverStatement.setMarka(jsonArray.getJSONObject(i).getInt("mark")); //int
+//                                    newDriverStatement.setModeli(1); //int
                                     newDriverStatement.setColor(jsonArray.getJSONObject(i).getInt("color"));
                                     newDriverStatement.setCarpicture(jsonArray.getJSONObject(i).getString("photo"));
                                     newDriverStatement.setKondencioneri(jsonArray.getJSONObject(i).getInt("kondincioneri"));

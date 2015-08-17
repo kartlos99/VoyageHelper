@@ -73,25 +73,267 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/add_statement_inline_padding"
+                android:orientation="horizontal"
+                android:padding="@dimen/add_statement_inline_padding"
+                android:showDividers="middle">
 
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pin" />
+
+                <TextView
+                    android:id="@+id/detiles_city_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="@dimen/text_size_in_detail_page" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/add_statement_inline_padding"
+                android:orientation="horizontal"
+                android:padding="@dimen/add_statement_inline_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/time" />
+
+                <TextView
+                    android:id="@+id/detiles_time_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="@dimen/text_size_in_detail_page" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/add_statement_inline_padding"
+                android:orientation="horizontal"
+                android:padding="@dimen/add_statement_inline_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/man_detail" />
+
+                <TextView
+                    android:id="@+id/detiles_freespace_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="@dimen/text_size_in_detail_page" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/add_statement_inline_padding"
+                android:orientation="horizontal"
+                android:padding="@dimen/add_statement_inline_padding">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/lari" />
+
+                <TextView
+                    android:id="@+id/detiles_price_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="@dimen/text_size_in_detail_page" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/pirobebi_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/cardViewMargin"
+                    card_view:cardCornerRadius="@dimen/cardCorner">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/add_statement_inline_padding">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="6dp"
+                            android:gravity="center"
+                            android:text="პირობები" />
+
+                        <RelativeLayout
+                            android:id="@+id/comfort1"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <CheckBox
+                                android:id="@+id/driver_conditioner_checkBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="6dp"
+                                android:layout_marginTop="6dp"
+                                android:enabled="false"
+                                android:text="კონდიციონერი" />
+
+                            <CheckBox
+                                android:id="@+id/driver_atplace_checkBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:layout_toRightOf="@+id/driver_conditioner_checkBox"
+                                android:enabled="false"
+                                android:text="ადგილზე მისვლა" />
+
+                            <CheckBox
+                                android:id="@+id/driver_cigar_checkBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/driver_conditioner_checkBox"
+                                android:layout_marginBottom="6dp"
+                                android:layout_marginLeft="6dp"
+                                android:enabled="false"
+                                android:text="სიგარეტი" />
+
+                            <CheckBox
+                                android:id="@+id/driver_baggage_checkBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/driver_conditioner_checkBox"
+                                android:layout_toEndOf="@+id/driver_cigar_checkBox"
+                                android:layout_toRightOf="@id/driver_cigar_checkBox"
+                                android:enabled="false"
+                                android:text="ბარგი" />
+
+                            <CheckBox
+                                android:id="@+id/driver_animal_checkBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/driver_conditioner_checkBox"
+                                android:layout_toEndOf="@+id/driver_baggage_checkBox"
+                                android:layout_toRightOf="@id/driver_baggage_checkBox"
+                                android:enabled="false"
+                                android:text="შ.ცხოველები" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/limit_detiles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:padding="@dimen/add_statement_inline_padding">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="შეზღუდვა მგზავრზე" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detiles_limit_age"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="მაქს. ასაკი: " />
+
+                    <TextView
+                        android:id="@+id/detiles_limit_gender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="სქესი: " />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/commentCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/cardViewMargin"
+                card_view:cardCornerRadius="@dimen/cardCorner">
+
+                <TextView
+                    android:id="@+id/detiles_comment_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="comment" />
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/scrollableview"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_margin="16dp"-->
-    <!--android:clickable="true"-->
-    <!--android:src="@drawable/ic_add_white_24dp"-->
-    <!--app:layout_anchor="@+id/appbar"-->
-    <!--app:layout_anchorGravity="bottom|right|end" />-->
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,20 +1,25 @@
 package diakonidze.kartlos.voiage;
 
+import android.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 
 import diakonidze.kartlos.voiage.adapters.AddStatementAdapter;
+import diakonidze.kartlos.voiage.fragments.AddDriverStatementF;
 
 
-public class AddStatement extends ActionBarActivity {
+public class AddStatement extends ActionBarActivity  {
 
     private ViewPager viewPager;
     private Toolbar toolbar;
+    AddDriverStatementF fragment1;
+    android.support.v4.app.FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,50 +32,16 @@ public class AddStatement extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.add_statement_pager);
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         AddStatementAdapter addStatementAdapter = new AddStatementAdapter(fragmentManager);
         viewPager.setAdapter(addStatementAdapter);
 
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-//
-//        driverDonebtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-
-//            }
-//        });
-
-
-//        Spinner spinner = (Spinner) findViewById(R.id.spiner1);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.cityes, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//
-//
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//                TextView v = (TextView) view;
-//                TextView textView = (TextView) findViewById(R.id.textView);
-//                textView.setText(v.getText()+" "+position);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                TextView textView = (TextView) findViewById(R.id.textView);
-//                textView.setText("rame airchie");
-//            }
-//        });
-//
-//
-//        spinner.setAdapter(adapter);
-
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -62,12 +62,19 @@ import diakonidze.kartlos.voiage.models.DriverStatement;
 /**
  * Created by k.diakonidze on 7/17/2015.
  */
-public class AddDriverStatementF extends Fragment {
+public class AddDriverStatementF extends Fragment implements View.OnClickListener {
     private Calendar runTimeC;
     private TextView passAgeText;
     private Button driverDonebtn, pirobebiBtn, limitBtn, takePhotoBtn;
     private DriverStatement driverStatement;
     private ImageView carImageView;
+    private ImageView carType1;
+    private ImageView carType2;
+    private ImageView carType3;
+    private ImageView carType4;
+    private ImageView carType5;
+
+    private int carType = 0;
 
     private Uri uri;
     private File imagefile;
@@ -387,7 +394,6 @@ public class AddDriverStatementF extends Fragment {
                             jsonObject.put("image", "");
                         }
 
-int w =1;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -543,7 +549,17 @@ int w =1;
         pirobebiBtn = (Button) view.findViewById(R.id.driver_pirobebi_btn);
         takePhotoBtn = (Button) view.findViewById(R.id.take_photo_btn);
         carImageView = (ImageView) view.findViewById(R.id.car_image);
+        carType1 = (ImageView) view.findViewById(R.id.car_type_1);
+        carType2 = (ImageView) view.findViewById(R.id.car_type_2);
+        carType3 = (ImageView) view.findViewById(R.id.car_type_3);
+        carType4 = (ImageView) view.findViewById(R.id.car_type_4);
+        carType5 = (ImageView) view.findViewById(R.id.car_type_5);
 
+        carType1.setOnClickListener(this);
+        carType2.setOnClickListener(this);
+        carType3.setOnClickListener(this);
+        carType4.setOnClickListener(this);
+        carType5.setOnClickListener(this);
 
         return view;
     }
@@ -569,10 +585,23 @@ int w =1;
         freeSpaceSpinner.setSelection(statement.getFreeSpace() - 1);
         priceSpinner.setSelection(statement.getPrice());
 
-        markaSpinner.setSelection(statement.getMarka());
-        modelebisListisDayeneba(statement.getMarka());
-        modelSpinner.setSelection(statement.getModeli());
-        colorSpinner.setSelection(statement.getColor());
+//        markaSpinner.setSelection(statement.getMarka());
+//        modelebisListisDayeneba(statement.getMarka());
+//        modelSpinner.setSelection(statement.getModeli());
+//        colorSpinner.setSelection(statement.getColor());
+        switch (statement.getMarka()){
+            case 0: carType1.setBackgroundColor(Color.DKGRAY);
+                break;
+            case 1: carType2.setBackgroundColor(Color.DKGRAY);
+                break;
+            case 2: carType3.setBackgroundColor(Color.DKGRAY);
+                break;
+            case 3: carType4.setBackgroundColor(Color.DKGRAY);
+                break;
+            case 4: carType5.setBackgroundColor(Color.DKGRAY);
+                break;
+        }
+
         if (statement.getAtHome() != 2) {
             pirobebi= true;
             pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_lite);
@@ -723,9 +752,10 @@ int w =1;
 
         statement.setTime(runTimeSpinner.getSelectedItem().toString());
 
-        statement.setMarka(markaSpinner.getSelectedItemPosition());
-        statement.setModeli(modelSpinner.getSelectedItemPosition());
-        statement.setColor(colorSpinner.getSelectedItemPosition());
+        statement.setMarka(carType);
+//        statement.setMarka(markaSpinner.getSelectedItemPosition());
+//        statement.setModeli(modelSpinner.getSelectedItemPosition());
+//        statement.setColor(colorSpinner.getSelectedItemPosition());
 
         if (pirobebi) {
             statement.setKondencioneri(BoolToInt(condicionerCK.isChecked()));
@@ -776,5 +806,38 @@ int w =1;
         }
         modelSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modellist);
         ((ArrayAdapter<String>) modelSpinner.getAdapter()).notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        carType1.setBackground(null);
+        carType2.setBackground(null);
+        carType3.setBackground(null);
+        carType4.setBackground(null);
+        carType5.setBackground(null);
+
+        switch (view.getId()) {
+            case R.id.car_type_1:
+                carType1.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 0;
+                break;
+            case R.id.car_type_2:
+                carType2.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 1;
+                break;
+            case R.id.car_type_3:
+                carType3.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 2;
+                break;
+            case R.id.car_type_4:
+                carType4.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 3;
+                break;
+            case R.id.car_type_5:
+                carType5.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 4;
+                break;
+        }
     }
 }

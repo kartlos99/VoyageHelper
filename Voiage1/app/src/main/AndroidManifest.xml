@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name=".DetailPageDriver"
-            android:label="@string/title_activity_detail_page" >
+            android:label="@string/title_activity_detail_page"
+            android:parentActivityName=".MainActivity" >
         </activity>
         <activity
             android:name=".DetailPagePassanger"

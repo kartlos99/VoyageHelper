@@ -173,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
         DBmanager.initialaize(this);
         DBmanager.openReadable();
         Constantebi.cityList = DBmanager.getCityList();
-        Constantebi.brendList = DBmanager.getMarkaList();
-        Constantebi.modelList = DBmanager.getModelList();
+//        Constantebi.brendList = DBmanager.getMarkaList();
+//        Constantebi.modelList = DBmanager.getModelList();
         DBmanager.close();
 
         // aq sxva kriteriumia chasasmeli, es droebitia
@@ -182,65 +182,66 @@ public class MainActivity extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            String url = "http://back.meet.ge/get.php?type=mark";
-            JsonArrayRequest requestMarka = new JsonArrayRequest(url,
-                    new Response.Listener<JSONArray>() {
-                        @Override
-                        public void onResponse(JSONArray jsonArray) {
-
-                            if (jsonArray.length() > 0) {
-                                Constantebi.brendList.clear();
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    try {
-                                        CarBrend carBrend = new CarBrend(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("name"));
-                                        Constantebi.brendList.add(carBrend);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                            movida++;
-                            writeToDB();
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            progress.dismiss();
-                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-            );
-
-            url = "http://back.meet.ge/get.php?type=model";
-            JsonArrayRequest requestModel = new JsonArrayRequest(url,
-                    new Response.Listener<JSONArray>() {
-                        @Override
-                        public void onResponse(JSONArray jsonArray) {
-
-                            if (jsonArray.length() > 0) {
-                                Constantebi.modelList.clear();
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    try {
-                                        CarModel carModel = new CarModel(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getInt("id_mark"), jsonArray.getJSONObject(i).getString("name"));
-                                        Constantebi.modelList.add(carModel);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                            movida++;
-                            writeToDB();
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            progress.dismiss();
-                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-            );
+            String url = "";
+//            String url = "http://back.meet.ge/get.php?type=mark";
+//            JsonArrayRequest requestMarka = new JsonArrayRequest(url,
+//                    new Response.Listener<JSONArray>() {
+//                        @Override
+//                        public void onResponse(JSONArray jsonArray) {
+//
+//                            if (jsonArray.length() > 0) {
+//                                Constantebi.brendList.clear();
+//                                for (int i = 0; i < jsonArray.length(); i++) {
+//                                    try {
+//                                        CarBrend carBrend = new CarBrend(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("name"));
+//                                        Constantebi.brendList.add(carBrend);
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+//                            movida++;
+//                            writeToDB();
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError volleyError) {
+//                            progress.dismiss();
+//                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//            );
+//
+//            url = "http://back.meet.ge/get.php?type=model";
+//            JsonArrayRequest requestModel = new JsonArrayRequest(url,
+//                    new Response.Listener<JSONArray>() {
+//                        @Override
+//                        public void onResponse(JSONArray jsonArray) {
+//
+//                            if (jsonArray.length() > 0) {
+//                                Constantebi.modelList.clear();
+//                                for (int i = 0; i < jsonArray.length(); i++) {
+//                                    try {
+//                                        CarModel carModel = new CarModel(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getInt("id_mark"), jsonArray.getJSONObject(i).getString("name"));
+//                                        Constantebi.modelList.add(carModel);
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+//                            movida++;
+//                            writeToDB();
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError volleyError) {
+//                            progress.dismiss();
+//                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//            );
 
 
             url = "http://back.meet.ge/get.php?type=cities";
@@ -275,9 +276,9 @@ public class MainActivity extends AppCompatActivity {
                     }
             );
 
-            progress = ProgressDialog.show(this, "ჩამოტვირთვა cars", "გთხოვთ დაიცადოთ");
-            queue.add(requestMarka);
-            queue.add(requestModel);
+            progress = ProgressDialog.show(this, "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+//            queue.add(requestMarka);
+//            queue.add(requestModel);
             queue.add(requestCities);
 
             Toast.makeText(this, "INtidan chamotvirtva", Toast.LENGTH_LONG).show();
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void writeToDB() {
-        if (movida == 3) {
+        if (movida == 1) {
 
             progress.dismiss();
 
@@ -362,20 +363,20 @@ public class MainActivity extends AppCompatActivity {
                 db.insert(DBscheme.CITY_TABLE_NAME, null, values);
             }
 
-            for (int i = 0; i < Constantebi.modelList.size(); i++) {
-                ContentValues values = new ContentValues();
-                values.put(DBscheme.MODEL_ID, Constantebi.modelList.get(i).getId());
-                values.put(DBscheme.MARKA_ID, Constantebi.modelList.get(i).getBrendID());
-                values.put(DBscheme.NAME, Constantebi.modelList.get(i).getModel());
-                db.insert(DBscheme.MODEL_TABLE_NAME, null, values);
-            }
-
-            for (int i = 0; i < Constantebi.brendList.size(); i++) {
-                ContentValues values = new ContentValues();
-                values.put(DBscheme.MARKA_ID, Constantebi.brendList.get(i).getId());
-                values.put(DBscheme.NAME, Constantebi.brendList.get(i).getMarka());
-                db.insert(DBscheme.MARKA_TABLE_NAME, null, values);
-            }
+//            for (int i = 0; i < Constantebi.modelList.size(); i++) {
+//                ContentValues values = new ContentValues();
+//                values.put(DBscheme.MODEL_ID, Constantebi.modelList.get(i).getId());
+//                values.put(DBscheme.MARKA_ID, Constantebi.modelList.get(i).getBrendID());
+//                values.put(DBscheme.NAME, Constantebi.modelList.get(i).getModel());
+//                db.insert(DBscheme.MODEL_TABLE_NAME, null, values);
+//            }
+//
+//            for (int i = 0; i < Constantebi.brendList.size(); i++) {
+//                ContentValues values = new ContentValues();
+//                values.put(DBscheme.MARKA_ID, Constantebi.brendList.get(i).getId());
+//                values.put(DBscheme.NAME, Constantebi.brendList.get(i).getMarka());
+//                db.insert(DBscheme.MARKA_TABLE_NAME, null, values);
+//            }
 
             db.close();
 

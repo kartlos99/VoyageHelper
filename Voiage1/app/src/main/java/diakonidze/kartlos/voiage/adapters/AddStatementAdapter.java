@@ -15,9 +15,11 @@ import diakonidze.kartlos.voiage.models.PassangerStatement;
  * Created by k.diakonidze on 7/17/2015.
  */
 public class AddStatementAdapter extends FragmentStatePagerAdapter {
+
     public AddStatementAdapter(FragmentManager fm) {
         super(fm);
     }
+
 
     @Override
     public Fragment getItem(int position) {
@@ -29,6 +31,7 @@ public class AddStatementAdapter extends FragmentStatePagerAdapter {
             DriverStatement statement = new DriverStatement(Constantebi.MY_ID,0,0,"","","");
             bundle.putSerializable("statement", statement);
             fragment = new AddDriverStatementF();
+
             fragment.setArguments(bundle);
         }
         if (position == 1) {
@@ -37,6 +40,7 @@ public class AddStatementAdapter extends FragmentStatePagerAdapter {
             fragment = new AddPassengetStatementF();
             fragment.setArguments(bundle);
         }
+
         return fragment;
     }
 

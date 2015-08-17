@@ -23,7 +23,6 @@ import diakonidze.kartlos.voiage.adapters.RecyclerAdapter;
 public class DetailPagePassanger extends ActionBarActivity {
     CollapsingToolbarLayout collapsingToolbar;
     int mutedColor = R.attr.colorPrimary;
-    RecyclerAdapter simpleRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
