@@ -80,23 +80,8 @@ public class DriverStatatementListFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        driverStatements = new ArrayList<>();
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-
-        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
-        final View v;
-
-        // vin gamoiZaxa es forma
-        location = getArguments().getString("location");
-
-        // Listis gaketeba
-        statementListView.setHasFixedSize(true);
-        driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
-        statementListView.setAdapter(driverListAdapterRc);
-        statementListView.setLayoutManager(linearLayoutManager);
+    public void onResume() {
+        super.onResume();
 
         switch (location) {
             case Constantebi.MY_OWN_STAT:
@@ -106,7 +91,6 @@ public class DriverStatatementListFragment extends Fragment {
                 DBmanager.close();
                 driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
                 statementListView.setAdapter(driverListAdapterRc);
-                v = statementListView;
                 break;
             case Constantebi.FAVORIT_STAT:
                 DBmanager.initialaize(getActivity());
@@ -115,14 +99,37 @@ public class DriverStatatementListFragment extends Fragment {
                 DBmanager.close();
                 driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
                 statementListView.setAdapter(driverListAdapterRc);
-                v = statementListView;
                 break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        driverStatements = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        // vin gamoiZaxa es forma
+        location = getArguments().getString("location");
+
+        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
+
+        final View v;
+
+        // Listis gaketeba
+        statementListView.setHasFixedSize(true);
+        driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+        statementListView.setAdapter(driverListAdapterRc);
+        statementListView.setLayoutManager(linearLayoutManager);
+
+        switch (location) {
             case Constantebi.ALL_STAT:
                 getDriversStatements();
                 v = getActivity().findViewById(R.id.main_content);
                 break;
             default:
-                Toast.makeText(getActivity(), "Nothing to show", Toast.LENGTH_LONG).show();
                 v = statementListView;
         }
 
@@ -142,6 +149,8 @@ public class DriverStatatementListFragment extends Fragment {
                     case Constantebi.FAVORIT_STAT:
                         getDriversStatements();
                         break;
+                    case Constantebi.MY_OWN_STAT:
+                        swRefresh.setRefreshing(false);
                 }
             }
         });
@@ -153,24 +162,31 @@ public class DriverStatatementListFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                int lastVisibleItemIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                int totalItemCount = driverListAdapterRc.getItemCount();
+                if(location.equals(Constantebi.ALL_STAT)) {
 
-                if (totalItemCount - lastVisibleItemIndex > 2) loadneeding = true;
+                    int lastVisibleItemIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = driverListAdapterRc.getItemCount();
 
-                if (lastVisibleItemIndex >= totalItemCount - 1 && !loading && loadneeding) {
-                    loading = true;
-                    loadneeding = false;
-                    Snackbar.make(v, "Loading...", Snackbar.LENGTH_LONG)
-                            .setActionTextColor(Color.CYAN)
-                            .setAction("STOP", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    queue.cancelAll("stList");
-                                }
-                            })
-                            .show();
-                    getDriversStatements();
+                    if (totalItemCount - lastVisibleItemIndex > 2) loadneeding = true;
+
+                    if (lastVisibleItemIndex >= totalItemCount - 1 && !loading && loadneeding) {
+                        loading = true;
+                        loadneeding = false;
+                        // marto refreshis dros rom amoagdos shetyobineba
+                        if (dataStartPoint == 0) {
+                            Snackbar.make(v, "Loading...", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.CYAN)
+                                    .setAction("STOP", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            queue.cancelAll("stList");
+                                        }
+                                    })
+                                    .show();
+                        }
+                        swRefresh.setRefreshing(true);
+                        getDriversStatements();
+                    }
                 }
             }
 
@@ -195,9 +211,9 @@ public class DriverStatatementListFragment extends Fragment {
 //            url = "http://back.meet.ge/get.php?type=1";
                 url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=" + dataStartPoint + "&end=" + dataPageSize;
                 break;
-            case Constantebi.MY_OWN_STAT:
-                url = "http://back.meet.ge/get.php?type=1";
-                break;
+//            case Constantebi.MY_OWN_STAT:
+//                url = "http://back.meet.ge/get.php?type=1";
+//                break;
             case Constantebi.FAVORIT_STAT:
                 // http://back.meet.ge/get.php?type=FAV&sub_type=1&id=158,161
                 url = "http://back.meet.ge/get.php?type=FAV&sub_type=1&id=";
@@ -280,15 +296,11 @@ public class DriverStatatementListFragment extends Fragment {
                                 driverListAdapterRc.notifyItemRangeInserted(driverStatements.size() - newData.size(), newData.size());
                             }
                             if (location.equals(Constantebi.FAVORIT_STAT)) {
-//                                driverStatements = newData;
-//                                driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
-//                                statementListView.setAdapter(driverListAdapterRc);
-
-                                int oldsize = driverStatements.size();
-                                driverStatements.clear();
-                                driverListAdapterRc.notifyItemRangeRemoved(0, oldsize);
                                 driverStatements = newData;
-                                driverListAdapterRc.notifyItemRangeInserted(0, driverStatements.size());
+                                driverListAdapterRc = new DriverListAdapterRc(driverStatements, getActivity(), location);
+                                statementListView.setAdapter(driverListAdapterRc);
+
+                                statementListView.setLayoutManager(linearLayoutManager);
 
                             }
 

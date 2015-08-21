@@ -202,7 +202,7 @@ public class DetailPageDriver extends ActionBarActivity {
         menuItemdel = (MenuItem) menu.findItem(R.id.del_dr_manu);
         menuItemfav = (MenuItem) menu.findItem(R.id.fav_dr_manu);
 
-        if (whereFrom.equals(Constantebi.ALL_STAT)) {
+        if (whereFrom.equals(Constantebi.ALL_STAT) || whereFrom.equals(Constantebi.FAVORIT_STAT) ) {
             menuItemedit.setVisible(false);
             menuItemdel.setVisible(false);
         }

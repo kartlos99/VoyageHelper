@@ -590,15 +590,15 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 //        modelSpinner.setSelection(statement.getModeli());
 //        colorSpinner.setSelection(statement.getColor());
         switch (statement.getMarka()){
-            case 0: carType1.setBackgroundColor(Color.DKGRAY);
+            case 0: carType1.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
                 break;
-            case 1: carType2.setBackgroundColor(Color.DKGRAY);
+            case 1: carType2.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
                 break;
-            case 2: carType3.setBackgroundColor(Color.DKGRAY);
+            case 2: carType3.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
                 break;
-            case 3: carType4.setBackgroundColor(Color.DKGRAY);
+            case 3: carType4.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
                 break;
-            case 4: carType5.setBackgroundColor(Color.DKGRAY);
+            case 4: carType5.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
                 break;
         }
 
