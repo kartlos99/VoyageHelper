@@ -15,29 +15,27 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
             android:divider="@drawable/linedividerhorizontal"
-            android:dividerPadding="10dp"
+            android:dividerPadding="20dp"
             android:orientation="vertical"
             android:showDividers="middle">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@drawable/linedivider"
-                android:dividerPadding="2dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding"
-                android:showDividers="middle">
+                android:padding="@dimen/add_statement_inline_padding">
 
-                <TextView
-                    android:id="@+id/driver_marshuti_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="3"
-                    android:text="მარშუტი" />
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pin" />
 
                 <AutoCompleteTextView
                     android:id="@+id/driver_cityfrom"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
@@ -48,6 +46,7 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/driver_cityto"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
@@ -61,20 +60,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@drawable/linedivider"
-                android:dividerPadding="2dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding"
-                android:showDividers="middle">
+                android:padding="@dimen/add_statement_inline_padding">
 
-                <TextView
-
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="3"
-                    android:text="დრო" />
-
+                    android:src="@drawable/time" />
 
                 <Spinner
                     android:id="@+id/driver_date_spiner"
@@ -89,6 +85,7 @@
                     android:id="@+id/driver_time_spiner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="6"
                     android:gravity="center"
                     android:text="00:00" />
@@ -97,53 +94,46 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@drawable/linedivider"
-                android:dividerPadding="2dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding"
-                android:showDividers="middle">
+                android:padding="@dimen/add_statement_inline_padding">
 
-                <TextView
-                    android:id="@+id/driver_freesplace_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="9"
-                    android:text="თავისუფალი ადგილი" />
+                    android:src="@drawable/man_detail" />
 
                 <Spinner
                     android:id="@+id/driver_freespace_spiner"
-                    android:layout_width="0dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="6"
-                    android:gravity="center" />
+                    android:layout_gravity="center"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@drawable/linedivider"
-                android:dividerPadding="2dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/add_statement_inline_padding"
-                android:showDividers="middle">
+                android:padding="@dimen/add_statement_inline_padding">
 
-                <TextView
-                    android:id="@+id/driver_price_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="@dimen/icon_size_in_detail_page"
+                    android:layout_height="@dimen/icon_size_in_detail_page"
+                    android:layout_marginLeft="@dimen/add_statement_inline_padding"
+                    android:layout_marginRight="@dimen/add_statement_inline_padding"
+                    android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="9"
-                    android:text="ფასი" />
+                    android:src="@drawable/lari" />
 
                 <Spinner
                     android:id="@+id/driver_price_spiner"
-                    android:layout_width="0dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="6"
-                    android:gravity="center"
-                    android:textAlignment="center" />
+                    android:layout_gravity="center"/>
 
             </LinearLayout>
 
@@ -171,20 +161,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:text="add photo" />
+                        android:text="ფოტოს მიმაგრება" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/round_corner"
                     android:padding="8dp">
 
                     <ImageView
                         android:id="@+id/car_image"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/round_corner" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -195,7 +183,6 @@
                         android:id="@+id/car_type_1"
                         android:src="@drawable/car1"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/abc_tab_indicator_mtrl_alpha"
                         android:onClick="selectCarType"
                         android:layout_width="0dp"
                         android:layout_weight="1"

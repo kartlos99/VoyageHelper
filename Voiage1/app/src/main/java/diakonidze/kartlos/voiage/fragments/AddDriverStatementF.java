@@ -420,6 +420,8 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                                     DBmanager.insertIntoDriver(driverStatement, Constantebi.MY_STATEMENT);
                                     DBmanager.close();
 
+                                    getActivity().onBackPressed();
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -683,17 +685,20 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
             pricelist.add(String.valueOf(i));
         }
 
-        brendlist.clear();
-        modellist.clear();
-        for (int i = 0; i < Constantebi.brendList.size(); i++) {
-            brendlist.add(Constantebi.brendList.get(i).getMarka());
-        }
+//        brendlist.clear();
+//        modellist.clear();
+//        for (int i = 0; i < Constantebi.brendList.size(); i++) {
+//            brendlist.add(Constantebi.brendList.get(i).getMarka());
+//        }
+//
+//        for (int i = 0; i < Constantebi.modelList.size(); i++) {
+//            if (Constantebi.modelList.get(i).getBrendID() == 1) {
+//                modellist.add(Constantebi.modelList.get(i).getModel());
+//            }
+//        }
+        carType2.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+        carType = 1;
 
-        for (int i = 0; i < Constantebi.modelList.size(); i++) {
-            if (Constantebi.modelList.get(i).getBrendID() == 1) {
-                modellist.add(Constantebi.modelList.get(i).getModel());
-            }
-        }
 
         modelSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modellist);
         brendSpinerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, brendlist);
