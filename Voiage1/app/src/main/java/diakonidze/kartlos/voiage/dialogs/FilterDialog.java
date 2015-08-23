@@ -76,8 +76,8 @@ public class FilterDialog extends DialogFragment {
             setedDate2 = dateFormat.format(time2.getTime());
 
             if (!datelist.contains(setedDate2)) {
-                datelist.add(setedDate1);
-                ((ArrayAdapter<String>) dateSpinner1.getAdapter()).notifyDataSetChanged();
+                datelist.add(setedDate2);
+                ((ArrayAdapter<String>) dateSpinner2.getAdapter()).notifyDataSetChanged();
             }
             dateSpinner2.setSelection(getIndexInSpinner(dateSpinner2, setedDate2));
         }
@@ -89,7 +89,7 @@ public class FilterDialog extends DialogFragment {
 
         Dialog dialog = super.onCreateDialog(savedInstanceState);
 
-        dialog.setTitle("ფილტრი");
+        dialog.setTitle("ფილტრი                 ");
 
         return dialog;
 
@@ -107,6 +107,7 @@ public class FilterDialog extends DialogFragment {
         cityTo = (AutoCompleteTextView) view.findViewById(R.id.filter1_cityto);
         dateSpinner1 = (Spinner) view.findViewById(R.id.filter_time1);
         dateSpinner2 = (Spinner) view.findViewById(R.id.filter_time2);
+        comfortBox = (RelativeLayout) view.findViewById(R.id.filter_comfortBox);
 
         driverSwitch.setChecked(true);
 
@@ -123,6 +124,8 @@ public class FilterDialog extends DialogFragment {
         dateSpinner2.setAdapter(dateSpinnerAdapter2);
 
         currTime = Calendar.getInstance();
+        time1 = Calendar.getInstance();
+        time2 = Calendar.getInstance();
 
         dateSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

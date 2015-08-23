@@ -15,10 +15,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:gravity="right"
             android:layout_marginRight="@dimen/add_statement_inline_padding"
-            android:text="განცხადების \nტიპი" />
+            android:textSize="@dimen/text_size_in_filter"
+            android:text="განცხადების\nტიპი" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -26,17 +27,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
             <Switch
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_in_filter"
                 android:text="ტრანსპორტი"
-                android:layout_marginLeft="@dimen/add_statement_inline_padding"
                 android:id="@+id/switch1" />
 
             <Switch
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_in_filter"
                 android:text="მგზავრი"
-                android:layout_marginLeft="@dimen/add_statement_inline_padding"
                 android:id="@+id/switch2" />
 
         </LinearLayout>
@@ -49,9 +50,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/icon_size_in_detail_page"
-            android:layout_height="@dimen/icon_size_in_detail_page"
-            android:layout_marginLeft="@dimen/add_statement_inline_padding"
+            android:layout_width="@dimen/icon_size_in_filter"
+            android:layout_height="@dimen/icon_size_in_filter"
             android:layout_marginRight="@dimen/add_statement_inline_padding"
             android:scaleType="centerInside"
             android:src="@drawable/pin" />
@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:focusableInTouchMode="true"
+            android:textSize="@dimen/text_size_in_filter"
             android:hint="საიდან"
             android:singleLine="true" />
 
@@ -73,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:focusableInTouchMode="true"
+            android:textSize="@dimen/text_size_in_filter"
             android:hint="საით"
             android:singleLine="true" />
 
@@ -87,9 +89,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/icon_size_in_detail_page"
-            android:layout_height="@dimen/icon_size_in_detail_page"
-            android:layout_marginLeft="@dimen/add_statement_inline_padding"
+            android:layout_width="@dimen/icon_size_in_filter"
+            android:layout_height="@dimen/icon_size_in_filter"
             android:layout_marginRight="@dimen/add_statement_inline_padding"
             android:scaleType="centerInside"
             android:layout_gravity="center_vertical"
@@ -101,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="6"
+            android:textSize="@dimen/text_size_in_filter"
             android:gravity="center"
             android:text="დღეს" />
 
@@ -110,6 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="6"
+            android:textSize="@dimen/text_size_in_filter"
             android:gravity="center"
             android:text="xval" />
 
@@ -144,14 +147,15 @@
 
             <CheckBox
                 android:id="@+id/filter_conditioner_checkBox"
+                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
                 android:layout_marginTop="6dp"
                 android:text="კონდიციონერი" />
 
             <CheckBox
                 android:id="@+id/filter_atplace_checkBox"
+                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
@@ -160,15 +164,16 @@
 
             <CheckBox
                 android:id="@+id/filter_cigar_checkBox"
+                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filter_conditioner_checkBox"
                 android:layout_marginBottom="6dp"
-                android:layout_marginLeft="6dp"
                 android:text="სიგარეტი" />
 
             <CheckBox
                 android:id="@+id/filter_baggage_checkBox"
+                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filter_conditioner_checkBox"
@@ -178,6 +183,7 @@
 
             <CheckBox
                 android:id="@+id/filter_animal_checkBox"
+                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filter_conditioner_checkBox"
