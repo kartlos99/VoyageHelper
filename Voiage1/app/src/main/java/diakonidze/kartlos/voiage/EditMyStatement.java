@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import diakonidze.kartlos.voiage.fragments.AddDriverStatementF;
+import diakonidze.kartlos.voiage.fragments.AddPassengetStatementF;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.DriverStatement;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
@@ -33,6 +34,7 @@ public class EditMyStatement extends ActionBarActivity {
         }else {
             // pirveladi chartva
             stType = getIntent().getStringExtra("type");
+
             if(stType.equals(Constantebi.STAT_TYPE_DRIVER)){
                 driverStatement = (DriverStatement) getIntent().getSerializableExtra("driver_st");
                 Bundle bundle = new Bundle();
@@ -47,15 +49,22 @@ public class EditMyStatement extends ActionBarActivity {
                 ft.replace(R.id.conteiner, fragment, "driverFR");
                 ft.commit();
             }
+
+            if(stType.equals(Constantebi.STAT_TYPE_PASSANGER)){
+                passangerStatement = (PassangerStatement) getIntent().getSerializableExtra("driver_st");
+                Bundle bundle = new Bundle();
+                bundle.putString("action", Constantebi.REASON_EDIT);
+                bundle.putSerializable("statement", passangerStatement);
+                fragment = new AddPassengetStatementF();
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+
+                ft.replace(R.id.conteiner, fragment, "driverFR");
+                ft.commit();
+            }
         }
-
-
-        if(stType.equals("passanger")){
-            // meore
-        }
-
-
-
     }
 
     @Override

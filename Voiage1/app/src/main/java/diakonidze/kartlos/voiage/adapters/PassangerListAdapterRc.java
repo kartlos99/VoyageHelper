@@ -1,9 +1,7 @@
 package diakonidze.kartlos.voiage.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,22 +12,20 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import diakonidze.kartlos.voiage.DetailPageDriver;
-import diakonidze.kartlos.voiage.MainActivity;
+import diakonidze.kartlos.voiage.DetailPagePassanger;
 import diakonidze.kartlos.voiage.R;
-import diakonidze.kartlos.voiage.fragments.DriverStatatementListFragment;
-import diakonidze.kartlos.voiage.models.DriverStatement;
+import diakonidze.kartlos.voiage.models.PassangerStatement;
 
 /**
- * Created by k.diakonidze on 8/12/2015.
+ * Created by kartlos on 8/23/2015.
  */
-public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterRc.DriverViewHolder> {
-    private ArrayList<DriverStatement> data;
+public class PassangerListAdapterRc extends RecyclerView.Adapter<PassangerListAdapterRc.PassangerViewHolder> {
+    private ArrayList<PassangerStatement> data;
     private LayoutInflater inflater;
     private Context context;
     String location="";
 
-    public DriverListAdapterRc(ArrayList<DriverStatement> data, Context context, String location) {
+    public PassangerListAdapterRc(ArrayList<PassangerStatement> data, Context context, String location) {
         this.data = data;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -37,15 +33,15 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
     }
 
     @Override
-    public DriverViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.driver_statement_layout, parent, false);
-        DriverViewHolder viewHolder = new DriverViewHolder(view);
+    public PassangerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.passenger_statement_layout, parent, false);
+        PassangerViewHolder viewHolder = new PassangerViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(DriverViewHolder holder, int position) {
-        DriverStatement currentStatement = data.get(position);
+    public void onBindViewHolder(PassangerViewHolder holder, int position) {
+        PassangerStatement currentStatement = data.get(position);
 
         holder.city.setText(currentStatement.getCityFrom() + " - " + currentStatement.getCityTo());
         holder.date.setText(currentStatement.getDate());
@@ -58,7 +54,7 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(50, ViewGroup.LayoutParams.MATCH_PARENT); //(Constantebi.MAN_WIDTH, Constantebi.MAN_HIEGHT);
         for (int i = 0; i < currentStatement.getFreeSpace(); i++) {
             imageView[i] = new ImageView(context);
-            imageView[i].setImageResource(R.drawable.man_empty);
+            imageView[i].setImageResource(R.drawable.man_full);
             imageView[i].setLayoutParams(lp);
             imageView[i].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.kacunebiConteiner.addView(imageView[i]);
@@ -70,24 +66,23 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
         return this.data.size();
     }
 
-    public void deleteItem(int position){
-        this.data.remove(position);
-        notifyItemRemoved(position);
-    }
 
-    class DriverViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
+
+    class PassangerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView city, date, name, cost;
         ImageView imig;
         LinearLayout kacunebiConteiner;
 
-        public DriverViewHolder(View itemToShow) {
+        public PassangerViewHolder(View itemToShow) {
             super(itemToShow);
-            imig = (ImageView) itemToShow.findViewById(R.id.list1_image);
-            city = (TextView) itemToShow.findViewById(R.id.list1_city_text);
-            date = (TextView) itemToShow.findViewById(R.id.list1_date);
-            name = (TextView) itemToShow.findViewById(R.id.list1_name_text);
-            cost = (TextView) itemToShow.findViewById(R.id.list1_price);
-            kacunebiConteiner = (LinearLayout) itemToShow.findViewById(R.id.list1_kacunebi);
+            imig = (ImageView) itemToShow.findViewById(R.id.list2_image);
+            city = (TextView) itemToShow.findViewById(R.id.list2_city_text);
+            date = (TextView) itemToShow.findViewById(R.id.list2_date);
+            name = (TextView) itemToShow.findViewById(R.id.list2_name_text);
+            cost = (TextView) itemToShow.findViewById(R.id.list2_price);
+            kacunebiConteiner = (LinearLayout) itemToShow.findViewById(R.id.list2_kacunebi);
 
             itemToShow.setOnClickListener(this);
         }
@@ -95,11 +90,10 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context, DetailPageDriver.class);
+            Intent intent = new Intent(context, DetailPagePassanger.class);
             intent.putExtra("driver_st", data.get(getAdapterPosition()));
             intent.putExtra("from", location);
             context.startActivity(intent);
-
         }
     }
 }

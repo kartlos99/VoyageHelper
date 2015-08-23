@@ -2,9 +2,14 @@ package diakonidze.kartlos.voiage.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +33,7 @@ import java.util.ArrayList;
 import diakonidze.kartlos.voiage.DetailPagePassanger;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.adapters.PassangerListAdapter;
+import diakonidze.kartlos.voiage.adapters.PassangerListAdapterRc;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
 import diakonidze.kartlos.voiage.utils.Constantebi;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
@@ -40,51 +46,144 @@ public class PassengerStatatementListFragment extends Fragment {
     private ArrayList<PassangerStatement> passangerStatements;
     private ListView passangerStatementList;
     private PassangerListAdapter passangerListAdapter;
+    private PassangerListAdapterRc passangerListAdapterRc;
+    private LinearLayoutManager linearLayoutManager;
+    private SwipeRefreshLayout swRefresh;
+    private RecyclerView statementListView;
     private ProgressDialog progress;
     private JSONObject myobj;
     private String location = "";
+
+    private int dataStartPoint = 0, dataPageSize = 10;
+    private Boolean loading = false;
+    private Boolean loadneeding = true;
+    private RequestQueue queue;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_b, container,false);
-        passangerStatementList = (ListView) v.findViewById(R.id.statement_2_list);
+
+//        passangerStatementList = (ListView) v.findViewById(R.id.statement_2_list);
+        statementListView = (RecyclerView) v.findViewById(R.id.recyclerList2);
+        swRefresh = (SwipeRefreshLayout) v.findViewById(R.id.passangerRefresh);
 
         return v;
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        switch (location) {
+            case Constantebi.MY_OWN_STAT:
+                DBmanager.initialaize(getActivity());
+                DBmanager.openReadable();
+                passangerStatements = DBmanager.getPassangerList(Constantebi.MY_STATEMENT);
+                DBmanager.close();
+                passangerListAdapterRc = new PassangerListAdapterRc(passangerStatements, getActivity(), location);
+                statementListView.setAdapter(passangerListAdapterRc);
+                break;
+            case Constantebi.FAVORIT_STAT:
+                DBmanager.initialaize(getActivity());
+                DBmanager.openReadable();
+                passangerStatements = DBmanager.getPassangerList(Constantebi.FAV_STATEMENT);
+                DBmanager.close();
+                passangerListAdapterRc = new PassangerListAdapterRc(passangerStatements, getActivity(), location);
+                statementListView.setAdapter(passangerListAdapterRc);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        location = getArguments().getString("location"); // vin gamoiZaxa es forma
         passangerStatements = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
+        // vin gamoiZaxa es forma
+        location = getArguments().getString("location");
 
-        if(location.equals(Constantebi.MY_OWN_STAT)){
-            DBmanager.initialaize(getActivity());
-            DBmanager.openReadable();
-            passangerStatements = DBmanager.getPassangerList(Constantebi.MY_STATEMENT);
-            DBmanager.close();
-        }else {
-            getPassengersStatements();
+        final View v;
+
+        // Listis gaketeba
+        statementListView.setHasFixedSize(true);
+        passangerListAdapterRc = new PassangerListAdapterRc(passangerStatements, getActivity(), location);
+        statementListView.setAdapter(passangerListAdapterRc);
+        statementListView.setLayoutManager(linearLayoutManager);
+
+        switch (location) {
+            case Constantebi.ALL_STAT:
+                getPassengersStatements();
+                v = getActivity().findViewById(R.id.main_content);
+                break;
+            default:
+                v = statementListView;
         }
 
-        passangerListAdapter = new PassangerListAdapter(getActivity(), passangerStatements);
-        passangerStatementList.setAdapter(passangerListAdapter);
-        passangerStatementList.setDivider(null);
-
-        passangerStatementList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        swRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), DetailPagePassanger.class);
-
-                PassangerStatement currStatement = (PassangerStatement) parent.getItemAtPosition(position);
-                intent.putExtra("driver_st", currStatement);
-                intent.putExtra("from", location);
-
-                startActivity(intent);
+            public void onRefresh() {
+                switch (location) {
+                    case Constantebi.ALL_STAT:
+                        int oldsize = passangerStatements.size();
+                        dataStartPoint = 0;
+                        passangerStatements.clear();
+                        passangerListAdapterRc.notifyItemRangeRemoved(0, oldsize);
+                        break;
+                    case Constantebi.FAVORIT_STAT:
+                        getPassengersStatements();
+                        break;
+                    case Constantebi.MY_OWN_STAT:
+                        swRefresh.setRefreshing(false);
+                }
             }
         });
+
+        // აქ ვარკვევთ ლისტის ბოლოში ვართ თუარა და ინფო წამოვიგოტ ტუ არა
+        statementListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (location.equals(Constantebi.ALL_STAT)) {
+
+                    int lastVisibleItemIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                    int totalItemCount = passangerListAdapterRc.getItemCount();
+
+                    if (totalItemCount - lastVisibleItemIndex > 2 || totalItemCount < 4) loadneeding = true;
+
+                    if (lastVisibleItemIndex >= totalItemCount - 1 && !loading && loadneeding) {
+                        loading = true;
+                        loadneeding = false;
+                        // marto refreshis dros rom amoagdos shetyobineba
+                        if (dataStartPoint == 0) {
+                            Snackbar.make(v, "Loading...", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.CYAN)
+                                    .setAction("STOP", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            queue.cancelAll("stList");
+                                        }
+                                    })
+                                    .show();
+                        }
+                        swRefresh.setRefreshing(true);
+                        getPassengersStatements();
+                    }
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
     }
 
     private void getPassengersStatements() {
@@ -94,35 +193,32 @@ public class PassengerStatatementListFragment extends Fragment {
         switch (location){
             case Constantebi.ALL_STAT:
 //                url = "http://back.meet.ge/get.php?type=2";
-                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=2&start=0&end=50";
+                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=2&start=" + dataStartPoint + "&end=" + dataPageSize;
                 break;
-            case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
-                break;
-            case Constantebi.FAVORIT_STAT:  url = "http://back.meet.ge/get.php?type=2";
+//            case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
+//                break;
+            case Constantebi.FAVORIT_STAT:
+//                url = "http://back.meet.ge/get.php?type=2";
+                url = "http://back.meet.ge/get.php?type=FAV&sub_type=2&id=";
+                for (int i = 0; i < Constantebi.FAV_STAT_PASSANGER.size(); i++) {
+                    url += String.valueOf(Constantebi.FAV_STAT_PASSANGER.get(i));
+                    if (i < Constantebi.FAV_STAT_PASSANGER.size() - 1) url += ",";
+                }
                 break;
         }
 
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue = Volley.newRequestQueue(getActivity());
 
         JsonArrayRequest request = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray jsonArray) {
 
-
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         ArrayList<PassangerStatement> newData = new ArrayList<>();
 
                         if(jsonArray.length()>0){
                             for(int i=0; i<jsonArray.length(); i++){
                                 try {
-//                                    String stringDate = jsonArray.getJSONObject(i).getString("date");
-//                                    Calendar calendar = Calendar.getInstance();
-//                                    try {
-//                                        calendar.setTime(format.parse(stringDate));
-//                                    } catch (ParseException e) {
-//                                        e.printStackTrace();
-//                                    }
 
                                     PassangerStatement newPassangerStatement = new PassangerStatement( 1,
                                             jsonArray.getJSONObject(i).getInt("freespace"),
@@ -157,37 +253,44 @@ public class PassengerStatatementListFragment extends Fragment {
                         }
 
                         if (newData.size() > 0) {           // tu erti mowyobiloba mainc aris mashin vaxarisxebt lists
-                            passangerStatements = newData;
-                            passangerListAdapter = new PassangerListAdapter(getActivity(),passangerStatements);
-                            passangerStatementList.setAdapter(passangerListAdapter);
+                            if (location.equals(Constantebi.ALL_STAT)) {
+
+                                for (int i = 0; i < newData.size(); i++) {
+                                    passangerStatements.add(newData.get(i));
+                                }
+                                dataStartPoint += dataPageSize;
+                                if (dataStartPoint > passangerStatements.size())
+                                    dataStartPoint = passangerStatements.size();
+
+                                passangerListAdapterRc.notifyItemRangeInserted(passangerStatements.size() - newData.size(), newData.size());
+                            }
+                            if (location.equals(Constantebi.FAVORIT_STAT)) {
+                                passangerStatements = newData;
+                                passangerListAdapterRc = new PassangerListAdapterRc(passangerStatements, getActivity(), location);
+                                statementListView.setAdapter(passangerListAdapterRc);
+
+                                statementListView.setLayoutManager(linearLayoutManager);
+                            }
                         }
-                        progress.dismiss();
+                        loading = false;
+                        swRefresh.setRefreshing(false);
+//                        progress.dismiss();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                          Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
-                        progress.dismiss();
+//                          Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        loading = false;
+                        swRefresh.setRefreshing(false);
+//                        progress.dismiss();
                     }
                 }
         );
 
-        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა2", "გთხოვთ დაიცადოთ");
+//        progress = ProgressDialog.show(getActivity(), "ჩამოტვირთვა2", "გთხოვთ დაიცადოთ");
+        request.setTag("stList");
         queue.add(request);
     }
 
-//    private ArrayList<PassangerStatement> getStatementData() {
-//        ArrayList<PassangerStatement> data = new ArrayList<>();
-////        Calendar now = Calendar.getInstance();
-////        for (int i = 0; i < 14; i++)
-////        {
-////            PassangerStatement newStatment = new PassangerStatement(1, 1, 10, "ბორჯომი", "ბაკურიანი", "");
-////            newStatment.setName("მარგარიტა");
-////            newStatment.setSurname("აბდუშელაშვილი");
-////            newStatment.setNumber("577987__6");
-////            data.add(newStatment);
-////        }
-//        return data;
-//    }
 }

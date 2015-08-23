@@ -64,7 +64,7 @@ public class DriverStatatementListFragment extends Fragment {
     private RequestQueue queue;
     private JsonArrayRequest request;
 
-    private int dataStartPoint = 0, dataPageSize = 5;
+    private int dataStartPoint = 0, dataPageSize = 10;
     private Boolean loading = false;
     private Boolean loadneeding = true;
 
@@ -111,10 +111,9 @@ public class DriverStatatementListFragment extends Fragment {
 
         driverStatements = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getActivity());
+        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
         // vin gamoiZaxa es forma
         location = getArguments().getString("location");
-
-        swRefresh.setColorSchemeColors(getResources().getColor(R.color.fab_color));
 
         final View v;
 
@@ -155,19 +154,18 @@ public class DriverStatatementListFragment extends Fragment {
             }
         });
 
-
         // აქ ვარკვევთ ლისტის ბოლოში ვართ თუარა და ინფო წამოვიგოტ ტუ არა
         statementListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if(location.equals(Constantebi.ALL_STAT)) {
+                if (location.equals(Constantebi.ALL_STAT)) {
 
                     int lastVisibleItemIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     int totalItemCount = driverListAdapterRc.getItemCount();
 
-                    if (totalItemCount - lastVisibleItemIndex > 2) loadneeding = true;
+                    if (totalItemCount - lastVisibleItemIndex > 2 || totalItemCount < 4) loadneeding = true;
 
                     if (lastVisibleItemIndex >= totalItemCount - 1 && !loading && loadneeding) {
                         loading = true;
@@ -206,7 +204,6 @@ public class DriverStatatementListFragment extends Fragment {
         // romeli info wamovigo serveridan
         switch (location) {
 //            http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=0&end=10
-
             case Constantebi.ALL_STAT:
 //            url = "http://back.meet.ge/get.php?type=1";
                 url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=" + dataStartPoint + "&end=" + dataPageSize;
@@ -216,11 +213,13 @@ public class DriverStatatementListFragment extends Fragment {
 //                break;
             case Constantebi.FAVORIT_STAT:
                 // http://back.meet.ge/get.php?type=FAV&sub_type=1&id=158,161
-                url = "http://back.meet.ge/get.php?type=FAV&sub_type=1&id=";
-                for (int i = 0; i < Constantebi.FAV_STAT_DRIVER.size(); i++) {
-                    url += String.valueOf(Constantebi.FAV_STAT_DRIVER.get(i));
-                    if (i < Constantebi.FAV_STAT_DRIVER.size() - 1) url += ",";
-                }
+                if(Constantebi.FAV_STAT_DRIVER.size() > 0) {
+                    url = "http://back.meet.ge/get.php?type=FAV&sub_type=1&id=";
+                    for (int i = 0; i < Constantebi.FAV_STAT_DRIVER.size(); i++) {
+                        url += String.valueOf(Constantebi.FAV_STAT_DRIVER.get(i));
+                        if (i < Constantebi.FAV_STAT_DRIVER.size() - 1) url += ",";
+                    }
+                }else{url = "http://back.meet.ge/get.php?type=FAV&sub_type=1&id=1";}
                 break;
         }
 
@@ -250,7 +249,7 @@ public class DriverStatatementListFragment extends Fragment {
                                     newDriverStatement.setCityPath(jsonArray.getJSONObject(i).getString("cityPath"));
                                     newDriverStatement.setTime(jsonArray.getJSONObject(i).getString("time"));
                                     newDriverStatement.setMarka(jsonArray.getJSONObject(i).getInt("mark")); //int
-//                                    newDriverStatement.setModeli(1); //int
+
                                     newDriverStatement.setColor(jsonArray.getJSONObject(i).getInt("color"));
                                     newDriverStatement.setCarpicture(jsonArray.getJSONObject(i).getString("photo"));
                                     newDriverStatement.setKondencioneri(jsonArray.getJSONObject(i).getInt("kondincioneri"));
@@ -322,10 +321,10 @@ public class DriverStatatementListFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        //  Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
                         loading = false;
-//                        progress.dismiss();
                         swRefresh.setRefreshing(false);
+//                        progress.dismiss();
                     }
                 }
         );

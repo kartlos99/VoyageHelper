@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
                                     try {
                                         Cities newCity = new Cities(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("nameGE"));
                                         newCity.setNameEN(jsonArray.getJSONObject(i).getString("nameEN"));
-                                        newCity.setNameEN(jsonArray.getJSONObject(i).getString("image"));
+                                        newCity.setImage(jsonArray.getJSONObject(i).getString("image"));
                                         Constantebi.cityList.add(newCity);
                                     } catch (JSONException e) {
                                         e.printStackTrace();

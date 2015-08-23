@@ -73,16 +73,12 @@ public class DetailPageDriver extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // bazidav amogeba
-
 
         if (Constantebi.FAV_STAT_DRIVER.contains(driverStatement.getId())) {
             favoriteState = true;
         } else {
             favoriteState = false;
         }
-
-
     }
 
     @Override
@@ -112,7 +108,6 @@ public class DetailPageDriver extends ActionBarActivity {
         collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
 
 
-//        TextView nameT = (TextView) findViewById(R.id.detiles_name_text);
         TextView cityT = (TextView) findViewById(R.id.detiles_city_text);
         TextView timeT = (TextView) findViewById(R.id.detiles_time_text);
         TextView freespaceT = (TextView) findViewById(R.id.detiles_freespace_text);
@@ -123,6 +118,13 @@ public class DetailPageDriver extends ActionBarActivity {
         TextView commentT = (TextView) findViewById(R.id.detiles_comment_text);
         ImageView carImage = (ImageView) findViewById(R.id.carDetailImage);
         ImageView carTypeImage = (ImageView) findViewById(R.id.car_type_imig);
+        ImageView headerCityImage = (ImageView) findViewById(R.id.header);
+
+        Picasso.with(this)
+                .load(findCityImage(driverStatement.getCityTo()))
+                .resize(700, 500)
+                .centerCrop()
+                .into(headerCityImage);
 
 //        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
         cityT.setText(driverStatement.getCityFrom() + " - " + driverStatement.getCityTo());
@@ -193,6 +195,18 @@ public class DetailPageDriver extends ActionBarActivity {
 
     }
 
+    private String findCityImage(String cityTo) {
+        for (int i = 0; i < Constantebi.cityList.size(); i++) {
+            if (cityTo.equals(Constantebi.cityList.get(i).getNameGE())) {
+                if (!Constantebi.cityList.get(i).getImage().equals(""))
+                    return Constantebi.cityList.get(i).getImage();
+                else
+                    return "http://back.meet.ge/uploads/No_Image_Available.png";
+            }
+        }
+        return "http://back.meet.ge/uploads/No_Image_Available.png";
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -202,7 +216,7 @@ public class DetailPageDriver extends ActionBarActivity {
         menuItemdel = (MenuItem) menu.findItem(R.id.del_dr_manu);
         menuItemfav = (MenuItem) menu.findItem(R.id.fav_dr_manu);
 
-        if (whereFrom.equals(Constantebi.ALL_STAT) || whereFrom.equals(Constantebi.FAVORIT_STAT) ) {
+        if (whereFrom.equals(Constantebi.ALL_STAT) || whereFrom.equals(Constantebi.FAVORIT_STAT)) {
             menuItemedit.setVisible(false);
             menuItemdel.setVisible(false);
         }
@@ -243,31 +257,32 @@ public class DetailPageDriver extends ActionBarActivity {
             // serverze gaushvebt gancx ID-s wasashlelad
             // da dadebiti pasuxis shemtxvevashi lokaluradac wavshlit
 
-            JSONObject givi = new JSONObject();
+            JSONObject delObj = new JSONObject();
 
             try {
-                givi.put("user_id", driverStatement.getUserID());
-                givi.put("s_id", driverStatement.getId());
+                delObj.put("user_id", driverStatement.getUserID());
+                delObj.put("s_id", driverStatement.getId());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
             String url = "http://back.meet.ge/get.php?type=DELETE&sub_type=1";
 
-            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, givi, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, delObj, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
 
-                    Toast.makeText(getApplicationContext(), "OK update" + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "განცხადება წაიშალა!", Toast.LENGTH_SHORT).show();
 
                     DBmanager.initialaize(getApplicationContext());
                     DBmanager.openWritable();
-                    DBmanager.updateDriverStatement(driverStatement);
+                    DBmanager.deleteDriverStatement(driverStatement.getId());
                     DBmanager.close();
 
+                    Intent toMyPage = new Intent(getApplicationContext(), MyStatements.class);
+                    startActivity(toMyPage);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -277,24 +292,14 @@ public class DetailPageDriver extends ActionBarActivity {
             });
             queue.add(jsonRequest);
 
-            //........................
-
-            DBmanager.initialaize(this);
-            DBmanager.openWritable();
-            DBmanager.deleteDriverStatement(driverStatement.getId());
-            DBmanager.close();
-            Toast.makeText(getApplicationContext(), "განცხადება წაიშალა", Toast.LENGTH_SHORT).show();
-
-            Intent toMyPage = new Intent(getApplicationContext(), MyStatements.class);
-            startActivity(toMyPage);
             return true;
         }
+
         if (id == R.id.edit_dr_manu) {
             // aq unda gamovidzaxot gancxadebis Sesavsebi forma, romelic
             // shevsebuli iqneba redaqtirebadi gancxadebis parametrebiT
             // amitom intentshi vatant gancxadebas
             Intent intent = new Intent(getApplicationContext(), EditMyStatement.class);
-
             intent.putExtra("driver_st", driverStatement);
             intent.putExtra("type", Constantebi.STAT_TYPE_DRIVER);
             startActivity(intent);
