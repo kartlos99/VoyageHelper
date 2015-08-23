@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,6 +118,13 @@ public class DetailPagePassanger extends ActionBarActivity {
         TextView freespaceT = (TextView) findViewById(R.id.detiles_freespace_text);
         TextView priceT = (TextView) findViewById(R.id.detiles_price_text);
         TextView commentT = (TextView) findViewById(R.id.detiles_comment_text);
+        ImageView headerCityImage = (ImageView) findViewById(R.id.header);
+
+        Picasso.with(this)
+                .load(findCityImage(passangerStatement.getCityTo()))
+                .resize(700, 500)
+                .centerCrop()
+                .into(headerCityImage);
 
         cityT.setText(passangerStatement.getCityFrom() + " - " + passangerStatement.getCityTo());
         timeT.setText(passangerStatement.getDate() + " " + passangerStatement.getTime());
@@ -146,8 +154,18 @@ public class DetailPagePassanger extends ActionBarActivity {
         } else {
             pirobebi_detail.setVisibility(View.GONE);
         }
+    }
 
-
+    private String findCityImage(String cityTo) {
+        for (int i = 0; i < Constantebi.cityList.size(); i++) {
+            if (cityTo.equals(Constantebi.cityList.get(i).getNameGE())) {
+                if (!Constantebi.cityList.get(i).getImage().equals(""))
+                    return Constantebi.cityList.get(i).getImage();
+                else
+                    return "http://back.meet.ge/uploads/No_Image_Available.png";
+            }
+        }
+        return "http://back.meet.ge/uploads/No_Image_Available.png";
     }
 
     @Override
