@@ -87,7 +87,6 @@ public class AddPassengetStatementF extends Fragment {
     Boolean pirobebi, passengerLimit;
 
 
-
     DatePickerDialog.OnDateSetListener datelistener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -197,7 +196,7 @@ public class AddPassengetStatementF extends Fragment {
             }
         });
 
-    
+
         // damatebiti pirobebis manipulaciebi
 
         pirobebiBtn.setOnClickListener(new View.OnClickListener() {
@@ -284,7 +283,7 @@ public class AddPassengetStatementF extends Fragment {
                         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
-                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "განცხადება დამატებულია!", Toast.LENGTH_SHORT).show();
 
                                 try {
                                     int id = jsonObject.getInt("insert_id");
@@ -294,6 +293,8 @@ public class AddPassengetStatementF extends Fragment {
                                     DBmanager.openWritable();
                                     DBmanager.insertIntoPassanger(passangerStatement, Constantebi.MY_STATEMENT);
                                     DBmanager.close();
+
+                                    getActivity().onBackPressed();
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -321,7 +322,7 @@ public class AddPassengetStatementF extends Fragment {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
 
-                                Toast.makeText(getActivity(), "OK " + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "ცვლილებები შენახულია!", Toast.LENGTH_SHORT).show();
 
                                 try {
                                     int id = jsonObject.getInt("insert_id");
@@ -331,6 +332,8 @@ public class AddPassengetStatementF extends Fragment {
                                     DBmanager.openWritable();
                                     DBmanager.insertIntoPassanger(passangerStatement, Constantebi.MY_STATEMENT);
                                     DBmanager.close();
+
+                                    getActivity().onBackPressed();
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -367,7 +370,8 @@ public class AddPassengetStatementF extends Fragment {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
-                    cityFrom.showDropDown();
+                    if (cityFrom.getText().toString().equals(""))
+                        cityFrom.showDropDown();
                     cityFrom.setTextColor(Color.BLACK);
                 } else {
                     if (!citylist.contains(cityFrom.getText().toString()))
@@ -380,7 +384,8 @@ public class AddPassengetStatementF extends Fragment {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
-                    cityTo.showDropDown();
+                    if (cityTo.getText().toString().equals(""))
+                        cityTo.showDropDown();
                     cityTo.setTextColor(Color.BLACK);
                 } else {
                     if (!citylist.contains(cityTo.getText().toString()))
@@ -412,7 +417,7 @@ public class AddPassengetStatementF extends Fragment {
         priceSpinner.setSelection(statement.getPrice());
 
         if (statement.getAtHome() != 2) {
-            pirobebi= true;
+            pirobebi = true;
             pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_lite);
             comfort1.setVisibility(View.VISIBLE);
             if (statement.getKondencioneri() == 1) condicionerCK.setChecked(true);
@@ -450,13 +455,10 @@ public class AddPassengetStatementF extends Fragment {
 
         runTimeC = Calendar.getInstance();
 
-        citylist.add("თბილისი");
-        citylist.add("ქუთაისი");
-        citylist.add("ბათუმი");
-        citylist.add("ფოთი");
-        citylist.add("სამტრედია");
-        citylist.add("ბორჯომი");
-        citylist.add("სტეფანწმინდა");
+        citylist.clear();
+        for (int i = 0; i < Constantebi.cityList.size(); i++) {
+            citylist.add(Constantebi.cityList.get(i).getNameGE());
+        }
 
         timelist.add("დილით");
         timelist.add("შუადღეს");
@@ -553,7 +555,6 @@ public class AddPassengetStatementF extends Fragment {
 
         return statement;
     }
-
 
 
 }

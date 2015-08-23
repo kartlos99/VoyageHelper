@@ -144,13 +144,13 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
         }
     };
 
-    public String convertImigToSrt(String teUri){
+    public String convertImigToSrt(String teUri) {
 //        System.out.print("______________");
-        Bitmap bitmap= BitmapFactory.decodeFile(teUri);
+        Bitmap bitmap = BitmapFactory.decodeFile(teUri);
 
-        if(bitmap == null){
+        if (bitmap == null) {
             return "";
-        }else {
+        } else {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -167,24 +167,24 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if(requestCode == 0){
-            if(resultCode == Activity.RESULT_OK){
-                if(imagefile.exists()){
-                    Toast.makeText(getActivity(), "sheinaxa "+imagefile.getAbsolutePath(), Toast.LENGTH_LONG ).show();
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (imagefile.exists()) {
+                    Toast.makeText(getActivity(), "sheinaxa " + imagefile.getAbsolutePath(), Toast.LENGTH_LONG).show();
 //                    imageView.setImageURI(uri);
                     carImageView.clearAnimation();
                     Picasso.with(getActivity())
                             .load(imagefile)
-                            .resize(500,200)
+                            .resize(500, 200)
                             .centerCrop()
                             .into(carImageView);
-                }else{
-                    Toast.makeText(getActivity(), "imagefile Error", Toast.LENGTH_LONG ).show();
+                } else {
+                    Toast.makeText(getActivity(), "imagefile Error", Toast.LENGTH_LONG).show();
                 }
 
             }
-            if(resultCode == Activity.RESULT_CANCELED){
-                Toast.makeText(getActivity(), "uari fotoze", Toast.LENGTH_LONG ).show();
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "uari fotoze", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -221,7 +221,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 Intent imageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                imagefile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"my1photo.jpg");
+                imagefile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "my1photo.jpg");
 
                 uri = Uri.fromFile(imagefile);
                 imageIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -388,9 +388,9 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                         jsonObject.put("photo", "NON");
                         jsonObject.put("user_id", driverStatement.getUserID());
 
-                        if(uri !=null) {
+                        if (uri != null) {
                             jsonObject.put("image", convertImigToSrt(uri.getPath()));
-                        }else{
+                        } else {
                             jsonObject.put("image", "");
                         }
 
@@ -400,7 +400,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
                     RequestQueue queue = Volley.newRequestQueue(getActivity());
 
-                    if(workState.equals(Constantebi.REASON_ADD)) {
+                    if (workState.equals(Constantebi.REASON_ADD)) {
 
                         String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
 
@@ -408,9 +408,10 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                             @Override
                             public void onResponse(JSONObject jsonObject) {
 
-                                Toast.makeText(getActivity(), "OK insert" + jsonObject.toString(), Toast.LENGTH_SHORT).show();
-                                // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
+//                                Toast.makeText(getActivity(), "OK insert" + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "განცხადება დამატებულია!", Toast.LENGTH_SHORT).show();
 
+                                // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
                                 try {
                                     int id = jsonObject.getInt("insert_id");
                                     driverStatement.setId(id);
@@ -435,17 +436,8 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                         });
                         queue.add(jsonRequest);
 
-                    }else{
+                    } else {
                         // **** aq modis ganaxlebis dros ******
-
-//                        JSONObject givi = new JSONObject();
-//
-//                        try {
-//                            givi.put("user_id", 1);
-//                            givi.put("s_id", 121);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
 
                         try {
                             jsonObject.put("s_id", driverStatement.getId());
@@ -461,12 +453,14 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                             @Override
                             public void onResponse(JSONObject jsonObject) {
 
-                                Toast.makeText(getActivity(), "OK update" + jsonObject.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "ცვლილებები შენახულია!", Toast.LENGTH_SHORT).show();
                                 // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
-                                    DBmanager.initialaize(getActivity());
-                                    DBmanager.openWritable();
-                                    DBmanager.updateDriverStatement(driverStatement);
-                                    DBmanager.close();
+                                DBmanager.initialaize(getActivity());
+                                DBmanager.openWritable();
+                                DBmanager.updateDriverStatement(driverStatement);
+                                DBmanager.close();
+
+                                getActivity().onBackPressed();
 
                             }
                         }, new Response.ErrorListener() {
@@ -498,7 +492,8 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
-                    cityFrom.showDropDown();
+                    if (cityFrom.getText().toString().equals(""))
+                        cityFrom.showDropDown();
                     cityFrom.setTextColor(Color.BLACK);
                 } else {
                     if (!citylist.contains(cityFrom.getText().toString()))
@@ -511,7 +506,8 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
-                    cityTo.showDropDown();
+                    if (cityTo.getText().toString().equals(""))
+                        cityTo.showDropDown();
                     cityTo.setTextColor(Color.BLACK);
                 } else {
                     if (!citylist.contains(cityTo.getText().toString()))
@@ -591,21 +587,38 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 //        modelebisListisDayeneba(statement.getMarka());
 //        modelSpinner.setSelection(statement.getModeli());
 //        colorSpinner.setSelection(statement.getColor());
-        switch (statement.getMarka()){
-            case 0: carType1.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+
+        carType1.setBackground(null);
+        carType2.setBackground(null);
+        carType3.setBackground(null);
+        carType4.setBackground(null);
+        carType5.setBackground(null);
+
+        switch (statement.getMarka()) {
+            case 0:
+                carType1.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 0;
                 break;
-            case 1: carType2.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+            case 1:
+                carType2.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 1;
                 break;
-            case 2: carType3.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+            case 2:
+                carType3.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 2;
                 break;
-            case 3: carType4.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+            case 3:
+                carType4.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 3;
                 break;
-            case 4: carType5.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+            case 4:
+                carType5.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
+                carType = 4;
                 break;
         }
 
         if (statement.getAtHome() != 2) {
-            pirobebi= true;
+            pirobebi = true;
             pirobebiBtn.setBackgroundResource(R.drawable.greenbtn_lite);
             comfort1.setVisibility(View.VISIBLE);
             if (statement.getKondencioneri() == 1) condicionerCK.setChecked(true);

@@ -43,7 +43,7 @@
         </activity>
         <activity
             android:name=".FavoriteStatements"
-            android:label="@string/title_activity_favorite_statements"
+            android:label="რჩეული განცხ."
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

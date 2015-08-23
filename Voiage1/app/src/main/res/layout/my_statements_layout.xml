@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="diakonidze.kartlos.voiage.MyStatements">
 
@@ -9,23 +10,20 @@
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar" />
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs_my_page"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/fab_color"
+        app:tabIndicatorHeight="2dp"
+        android:background="@color/ColorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pageView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/list_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/ColorPrimary"
-            android:paddingBottom="6dp"
-            android:paddingTop="6dp">
-
-        </android.support.v4.view.PagerTabStrip>
-    </android.support.v4.view.ViewPager>
-
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
 

@@ -1,11 +1,13 @@
 package diakonidze.kartlos.voiage;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
 import diakonidze.kartlos.voiage.utils.Constantebi;
@@ -15,6 +17,7 @@ public class FavoriteStatements extends ActionBarActivity {
 
     private Toolbar toolbar;
     private ViewPager pager = null;
+    private TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +26,17 @@ public class FavoriteStatements extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("რჩეული განცხ.");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pager = (ViewPager) findViewById(R.id.pageView);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.FAVORIT_STAT);
         pager.setAdapter(myadapter);
+
+        tabs = (TabLayout) findViewById(R.id.tabs_fav_page);
+        tabs.setupWithViewPager(pager);
     }
 
     @Override

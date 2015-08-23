@@ -1,5 +1,6 @@
 package diakonidze.kartlos.voiage;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ public class MyStatements extends ActionBarActivity {
 
     private Toolbar toolbar;
     private ViewPager pager = null;
+    private TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class MyStatements extends ActionBarActivity {
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.MY_OWN_STAT);
         pager.setAdapter(myadapter);
+
+        tabs = (TabLayout) findViewById(R.id.tabs_my_page);
+        tabs.setupWithViewPager(pager);
 
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN

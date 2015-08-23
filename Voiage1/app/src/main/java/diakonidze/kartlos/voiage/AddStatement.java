@@ -1,6 +1,7 @@
 package diakonidze.kartlos.voiage;
 
 import android.app.Fragment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ public class AddStatement extends ActionBarActivity  {
 
     private ViewPager viewPager;
     private Toolbar toolbar;
+    private TabLayout tabsAddStatement;
     AddDriverStatementF fragment1;
     android.support.v4.app.FragmentManager fragmentManager;
 
@@ -35,6 +37,9 @@ public class AddStatement extends ActionBarActivity  {
         fragmentManager = getSupportFragmentManager();
         AddStatementAdapter addStatementAdapter = new AddStatementAdapter(fragmentManager);
         viewPager.setAdapter(addStatementAdapter);
+
+        tabsAddStatement = (TabLayout) findViewById(R.id.tabs_add_statement_page);
+        tabsAddStatement.setupWithViewPager(viewPager);
 
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN

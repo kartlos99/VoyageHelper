@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         StatementListPagesAdapter myadapter = new StatementListPagesAdapter(fragmentManager, Constantebi.ALL_STAT);
         pager.setAdapter(myadapter);
 
-        tabs = (TabLayout) findViewById(R.id.tabs_indetal);
+        tabs = (TabLayout) findViewById(R.id.tabs_mainpage);
         tabs.setupWithViewPager(pager);
 
 //        tabs.setTabGravity(TabLayout.GRAVITY_FILL);

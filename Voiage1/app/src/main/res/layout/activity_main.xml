@@ -19,7 +19,7 @@
 
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs_indetal"
+            android:id="@+id/tabs_mainpage"
             app:tabGravity="center"
             app:tabIndicatorColor="@color/fab_color"
             app:tabIndicatorHeight="2dp"
