@@ -117,6 +117,16 @@ public class DBhelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    private void createUserTable(SQLiteDatabase db) {
+        String query = "create table if not exists " +
+                DBscheme.USER_TABLE_NAME + "(" +
+                DBscheme.ID + " integer primary key autoincrement, " +
+                DBscheme.MARKA_ID + " integer not null, " +
+                DBscheme.MODEL_ID + " integer not null, " +
+                DBscheme.NAME + " text);";
+        db.execSQL(query);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 //        createMarkaTable(db);

@@ -120,11 +120,19 @@ public class DetailPagePassanger extends ActionBarActivity {
         TextView commentT = (TextView) findViewById(R.id.detiles_comment_text);
         ImageView headerCityImage = (ImageView) findViewById(R.id.header);
 
-        Picasso.with(this)
-                .load(findCityImage(passangerStatement.getCityTo()))
-                .resize(700, 500)
-                .centerCrop()
-                .into(headerCityImage);
+        int i = 0;
+        while (i < Constantebi.cityList.size()) {
+            if (passangerStatement.getCityTo().equals(Constantebi.cityList.get(i).getNameGE())) {
+                if (!Constantebi.cityList.get(i).getImage().equals(""))
+                    Picasso.with(this)
+                            .load(Constantebi.cityList.get(i).getImage())
+                            .resize(700, 500)
+                            .centerCrop()
+                            .into(headerCityImage);
+                i=1000;
+            }
+            i++;
+        }
 
         cityT.setText(passangerStatement.getCityFrom() + " - " + passangerStatement.getCityTo());
         timeT.setText(passangerStatement.getDate() + " " + passangerStatement.getTime());
@@ -156,18 +164,6 @@ public class DetailPagePassanger extends ActionBarActivity {
         }
     }
 
-    private String findCityImage(String cityTo) {
-        for (int i = 0; i < Constantebi.cityList.size(); i++) {
-            if (cityTo.equals(Constantebi.cityList.get(i).getNameGE())) {
-                if (!Constantebi.cityList.get(i).getImage().equals(""))
-                    return Constantebi.cityList.get(i).getImage();
-                else
-                    return "http://back.meet.ge/uploads/No_Image_Available.png";
-            }
-        }
-        return "http://back.meet.ge/uploads/No_Image_Available.png";
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -177,7 +173,7 @@ public class DetailPagePassanger extends ActionBarActivity {
         menuItemdel = (MenuItem) menu.findItem(R.id.del_dr_manu);
         menuItemfav = (MenuItem) menu.findItem(R.id.fav_dr_manu);
 
-        if (whereFrom.equals(Constantebi.ALL_STAT) || whereFrom.equals(Constantebi.FAVORIT_STAT) ) {
+        if (whereFrom.equals(Constantebi.ALL_STAT) || whereFrom.equals(Constantebi.FAVORIT_STAT)) {
             menuItemedit.setVisible(false);
             menuItemdel.setVisible(false);
         }

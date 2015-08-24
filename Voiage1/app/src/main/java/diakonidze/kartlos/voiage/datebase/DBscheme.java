@@ -9,6 +9,7 @@ public class DBscheme {
     public static final String MARKA_TABLE_NAME = "MARKA_TABLE";
     public static final String MODEL_TABLE_NAME = "MODEL_TABLE";
     public static final String CITY_TABLE_NAME = "CITY_TABLE";
+    public static final String USER_TABLE_NAME = "USER_TABLE";
 
     public static final String ID = "id";
     public static final String S_ID = "s_id";

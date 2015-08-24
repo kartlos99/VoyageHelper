@@ -350,6 +350,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
             public void onClick(View v) {
 
 
+
                 if (!citylist.contains(cityFrom.getText().toString()) || !citylist.contains(cityTo.getText().toString())) {
                     Toast.makeText(getActivity(), "ქალაქი არასწორადაა მითითებული!", Toast.LENGTH_LONG).show();
                 } else {

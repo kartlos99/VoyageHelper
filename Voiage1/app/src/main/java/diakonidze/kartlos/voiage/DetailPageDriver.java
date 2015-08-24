@@ -120,11 +120,19 @@ public class DetailPageDriver extends ActionBarActivity {
         ImageView carTypeImage = (ImageView) findViewById(R.id.car_type_imig);
         ImageView headerCityImage = (ImageView) findViewById(R.id.header);
 
-        Picasso.with(this)
-                .load(findCityImage(driverStatement.getCityTo()))
-                .resize(700, 500)
-                .centerCrop()
-                .into(headerCityImage);
+        int i = 0;
+        while (i < Constantebi.cityList.size()) {
+            if (driverStatement.getCityTo().equals(Constantebi.cityList.get(i).getNameGE())) {
+                if (!Constantebi.cityList.get(i).getImage().equals(""))
+                    Picasso.with(this)
+                            .load(Constantebi.cityList.get(i).getImage())
+                            .resize(700, 500)
+                            .centerCrop()
+                            .into(headerCityImage);
+                i=1000;
+            }
+            i++;
+        }
 
 //        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
         cityT.setText(driverStatement.getCityFrom() + " - " + driverStatement.getCityTo());
@@ -193,18 +201,6 @@ public class DetailPageDriver extends ActionBarActivity {
             limit_detiles.setVisibility(View.GONE);
         }
 
-    }
-
-    private String findCityImage(String cityTo) {
-        for (int i = 0; i < Constantebi.cityList.size(); i++) {
-            if (cityTo.equals(Constantebi.cityList.get(i).getNameGE())) {
-                if (!Constantebi.cityList.get(i).getImage().equals(""))
-                    return Constantebi.cityList.get(i).getImage();
-                else
-                    return "http://back.meet.ge/uploads/No_Image_Available.png";
-            }
-        }
-        return "http://back.meet.ge/uploads/No_Image_Available.png";
     }
 
     @Override
