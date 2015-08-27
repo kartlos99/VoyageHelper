@@ -516,6 +516,42 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                 }
             }
         });
+
+        cityFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (citylist.contains(cityFrom.getText().toString()) && citylist.contains(cityTo.getText().toString())) {
+                    if (!cityFrom.getText().equals(cityTo.getText())) {
+                        getCityPath(cityFrom.getText().toString(), cityTo.getText().toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        cityTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (citylist.contains(cityFrom.getText().toString()) && citylist.contains(cityTo.getText().toString())) {
+                    if (!cityFrom.getText().equals(cityTo.getText())) {
+                        getCityPath(cityFrom.getText().toString(), cityTo.getText().toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void getCityPath(String startCity, String finishCity) {
+        
     }
 
     @Nullable
