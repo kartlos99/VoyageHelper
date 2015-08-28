@@ -528,8 +528,8 @@ public class AddPassengetStatementF extends Fragment {
         PassangerStatement statement = new PassangerStatement(Constantebi.MY_ID,
                 freeSpaceSpinner.getSelectedItemPosition() + 1,
                 Integer.valueOf(priceSpinner.getSelectedItem().toString()),
-                cityFrom.getText().toString(),
-                cityTo.getText().toString(),
+                String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityFrom.getText().toString())).getC_id()) ,
+                String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityTo.getText().toString())).getC_id()) ,
                 setedDate);
 
         statement.setTime(runTimeSpinner.getSelectedItem().toString());

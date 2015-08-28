@@ -134,7 +134,7 @@ public class DetailPagePassanger extends ActionBarActivity {
             i++;
         }
 
-        cityT.setText(passangerStatement.getCityFrom() + " - " + passangerStatement.getCityTo());
+        cityT.setText(cityAtID(passangerStatement.getCityFrom()) + " - " + cityAtID(passangerStatement.getCityTo()));
         timeT.setText(passangerStatement.getDate() + " " + passangerStatement.getTime());
         freespaceT.setText(String.valueOf(passangerStatement.getFreeSpace()));
         priceT.setText(String.valueOf(passangerStatement.getPrice()));
@@ -262,5 +262,15 @@ public class DetailPagePassanger extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String cityAtID(String c_ID){
+        int id = Integer.parseInt(c_ID);
+        for(int i=0; i< Constantebi.cityList.size(); i++){
+            if(Constantebi.cityList.get(i).getC_id()==id){
+                return Constantebi.cityList.get(i).getNameGE();
+            }
+        }
+        return "";
     }
 }

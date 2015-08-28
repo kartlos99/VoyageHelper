@@ -62,7 +62,7 @@
 
                 <LinearLayout
                     android:id="@+id/path_info_box"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -70,9 +70,9 @@
                     <TextView
                         android:id="@+id/city_path_text"
                         android:text="მარშუტი"
-                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:layout_marginBottom="4dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                     <TextView

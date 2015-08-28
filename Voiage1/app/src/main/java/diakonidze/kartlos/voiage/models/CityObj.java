@@ -14,6 +14,14 @@ public class CityObj {
         this.time = time;
     }
 
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
     public String getName() {
         return name;
     }

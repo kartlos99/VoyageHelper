@@ -19,6 +19,7 @@ import diakonidze.kartlos.voiage.MainActivity;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.fragments.DriverStatatementListFragment;
 import diakonidze.kartlos.voiage.models.DriverStatement;
+import diakonidze.kartlos.voiage.utils.Constantebi;
 
 /**
  * Created by k.diakonidze on 8/12/2015.
@@ -43,11 +44,21 @@ public class DriverListAdapterRc extends RecyclerView.Adapter<DriverListAdapterR
         return viewHolder;
     }
 
+    private String cityAtID(String c_ID){
+        int id = Integer.parseInt(c_ID);
+        for(int i=0; i< Constantebi.cityList.size(); i++){
+            if(Constantebi.cityList.get(i).getC_id()==id){
+                return Constantebi.cityList.get(i).getNameGE();
+            }
+        }
+        return "";
+    }
+
     @Override
     public void onBindViewHolder(DriverViewHolder holder, int position) {
         DriverStatement currentStatement = data.get(position);
 
-        holder.city.setText(currentStatement.getCityFrom() + " - " + currentStatement.getCityTo());
+        holder.city.setText(cityAtID(currentStatement.getCityFrom()) + " - " + cityAtID(currentStatement.getCityTo()));
         holder.date.setText(currentStatement.getDate());
         holder.name.setText(currentStatement.getName() + " " + currentStatement.getSurname());
         holder.cost.setText(String.valueOf(currentStatement.getPrice()));

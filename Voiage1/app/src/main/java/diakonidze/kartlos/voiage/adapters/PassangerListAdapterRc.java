@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import diakonidze.kartlos.voiage.DetailPagePassanger;
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.models.PassangerStatement;
+import diakonidze.kartlos.voiage.utils.Constantebi;
 
 /**
  * Created by kartlos on 8/23/2015.
@@ -39,11 +40,21 @@ public class PassangerListAdapterRc extends RecyclerView.Adapter<PassangerListAd
         return viewHolder;
     }
 
+    private String cityAtID(String c_ID){
+        int id = Integer.parseInt(c_ID);
+        for(int i=0; i< Constantebi.cityList.size(); i++){
+            if(Constantebi.cityList.get(i).getC_id()==id){
+                return Constantebi.cityList.get(i).getNameGE();
+            }
+        }
+        return "";
+    }
+
     @Override
     public void onBindViewHolder(PassangerViewHolder holder, int position) {
         PassangerStatement currentStatement = data.get(position);
 
-        holder.city.setText(currentStatement.getCityFrom() + " - " + currentStatement.getCityTo());
+        holder.city.setText(cityAtID(currentStatement.getCityFrom()) + " - " + cityAtID(currentStatement.getCityTo()));
         holder.date.setText(currentStatement.getDate());
         holder.name.setText(currentStatement.getName() + " " + currentStatement.getSurname());
         holder.cost.setText(String.valueOf(currentStatement.getPrice()));

@@ -134,8 +134,8 @@ public class DetailPageDriver extends ActionBarActivity {
             i++;
         }
 
-//        nameT.setText(driverStatement.getName()+" "+driverStatement.getSurname());
-        cityT.setText(driverStatement.getCityFrom() + " - " + driverStatement.getCityTo());
+
+        cityT.setText(cityAtID(driverStatement.getCityFrom()) + " - " + cityAtID(driverStatement.getCityTo()));
         timeT.setText(driverStatement.getDate() + " " + driverStatement.getTime());
         freespaceT.setText(String.valueOf(driverStatement.getFreeSpace()));
         priceT.setText(String.valueOf(driverStatement.getPrice()));
@@ -303,5 +303,15 @@ public class DetailPageDriver extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String cityAtID(String c_ID){
+        int id = Integer.parseInt(c_ID);
+        for(int i=0; i< Constantebi.cityList.size(); i++){
+            if(Constantebi.cityList.get(i).getC_id()==id){
+                return Constantebi.cityList.get(i).getNameGE();
+            }
+        }
+        return "";
     }
 }
