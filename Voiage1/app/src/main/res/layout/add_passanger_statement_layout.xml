@@ -128,7 +128,7 @@
                     android:layout_marginRight="@dimen/add_statement_inline_padding"
                     android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/lari" />
+                    android:src="@drawable/lari_gray" />
 
                 <Spinner
                     android:id="@+id/passanger_price_spiner"

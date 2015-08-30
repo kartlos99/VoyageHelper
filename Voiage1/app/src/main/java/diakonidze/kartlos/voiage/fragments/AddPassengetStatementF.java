@@ -140,13 +140,10 @@ public class AddPassengetStatementF extends Fragment {
             }
             // axali gancxadebis chawera
             if (getArguments().getString("action").equals(Constantebi.REASON_ADD)) {
-
             }
         }
 
-
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
 
         // დროის დაყენება
         runDateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -525,11 +522,20 @@ public class AddPassengetStatementF extends Fragment {
             setedDate = dateFormat.format(runTimeC.getTime());
         }
 
+        String cityF = "1";
+        if (citylist.contains(cityFrom.getText().toString())) {
+            cityF = String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityFrom.getText().toString())).getC_id());
+        }
+        String cityT = "1";
+        if (citylist.contains(cityTo.getText().toString())) {
+            cityT = String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityTo.getText().toString())).getC_id());
+        }
+
         PassangerStatement statement = new PassangerStatement(Constantebi.MY_ID,
                 freeSpaceSpinner.getSelectedItemPosition() + 1,
                 Integer.valueOf(priceSpinner.getSelectedItem().toString()),
-                String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityFrom.getText().toString())).getC_id()) ,
-                String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityTo.getText().toString())).getC_id()) ,
+                cityF,
+                cityT,
                 setedDate);
 
         statement.setTime(runTimeSpinner.getSelectedItem().toString());

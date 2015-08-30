@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -36,7 +37,7 @@ public class FilterDialog extends DialogFragment {
     Button filterBtn, filter_pirobebi_btn;
     RelativeLayout comfortBox;
     Boolean pirobebi = false;
-    Switch driverSwitch, passangerSwitch;
+    CheckBox filterDriver, filterPassanger;
     private ArrayAdapter<String> cityFromAdapret;
     private ArrayAdapter<String> cityToAdapret;
     private ArrayAdapter<String> dateSpinnerAdapter1;
@@ -86,13 +87,9 @@ public class FilterDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-
         dialog.setTitle("ფილტრი                 ");
-
         return dialog;
-
     }
 
     @Nullable
@@ -101,15 +98,15 @@ public class FilterDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.filter_layout, container, false);
         filterBtn = (Button) view.findViewById(R.id.filter_Btn);
         filter_pirobebi_btn = (Button) view.findViewById(R.id.filter_pirobebi_btn );
-        driverSwitch = (Switch) view.findViewById(R.id.switch1);
-        passangerSwitch = (Switch) view.findViewById(R.id.switch1);
+        filterDriver = (CheckBox) view.findViewById(R.id.filterDriver);
+        filterPassanger = (CheckBox) view.findViewById(R.id.filterPassanger);
         cityFrom = (AutoCompleteTextView) view.findViewById(R.id.filter1_cityfrom);
         cityTo = (AutoCompleteTextView) view.findViewById(R.id.filter1_cityto);
         dateSpinner1 = (Spinner) view.findViewById(R.id.filter_time1);
         dateSpinner2 = (Spinner) view.findViewById(R.id.filter_time2);
         comfortBox = (RelativeLayout) view.findViewById(R.id.filter_comfortBox);
 
-        driverSwitch.setChecked(true);
+        filterDriver.setChecked(true);
 
         datelist.clear();
         datelist.add("დღეს");

@@ -81,7 +81,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
     private int carType = 0;
     private double pathLength = 0, pathTime = 0;
-    private String pathItems="";
+    private String pathItems="", pathItemsID="";
 
     private Uri uri;
     private File imagefile;
@@ -369,7 +369,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                     try {
                         jsonObject.put("cityFrom", driverStatement.getCityFrom());
                         jsonObject.put("cityTo", driverStatement.getCityTo());
-                        jsonObject.put("cityPath", "AA__BB");
+                        jsonObject.put("cityPath", driverStatement.getCityPath());
                         jsonObject.put("date", driverStatement.getDate());
                         jsonObject.put("time", driverStatement.getTime());
                         jsonObject.put("freespace", driverStatement.getFreeSpace());
@@ -538,11 +538,11 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
+                pathItems = "";
+                pathTime = 0;
+                pathLength = 0;
                 if (citylist.contains(cityFrom.getText().toString()) && citylist.contains(cityTo.getText().toString())) {
-                    if (!cityFrom.getText().equals(cityTo.getText())) {
-                        pathItems = "";
-                        pathTime = 0;
-                        pathLength = 0;
+                    if (!cityFrom.getText().toString().equals(cityTo.getText().toString())) {
                         getCityPath(String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityFrom.getText().toString())).getC_id()), String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityTo.getText().toString())).getC_id()));
                     }
                 }
@@ -563,11 +563,11 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
+                pathItems = "";
+                pathTime = 0;
+                pathLength = 0;
                 if (citylist.contains(cityFrom.getText().toString()) && citylist.contains(cityTo.getText().toString())) {
-                    if (!cityFrom.getText().equals(cityTo.getText())) {
-                        pathItems = "";
-                        pathTime = 0;
-                        pathLength = 0;
+                    if (!cityFrom.getText().toString().equals(cityTo.getText().toString())) {
                         getCityPath(String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityFrom.getText().toString())).getC_id()), String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityTo.getText().toString())).getC_id()));
                     }
                 }
@@ -580,8 +580,12 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
     private void drawPathInfo() {
         pathInfoBox.setVisibility(View.VISIBLE);
-        pathItemText.setText(pathItems);
-        pathDistanceText.setText(String.valueOf(pathLength)+"კმ.  "+String.valueOf(pathTime)+"წთ.");
+        if(pathItems.equals("")){
+            pathItemText.setText(cityFrom.getText() + " - "+cityTo.getText());
+        }else{
+            pathItemText.setText(cityFrom.getText() + " - " + pathItems + " - " + cityTo.getText());
+        }
+        pathDistanceText.setText(String.valueOf(pathLength)+"კმ.  "+String.valueOf((int)(pathTime/60))+"სთ "+String.valueOf((int)(pathTime%60))+"წთ");
     }
 
     @Nullable
@@ -831,14 +835,24 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
             setedDate = dateFormat.format(runTimeC.getTime());
         }
 
+        String cityF = "1";
+        if (citylist.contains(cityFrom.getText().toString())) {
+            cityF = String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityFrom.getText().toString())).getC_id());
+        }
+        String cityT = "1";
+        if (citylist.contains(cityTo.getText().toString())) {
+            cityT = String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityTo.getText().toString())).getC_id());
+        }
+
         DriverStatement statement = new DriverStatement(Constantebi.MY_ID,
                 freeSpaceSpinner.getSelectedItemPosition() + 1,
                 Integer.valueOf(priceSpinner.getSelectedItem().toString()),
                 setedDate,
-                String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityFrom.getText().toString())).getC_id()),
-                String.valueOf(Constantebi.cityList.get(citylist.indexOf(cityTo.getText().toString())).getC_id()));
+                cityF,
+                cityT);
 
         statement.setTime(runTimeSpinner.getSelectedItem().toString());
+        statement.setCityPath(pathItemsID);
 
         statement.setMarka(carType);
 //        statement.setMarka(markaSpinner.getSelectedItemPosition());
@@ -1200,11 +1214,32 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
         CityObj finishCity = new CityObj(finish_City, "", 0, 0);
 
         CityObj currCity = startCity;
-        visiTedCities.put(currCity.getName(), currCity);
-        visiTedCitiesNames.add(currCity.getName());
+        visiBleCities.put(currCity.getName(), currCity);
+        visiBleCitiesNames.add(currCity.getName());
         Boolean finishFounded = false;
 
         do {
+            // xilvadi qalaqebidan varchevt ufro axlos romelia, rom gadavidet masze shemdegi iteraciistvis
+            int minTime = 10000000;
+            String nextCity = "";
+            for (int i = 0; i < visiBleCitiesNames.size(); i++) {
+                if (visiBleCities.get(visiBleCitiesNames.get(i)).getTime() < minTime) {
+                    minTime = visiBleCities.get(visiBleCitiesNames.get(i)).getTime();
+                    nextCity = visiBleCitiesNames.get(i);
+                }
+            }
+
+            // gadavdivart uaxloes qalaqze
+            currCity = visiBleCities.get(nextCity);
+            visiBleCities.remove(nextCity);
+            visiBleCitiesNames.remove(nextCity);
+
+            visiTedCities.put(currCity.getName(), currCity);
+            visiTedCitiesNames.add(currCity.getName());
+
+            if (currCity.getName().equals(finishCity.getName())) {
+                finishFounded = true;
+            }
 
             for (int i = 0; i < cityMap.get(currCity.getName()).size(); i++) {
                 // mimdinare qalaqistvis avigot yvela mezobeli qalaqi da vamatebt xilvadi qalaqebis siashi
@@ -1213,11 +1248,11 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                     // tu mimdinare qalaqis i-uri mezobeli ukve aris xilvadobis areshi
                     // mashin gadavamowmot mandzili am qalaqamde da tu uketesia shevcvalot
 
-                    if (visiBleCities.get(cityMap.get(currCity.getName()).get(i).getName()).getDistance() > currCity.getDistance() + cityMap.get(currCity.getName()).get(i).getDistance()) {
+                    if (visiBleCities.get(cityMap.get(currCity.getName()).get(i).getName()).getTime() > currCity.getTime() + cityMap.get(currCity.getName()).get(i).getTime()) {
+                        visiBleCities.get(cityMap.get(currCity.getName()).get(i).getName()).setTime(currCity.getTime() + cityMap.get(currCity.getName()).get(i).getTime());
                         visiBleCities.get(cityMap.get(currCity.getName()).get(i).getName()).setDistance(currCity.getDistance() + cityMap.get(currCity.getName()).get(i).getDistance());
                         visiBleCities.get(cityMap.get(currCity.getName()).get(i).getName()).setPrevCity(currCity.getName());
                         // time
-                        visiBleCities.get(cityMap.get(currCity.getName()).get(i).getName()).setTime(currCity.getTime() + cityMap.get(currCity.getName()).get(i).getTime());
                     }
 
                 } else {
@@ -1235,27 +1270,6 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                 }
             }
 
-            // xilvadi qalaqebidan varchevt ufro axlos romelia, rom gadavidet masze shemdegi iteraciistvis
-            int minDistance = 10000000;
-            String nextCity = "";
-            for (int i = 0; i < visiBleCitiesNames.size(); i++) {
-                if (visiBleCities.get(visiBleCitiesNames.get(i)).getDistance() < minDistance) {
-                    minDistance = visiBleCities.get(visiBleCitiesNames.get(i)).getDistance();
-                    nextCity = visiBleCitiesNames.get(i);
-                }
-            }
-
-            // gadavdivart uaxloes qalaqze
-            currCity = visiBleCities.get(nextCity);
-            visiBleCities.remove(nextCity);
-            visiBleCitiesNames.remove(nextCity);
-
-            visiTedCities.put(currCity.getName(), currCity);
-            visiTedCitiesNames.add(currCity.getName());
-
-            if (currCity.getName().equals(finishCity.getName())) {
-                finishFounded = true;
-            }
 
         } while (visiBleCities.size() > 0 && !finishFounded);
 
@@ -1271,16 +1285,18 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
         pathLength = visiTedCities.get(finishCity.getName()).getDistance() / 1000;
         pathTime = visiTedCities.get(finishCity.getName()).getTime();
+        pathItemsID = "";
 
         citylistName.clear();
         for (int i = 0; i < Constantebi.cityList.size(); i++) {
             citylistName.add(String.valueOf(Constantebi.cityList.get(i).getC_id()));
         }
-//        pathItems +=
+
         for (int i = 1; i <= result.size(); i++) {
-            if (i > 1) pathItems += " * ";
+            if (i > 1) {pathItems += " - "; pathItemsID += ","; }
 
             pathItems += Constantebi.cityList.get(citylistName.indexOf(result.get(result.size() - i))).getNameGE();
+            pathItemsID += result.get(result.size() - i);
         }
 
     }

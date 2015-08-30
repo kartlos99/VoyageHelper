@@ -169,7 +169,7 @@
                     android:layout_marginLeft="@dimen/add_statement_inline_padding"
                     android:layout_marginRight="@dimen/add_statement_inline_padding"
                     android:scaleType="centerInside"
-                    android:src="@drawable/lari" />
+                    android:src="@drawable/lari_gray" />
 
                 <TextView
                     android:id="@+id/detiles_price_text"
