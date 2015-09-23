@@ -5,41 +5,40 @@
     android:orientation="vertical">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginRight="@dimen/add_statement_inline_padding"
             android:layout_weight="2"
             android:gravity="right"
-            android:layout_marginRight="@dimen/add_statement_inline_padding"
-            android:textSize="@dimen/text_size_in_filter"
-            android:text="განცხადების\nტიპი" />
+            android:text="განცხადების\nტიპი"
+            android:textSize="@dimen/text_size_in_filter" />
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="3"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="vertical">
 
             <CheckBox
                 android:id="@+id/filterDriver"
-                android:text="ტრანსპორტი"
-                android:textSize="12sp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="ტრანსპორტი"
+                android:textSize="12sp" />
 
             <CheckBox
                 android:id="@+id/filterPassanger"
-                android:text="მგზავრი"
-                android:textSize="12sp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="მგზავრი"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -53,35 +52,34 @@
         <ImageView
             android:layout_width="@dimen/icon_size_in_filter"
             android:layout_height="@dimen/icon_size_in_filter"
-            android:layout_marginRight="@dimen/add_statement_inline_padding"
+            android:layout_margin="@dimen/add_statement_inline_padding"
             android:scaleType="centerInside"
             android:src="@drawable/pin" />
 
         <AutoCompleteTextView
             android:id="@+id/filter1_cityfrom"
-            android:layout_gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="6"
             android:focusableInTouchMode="true"
-            android:textSize="@dimen/text_size_in_filter"
             android:hint="საიდან"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_in_filter" />
 
         <AutoCompleteTextView
             android:id="@+id/filter1_cityto"
-            android:layout_gravity="center_vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="6"
             android:focusableInTouchMode="true"
-            android:textSize="@dimen/text_size_in_filter"
             android:hint="საით"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_in_filter" />
 
 
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -92,9 +90,9 @@
         <ImageView
             android:layout_width="@dimen/icon_size_in_filter"
             android:layout_height="@dimen/icon_size_in_filter"
-            android:layout_marginRight="@dimen/add_statement_inline_padding"
-            android:scaleType="centerInside"
             android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/add_statement_inline_padding"
+            android:scaleType="centerInside"
             android:src="@drawable/time" />
 
         <Spinner
@@ -103,9 +101,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="6"
-            android:textSize="@dimen/text_size_in_filter"
             android:gravity="center"
-            android:text="დღეს" />
+            android:text="დღეს"
+            android:textSize="@dimen/text_size_in_filter" />
 
         <Spinner
             android:id="@+id/filter_time2"
@@ -113,9 +111,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="6"
-            android:textSize="@dimen/text_size_in_filter"
             android:gravity="center"
-            android:text="xval" />
+            android:text="xval"
+            android:textSize="@dimen/text_size_in_filter" />
 
 
     </LinearLayout>
@@ -135,7 +133,7 @@
             android:background="@drawable/greenbtn_dark"
             android:text="პირობები"
             android:textColor="@android:color/white"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <RelativeLayout
             android:id="@+id/filter_comfortBox"
@@ -148,60 +146,74 @@
 
             <CheckBox
                 android:id="@+id/filter_conditioner_checkBox"
-                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="კონდიციონერი" />
+                android:text="@string/ST_condicioner"
+                android:textSize="@dimen/text_size_in_filter" />
 
             <CheckBox
                 android:id="@+id/filter_atplace_checkBox"
-                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_toRightOf="@+id/filter_conditioner_checkBox"
-                android:text="ადგილზე მისვლა" />
+                android:text="@string/ST_athome"
+                android:textSize="@dimen/text_size_in_filter" />
 
             <CheckBox
                 android:id="@+id/filter_cigar_checkBox"
-                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filter_conditioner_checkBox"
                 android:layout_marginBottom="6dp"
-                android:text="სიგარეტი" />
+                android:text="@string/ST_sigar"
+                android:textSize="@dimen/text_size_in_filter" />
 
             <CheckBox
                 android:id="@+id/filter_baggage_checkBox"
-                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filter_conditioner_checkBox"
                 android:layout_toEndOf="@+id/filter_cigar_checkBox"
                 android:layout_toRightOf="@id/filter_cigar_checkBox"
-                android:text="ბარგი" />
+                android:text="@string/ST_baggage"
+                android:textSize="@dimen/text_size_in_filter" />
 
             <CheckBox
                 android:id="@+id/filter_animal_checkBox"
-                android:textSize="@dimen/text_size_in_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filter_conditioner_checkBox"
                 android:layout_toEndOf="@+id/filter_baggage_checkBox"
                 android:layout_toRightOf="@id/filter_baggage_checkBox"
-                android:text="შ.ცხოველები" />
+                android:text="@string/ST_animals"
+                android:textSize="@dimen/text_size_in_filter" />
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/filter_Btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="გაფილტვრა" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/filter_Exit_Btn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/ST_exit" />
+        <Button
+            android:id="@+id/filter_Btn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="გაფილტვრა" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

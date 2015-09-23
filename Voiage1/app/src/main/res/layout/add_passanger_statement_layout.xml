@@ -128,7 +128,7 @@
                     android:layout_marginRight="@dimen/add_statement_inline_padding"
                     android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/lari_gray" />
+                    android:src="@drawable/lari2" />
 
                 <Spinner
                     android:id="@+id/passanger_price_spiner"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
                         android:layout_marginTop="6dp"
-                        android:text="კონდიციონერი" />
+                        android:text="@string/ST_condicioner" />
 
                     <CheckBox
                         android:id="@+id/passanger_atplace_checkBox"
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:layout_toRightOf="@+id/passanger_conditioner_checkBox"
-                        android:text="ადგილზე მისვლა" />
+                        android:text="@string/ST_athome" />
 
                     <CheckBox
                         android:id="@+id/passanger_cigar_checkBox"
@@ -187,7 +187,7 @@
                         android:layout_below="@+id/passanger_conditioner_checkBox"
                         android:layout_marginBottom="6dp"
                         android:layout_marginLeft="6dp"
-                        android:text="სიგარეტი" />
+                        android:text="@string/ST_sigar" />
 
                     <CheckBox
                         android:id="@+id/passanger_baggage_checkBox"
@@ -195,7 +195,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/passanger_conditioner_checkBox"
                         android:layout_toEndOf="@+id/passanger_cigar_checkBox"
-                        android:text="ბარგი" />
+                        android:layout_toRightOf="@+id/passanger_cigar_checkBox"
+                        android:text="@string/ST_baggage" />
 
                     <CheckBox
                         android:id="@+id/passanger_animal_checkBox"
@@ -203,7 +204,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/passanger_conditioner_checkBox"
                         android:layout_toEndOf="@+id/passanger_baggage_checkBox"
-                        android:text="შ.ცხოველები" />
+                        android:layout_toRightOf="@+id/passanger_baggage_checkBox"
+                        android:text="@string/ST_animals" />
 
                 </RelativeLayout>
 

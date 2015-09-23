@@ -81,7 +81,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
     private int carType = 0;
     private double pathLength = 0, pathTime = 0;
-    private String pathItems="", pathItemsID="";
+    private String pathItems = "", pathItemsID = "";
 
     private Uri uri;
     private File imagefile;
@@ -208,7 +208,11 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
         if (savedInstanceState != null) {
             // tu reCreate moxda grafebshi vabrumebt ra mdgomareobac iyo
             driverStatement = (DriverStatement) savedInstanceState.getSerializable("statement");
+            pathItems = savedInstanceState.getString("pathItems");
+            pathLength = savedInstanceState.getDouble("distance");
+            pathTime = savedInstanceState.getDouble("time");
             fillForm(driverStatement);
+            drawPathInfo();
         } else {  // pirvelad chaitvirta es forma
             driverStatement = (DriverStatement) getArguments().getSerializable("statement");
             // chemi gancxadebis gaxsna redaqtirebisatvis
@@ -575,17 +579,18 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
             }
         });
 
-
     }
 
     private void drawPathInfo() {
         pathInfoBox.setVisibility(View.VISIBLE);
-        if(pathItems.equals("")){
-            pathItemText.setText(cityFrom.getText() + " - "+cityTo.getText());
-        }else{
-            pathItemText.setText(cityFrom.getText() + " - " + pathItems + " - " + cityTo.getText());
+        String cf = cityFrom.getText().toString();
+        String ct = cityTo.getText().toString();
+        if (pathItems.equals("")) {
+            pathItemText.setText(cf + " - " + ct);
+        } else {
+            pathItemText.setText(cf + " - " + pathItems + " - " + ct);
         }
-        pathDistanceText.setText(String.valueOf(pathLength)+"კმ.  "+String.valueOf((int)(pathTime/60))+"სთ "+String.valueOf((int)(pathTime%60))+"წთ");
+        pathDistanceText.setText(String.valueOf(pathLength) + "კმ.  " + String.valueOf((int) (pathTime / 60)) + "სთ " + String.valueOf((int) (pathTime % 60)) + "წთ");
     }
 
     @Nullable
@@ -786,6 +791,8 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
         carType2.setBackground(getResources().getDrawable(R.drawable.abc_tab_indicator_mtrl_alpha));
         carType = 1;
 
+        passAgeText.setText("მაქს. ასაკი " + seekBar.getProgress());
+
 
         modelSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modellist);
         brendSpinerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, brendlist);
@@ -823,6 +830,10 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
         driverStatement = readForm();
 
         outState.putSerializable("statement", driverStatement);
+
+        outState.putString("pathItems", pathItems);
+        outState.putDouble("distance", pathLength);
+        outState.putDouble("time", pathTime);
     }
 
     // formidan informaciis wakitxva ***************************************
@@ -1285,7 +1296,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
         pathLength = visiTedCities.get(finishCity.getName()).getDistance() / 1000;
         pathTime = visiTedCities.get(finishCity.getName()).getTime();
-        pathItemsID = "";
+        pathItemsID = ",";
 
         citylistName.clear();
         for (int i = 0; i < Constantebi.cityList.size(); i++) {
@@ -1293,10 +1304,12 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
         }
 
         for (int i = 1; i <= result.size(); i++) {
-            if (i > 1) {pathItems += " - "; pathItemsID += ","; }
+            if (i > 1) {
+                pathItems += " - ";
+            }
 
             pathItems += Constantebi.cityList.get(citylistName.indexOf(result.get(result.size() - i))).getNameGE();
-            pathItemsID += result.get(result.size() - i);
+            pathItemsID += result.get(result.size() - i) + ",";
         }
 
     }

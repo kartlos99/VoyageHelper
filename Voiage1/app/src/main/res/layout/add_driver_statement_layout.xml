@@ -158,7 +158,7 @@
                     android:layout_marginRight="@dimen/add_statement_inline_padding"
                     android:scaleType="centerInside"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/lari_gray" />
+                    android:src="@drawable/lari2" />
 
                 <Spinner
                     android:id="@+id/driver_price_spiner"
@@ -260,13 +260,15 @@
                         android:layout_weight="4" />
 
                     <Spinner
-                        android:visibility="gone"      android:id="@+id/driver_model_spiner"
+                        android:visibility="gone"
+                        android:id="@+id/driver_model_spiner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4" />
 
                     <Spinner
-                        android:visibility="gone"          android:id="@+id/driver_color_spiner"
+                        android:visibility="gone"
+                        android:id="@+id/driver_color_spiner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
@@ -307,7 +309,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
                         android:layout_marginTop="6dp"
-                        android:text="კონდიციონერი" />
+                        android:text="@string/ST_condicioner" />
 
                     <CheckBox
                         android:id="@+id/driver_atplace_checkBox"
@@ -315,7 +317,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:layout_toRightOf="@+id/driver_conditioner_checkBox"
-                        android:text="ადგილზე მისვლა" />
+                        android:text="@string/ST_athome" />
 
                     <CheckBox
                         android:id="@+id/driver_cigar_checkBox"
@@ -324,7 +326,7 @@
                         android:layout_below="@+id/driver_conditioner_checkBox"
                         android:layout_marginBottom="6dp"
                         android:layout_marginLeft="6dp"
-                        android:text="სიგარეტი" />
+                        android:text="@string/ST_sigar" />
 
                     <CheckBox
                         android:id="@+id/driver_baggage_checkBox"
@@ -333,7 +335,7 @@
                         android:layout_below="@+id/driver_conditioner_checkBox"
                         android:layout_toEndOf="@+id/driver_cigar_checkBox"
                         android:layout_toRightOf="@id/driver_cigar_checkBox"
-                        android:text="ბარგი" />
+                        android:text="@string/ST_baggage" />
 
                     <CheckBox
                         android:id="@+id/driver_animal_checkBox"
@@ -342,7 +344,7 @@
                         android:layout_below="@+id/driver_conditioner_checkBox"
                         android:layout_toEndOf="@+id/driver_baggage_checkBox"
                         android:layout_toRightOf="@id/driver_baggage_checkBox"
-                        android:text="შ.ცხოველები" />
+                        android:text="@string/ST_animals" />
 
                 </RelativeLayout>
 

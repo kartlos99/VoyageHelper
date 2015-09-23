@@ -34,7 +34,7 @@ import diakonidze.kartlos.voiage.utils.Constantebi;
 public class FilterDialog extends DialogFragment {
 
     private Calendar currTime, time1, time2;
-    Button filterBtn, filter_pirobebi_btn;
+    Button filterBtn, filter_pirobebi_btn, filterExitBtn ;
     RelativeLayout comfortBox;
     Boolean pirobebi = false;
     CheckBox filterDriver, filterPassanger;
@@ -97,6 +97,7 @@ public class FilterDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.filter_layout, container, false);
         filterBtn = (Button) view.findViewById(R.id.filter_Btn);
+        filterExitBtn = (Button) view.findViewById(R.id.filter_Exit_Btn);
         filter_pirobebi_btn = (Button) view.findViewById(R.id.filter_pirobebi_btn );
         filterDriver = (CheckBox) view.findViewById(R.id.filterDriver);
         filterPassanger = (CheckBox) view.findViewById(R.id.filterPassanger);
@@ -204,6 +205,13 @@ public class FilterDialog extends DialogFragment {
 
                 // aq vagzavnit servewrze motxovnas chveni kiteriumebiT
 
+                dismiss();
+            }
+        });
+
+        filterExitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dismiss();
             }
         });

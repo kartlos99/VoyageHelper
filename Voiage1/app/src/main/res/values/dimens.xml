@@ -15,8 +15,8 @@
     <dimen name="cardCorner">0dp</dimen>
     <dimen name="header_hiegth">172dp</dimen>
     <dimen name="cardViewMargin">4dp</dimen>
-    <dimen name="icon_size_in_detail_page">52dp</dimen>
+    <dimen name="icon_size_in_detail_page">42dp</dimen>
     <dimen name="text_size_in_detail_page">18sp</dimen>
-    <dimen name="icon_size_in_filter">40dp</dimen>
+    <dimen name="icon_size_in_filter">32dp</dimen>
     <dimen name="text_size_in_filter">12sp</dimen>
 </resources>
