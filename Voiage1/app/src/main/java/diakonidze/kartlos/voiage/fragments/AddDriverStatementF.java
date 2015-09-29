@@ -394,11 +394,11 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                         jsonObject.put("comment", driverStatement.getComment());
                         jsonObject.put("firstname", "KARTLOS");
                         jsonObject.put("lastname", "DIAKO");
-                        jsonObject.put("mobile", "577987006");
+                        jsonObject.put("mobile", Constantebi.MY_MOBILE);
                         jsonObject.put("birth_date", "1999");
                         jsonObject.put("status", 1);
                         jsonObject.put("sex", 1);
-                        jsonObject.put("photo", "NON");
+                        jsonObject.put("photo", Constantebi.profile.getProfilePictureUri(200, 300).toString());
                         jsonObject.put("user_id", driverStatement.getUserID());
 
                         if (uri != null) {

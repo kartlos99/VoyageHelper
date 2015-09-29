@@ -7,12 +7,12 @@ import java.util.Calendar;
  * Created by k.diakonidze on 7/13/2015.
  */
 public class PassangerStatement implements Serializable {
-        long id, userID, placeX, placeY;
+        long id, placeX, placeY;
         int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome;
-        String cityFrom, cityTo, time, comment, number, name, surname;
+        String cityFrom, cityTo, time, comment, number, name, userID, surname;
         String date;
 
-        public PassangerStatement(long userID, int freeSpace, int price, String cityFrom, String cityTo, String date) {
+        public PassangerStatement(String userID, int freeSpace, int price, String cityFrom, String cityTo, String date) {
                 this.userID = userID;
                 this.freeSpace = freeSpace;
                 this.price = price;
@@ -87,11 +87,11 @@ public class PassangerStatement implements Serializable {
                 this.id = id;
         }
 
-        public long getUserID() {
+        public String getUserID() {
                 return userID;
         }
 
-        public void setUserID(long userID) {
+        public void setUserID(String userID) {
                 this.userID = userID;
         }
 

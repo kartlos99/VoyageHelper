@@ -21,8 +21,8 @@ public class DBhelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createDriverTable(db);
         createPassangerTable(db);
-        createMarkaTable(db);
-        createModelTable(db);
+//        createMarkaTable(db);
+//        createModelTable(db);
         createCityTable(db);
     }
 
@@ -37,30 +37,30 @@ public class DBhelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    private void createModelTable(SQLiteDatabase db) {
-        String query = "create table if not exists " +
-                DBscheme.MODEL_TABLE_NAME + "(" +
-                DBscheme.ID + " integer primary key autoincrement, " +
-                DBscheme.MARKA_ID + " integer not null, " +
-                DBscheme.MODEL_ID + " integer not null, " +
-                DBscheme.NAME + " text);";
-        db.execSQL(query);
-    }
+//    private void createModelTable(SQLiteDatabase db) {
+//        String query = "create table if not exists " +
+//                DBscheme.MODEL_TABLE_NAME + "(" +
+//                DBscheme.ID + " integer primary key autoincrement, " +
+//                DBscheme.MARKA_ID + " integer not null, " +
+//                DBscheme.MODEL_ID + " integer not null, " +
+//                DBscheme.NAME + " text);";
+//        db.execSQL(query);
+//    }
 
-    private void createMarkaTable(SQLiteDatabase db) {
-        String query = "create table if not exists " +
-                DBscheme.MARKA_TABLE_NAME + "(" +
-                DBscheme.ID + " integer primary key autoincrement, " +
-                DBscheme.MARKA_ID + " integer not null, " +
-                DBscheme.NAME + " text);";
-        db.execSQL(query);
-    }
+//    private void createMarkaTable(SQLiteDatabase db) {
+//        String query = "create table if not exists " +
+//                DBscheme.MARKA_TABLE_NAME + "(" +
+//                DBscheme.ID + " integer primary key autoincrement, " +
+//                DBscheme.MARKA_ID + " integer not null, " +
+//                DBscheme.NAME + " text);";
+//        db.execSQL(query);
+//    }
 
     private void createPassangerTable(SQLiteDatabase db) {
         String query = "create table if not exists " +
                 DBscheme.PASSANGER_TABLE_NAME + "(" +
                 DBscheme.ID + " integer primary key autoincrement, " +
-                DBscheme.USER_ID + " integer not null, " +
+                DBscheme.USER_ID + " text not null, " +
                 DBscheme.S_ID + " integer not null, " +
                 DBscheme.PLACE_X + " text not null, " +
                 DBscheme.PLACE_Y + " text, " +
@@ -87,7 +87,7 @@ public class DBhelper extends SQLiteOpenHelper {
         String query = "create table if not exists " +
                 DBscheme.DRIVER_TABLE_NAME + "(" +
                 DBscheme.ID + " integer primary key autoincrement, " +
-                DBscheme.USER_ID + " integer not null, " +
+                DBscheme.USER_ID + " text not null, " +
                 DBscheme.S_ID + " integer not null, " +
                 DBscheme.PLACE_X + " text, " +
                 DBscheme.PLACE_Y + " text, " +

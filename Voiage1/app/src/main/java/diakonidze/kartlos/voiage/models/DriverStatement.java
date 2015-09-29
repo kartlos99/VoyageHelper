@@ -7,12 +7,12 @@ import java.util.Calendar;
  * Created by k.diakonidze on 7/15/2015.
  */
 public class DriverStatement implements Serializable {
-    long id, userID, placeX, placeY;
+    long id, placeX, placeY;
     int freeSpace, price, kondencioneri, sigareti, sabarguli, cxovelebi, atHome, marka, modeli, color, ageFrom, ageTo, gender;
 
-    String cityFrom, cityTo, cityPath, date, time, comment,  number, name, surname, carpicture;
+    String cityFrom, cityTo, cityPath, date, time, comment,  number, name, surname, userID, carpicture;
 
-    public DriverStatement(long userID, int freeSpace, int price, String date, String cityFrom, String cityTo) {
+    public DriverStatement(String userID, int freeSpace, int price, String date, String cityFrom, String cityTo) {
         this.userID = userID;
         this.freeSpace = freeSpace;
         this.price = price;
@@ -107,11 +107,11 @@ public class DriverStatement implements Serializable {
         this.id = id;
     }
 
-    public long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

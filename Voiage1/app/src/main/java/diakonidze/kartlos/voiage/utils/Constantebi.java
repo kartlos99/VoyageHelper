@@ -1,5 +1,8 @@
 package diakonidze.kartlos.voiage.utils;
 
+import com.facebook.AccessToken;
+import com.facebook.Profile;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,8 @@ import diakonidze.kartlos.voiage.models.Cities;
  */
 public class Constantebi {
 
-    public static int MY_ID = 2;
+    public static String MY_ID ;
+    public static String MY_NAME = "";
     public static String MY_MOBILE = "";
 
     public final static String MY_OWN_STAT = "chemi";
@@ -34,5 +38,8 @@ public class Constantebi {
 
     public static List<Long> FAV_STAT_DRIVER = new ArrayList<>();
     public static List<Long> FAV_STAT_PASSANGER = new ArrayList<>();
+
+    public static AccessToken accessToken;
+    public static Profile profile;
 
 }

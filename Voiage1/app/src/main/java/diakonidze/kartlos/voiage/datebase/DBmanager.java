@@ -237,7 +237,7 @@ public class DBmanager {
         Cursor cursor = db.query(DBscheme.DRIVER_TABLE_NAME, null, DBscheme.MANU_LOCATION + " = " + location, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                int user_id = cursor.getInt(cursor.getColumnIndex(DBscheme.USER_ID));
+                String user_id = cursor.getString(cursor.getColumnIndex(DBscheme.USER_ID));
                 int freeSpace = cursor.getInt(cursor.getColumnIndex(DBscheme.FREESPACE));
                 int price = cursor.getInt(cursor.getColumnIndex(DBscheme.PRICE));
                 String date = cursor.getString(cursor.getColumnIndex(DBscheme.DATE));
@@ -282,7 +282,7 @@ public class DBmanager {
         Cursor cursor = db.query(DBscheme.PASSANGER_TABLE_NAME, null, DBscheme.MANU_LOCATION + " = " + location, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                int user_id = cursor.getInt(cursor.getColumnIndex(DBscheme.USER_ID));
+                String user_id = cursor.getString(cursor.getColumnIndex(DBscheme.USER_ID));
                 int freeSpace = cursor.getInt(cursor.getColumnIndex(DBscheme.FREESPACE));
                 int price = cursor.getInt(cursor.getColumnIndex(DBscheme.PRICE));
                 String date = cursor.getString(cursor.getColumnIndex(DBscheme.DATE));

@@ -122,7 +122,7 @@ public class DetailPageDriver extends ActionBarActivity {
 
         int i = 0;
         while (i < Constantebi.cityList.size()) {
-            if (driverStatement.getCityTo().equals(Constantebi.cityList.get(i).getNameGE())) {
+            if (driverStatement.getCityTo().equals(String.valueOf(Constantebi.cityList.get(i).getC_id()))) {
                 if (!Constantebi.cityList.get(i).getImage().equals(""))
                     Picasso.with(this)
                             .load(Constantebi.cityList.get(i).getImage())

@@ -5,7 +5,12 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,9 +23,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -28,14 +37,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.AccessToken;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
 import diakonidze.kartlos.voiage.datebase.DBhelper;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
@@ -63,11 +77,43 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager pager = null;
     private TabLayout tabs;
 
+    void printHK(){
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "diakonidze.kartlos.voiage",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(Constantebi.accessToken == null){
+            Intent intent = new Intent(getApplication(), LoginActivity.class);
+
+            startActivity(intent);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        printHK();
+
+
 
         final CoordinatorLayout coordLayout = (CoordinatorLayout) findViewById(R.id.main_content);
         manager = getSupportFragmentManager();
@@ -140,14 +186,29 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(),"daiketa",Toast.LENGTH_SHORT).show();
                 // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
                 super.onDrawerClosed(drawerView);
+
+
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
 //                Toast.makeText(getApplicationContext(),"gaigo",Toast.LENGTH_SHORT).show();
                 // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-
                 super.onDrawerOpened(drawerView);
+
+                TextView myname = (TextView) findViewById(R.id.username);
+                myname.setText(Constantebi.MY_NAME);
+
+                de.hdodenhof.circleimageview.CircleImageView profImage = (CircleImageView) findViewById(R.id.profile_image);
+
+                Uri imageUri = Constantebi.profile.getProfilePictureUri(200, 200);
+
+                Picasso.with(getApplicationContext())
+                        .load(imageUri)
+                        .resize(200,200)
+                        .centerCrop()
+                        .into(profImage);
+
             }
         };
 

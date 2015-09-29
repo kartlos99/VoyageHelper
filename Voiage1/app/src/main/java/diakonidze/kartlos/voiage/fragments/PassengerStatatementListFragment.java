@@ -220,7 +220,8 @@ public class PassengerStatatementListFragment extends Fragment {
                             for(int i=0; i<jsonArray.length(); i++){
                                 try {
 
-                                    PassangerStatement newPassangerStatement = new PassangerStatement( 1,
+                                    PassangerStatement newPassangerStatement = new PassangerStatement(
+                                            jsonArray.getJSONObject(i).getString("user_id"),
                                             jsonArray.getJSONObject(i).getInt("freespace"),
                                             jsonArray.getJSONObject(i).getInt("price"),
                                             jsonArray.getJSONObject(i).getString("cityFrom"),
@@ -242,7 +243,6 @@ public class PassengerStatatementListFragment extends Fragment {
                                     newPassangerStatement.setNumber(jsonArray.getJSONObject(i).getString("mobile"));
 
                                     newPassangerStatement.setId(jsonArray.getJSONObject(i).getInt("s_id"));
-                                    newPassangerStatement.setUserID(jsonArray.getJSONObject(i).getInt("user_id"));
 
                                     newData.add(newPassangerStatement);
 
