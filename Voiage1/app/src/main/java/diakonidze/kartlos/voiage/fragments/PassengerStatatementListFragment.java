@@ -193,7 +193,7 @@ public class PassengerStatatementListFragment extends Fragment {
         switch (location){
             case Constantebi.ALL_STAT:
 //                url = "http://back.meet.ge/get.php?type=2";
-                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=2&start=" + dataStartPoint + "&end=" + dataPageSize;
+                url = Constantebi.URL_GET_ST_LIST + "stType=2&start_row=" + dataStartPoint + "&page_size=" + dataPageSize;
                 break;
 //            case Constantebi.MY_OWN_STAT:  url = "http://back.meet.ge/get.php?type=2";
 //                break;
@@ -221,7 +221,7 @@ public class PassengerStatatementListFragment extends Fragment {
                                 try {
 
                                     PassangerStatement newPassangerStatement = new PassangerStatement(
-                                            jsonArray.getJSONObject(i).getString("user_id"),
+                                            jsonArray.getJSONObject(i).getString("userID"),
                                             jsonArray.getJSONObject(i).getInt("freespace"),
                                             jsonArray.getJSONObject(i).getInt("price"),
                                             jsonArray.getJSONObject(i).getString("cityFrom"),
@@ -238,11 +238,11 @@ public class PassengerStatatementListFragment extends Fragment {
                                     newPassangerStatement.setPlaceY(jsonArray.getJSONObject(i).getLong("placey"));
                                     newPassangerStatement.setComment(jsonArray.getJSONObject(i).getString("comment"));
 
-                                    newPassangerStatement.setName(jsonArray.getJSONObject(i).getString("firstname"));
-                                    newPassangerStatement.setSurname(jsonArray.getJSONObject(i).getString("lastname"));
+                                    newPassangerStatement.setName(jsonArray.getJSONObject(i).getString("name"));
+//                                    newPassangerStatement.setSurname(jsonArray.getJSONObject(i).getString("lastname"));
                                     newPassangerStatement.setNumber(jsonArray.getJSONObject(i).getString("mobile"));
 
-                                    newPassangerStatement.setId(jsonArray.getJSONObject(i).getInt("s_id"));
+                                    newPassangerStatement.setId(jsonArray.getJSONObject(i).getInt("id"));
 
                                     newData.add(newPassangerStatement);
 

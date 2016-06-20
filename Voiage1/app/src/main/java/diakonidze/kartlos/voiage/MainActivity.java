@@ -32,22 +32,40 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//import diakonidze.kartlos.voiage.R;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+//import com.facebook.AccessToken;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import diakonidze.kartlos.voiage.adapters.StatementListPagesAdapter;
@@ -74,10 +92,14 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    CallbackManager callbackManager;
+
     private ViewPager pager = null;
     private TabLayout tabs;
 
-    void printHK(){
+
+    //    **********************************************************************************************
+    void printHK() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "diakonidze.kartlos.voiage",
@@ -95,14 +117,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
-        if(Constantebi.accessToken == null){
-            Intent intent = new Intent(getApplication(), LoginActivity.class);
-
-            startActivity(intent);
-        }
+//        if(Constantebi.accessToken == null){
+//            Intent intent = new Intent(getApplication(), LoginActivity.class);
+//
+//            startActivity(intent);
+//        }
 
     }
 
@@ -112,8 +140,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         printHK();
-
-
 
         final CoordinatorLayout coordLayout = (CoordinatorLayout) findViewById(R.id.main_content);
         manager = getSupportFragmentManager();
@@ -163,6 +189,21 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(toMyfav);
                         return true;
 
+                    case R.id.manuFBlogin:
+
+                        if (Constantebi.accessToken == null) {
+//                          aq vlogindebit FB-it
+                            List<String> permissions = Arrays.asList("public_profile", "email", "user_friends");
+                            LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, permissions);
+                        } else {
+//                          aq gamovdivart FB-it
+                            LoginManager.getInstance().logOut();
+                            Constantebi.accessToken = null;
+                            clearUIatLogout();
+                        }
+
+                        return true;
+
                     case R.id.manuExit:
                         break;
 
@@ -196,19 +237,11 @@ public class MainActivity extends AppCompatActivity {
                 // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
                 super.onDrawerOpened(drawerView);
 
-                TextView myname = (TextView) findViewById(R.id.username);
-                myname.setText(Constantebi.MY_NAME);
-
-                de.hdodenhof.circleimageview.CircleImageView profImage = (CircleImageView) findViewById(R.id.profile_image);
-
-                Uri imageUri = Constantebi.profile.getProfilePictureUri(200, 200);
-
-                Picasso.with(getApplicationContext())
-                        .load(imageUri)
-                        .resize(200,200)
-                        .centerCrop()
-                        .into(profImage);
-
+                if (Constantebi.ONLYONES && Constantebi.profile != null) {
+                    Toast.makeText(getApplicationContext(), "haaa", Toast.LENGTH_SHORT).show();
+                    fillUIatLogin();
+                    Constantebi.ONLYONES = false;
+                }
             }
         };
 
@@ -230,8 +263,82 @@ public class MainActivity extends AppCompatActivity {
 
         LoadCities();
 
-        getFavoriteStatements();
+        facebookissues();
+    }
 
+    private void facebookissues() {
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Constantebi.profile = Profile.getCurrentProfile();
+                Constantebi.accessToken = AccessToken.getCurrentAccessToken();
+
+                if (Constantebi.profile != null) {
+                    Constantebi.MY_NAME = Constantebi.profile.getName();
+                    Constantebi.MY_ID = Constantebi.profile.getId();
+                    fillUIatLogin();
+
+                    Toast.makeText(getApplicationContext(), "prof info geted!", Toast.LENGTH_LONG).show();
+
+                    String url = Constantebi.URL_ADD_USER;
+
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("fb_id", Constantebi.MY_ID);
+                            params.put("name", Constantebi.MY_NAME);
+                            params.put("comment", "");
+                            params.toString();
+                            return params;
+                        }
+                    };
+                    queue.add(stringRequest);
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "no prof!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+
+        Toast.makeText(this, "NOT logged", Toast.LENGTH_SHORT).show();
+        if (Profile.getCurrentProfile() != null) {
+            Toast.makeText(this, "logged in", Toast.LENGTH_SHORT).show();
+            Constantebi.accessToken = AccessToken.getCurrentAccessToken();
+            Constantebi.profile = Profile.getCurrentProfile();
+
+            Constantebi.MY_NAME = Constantebi.profile.getName();
+            Constantebi.MY_ID = Constantebi.profile.getId();
+            fillUIatLogin();
+        }
     }
 
     private void getFavoriteStatements() {
@@ -258,78 +365,17 @@ public class MainActivity extends AppCompatActivity {
         DBmanager.initialaize(this);
         DBmanager.openReadable();
         Constantebi.cityList = DBmanager.getCityList();
-//        Constantebi.brendList = DBmanager.getMarkaList();
-//        Constantebi.modelList = DBmanager.getModelList();
         DBmanager.close();
 
         // aq sxva kriteriumia chasasmeli, es droebitia
         if (Constantebi.cityList.size() == 0) {
 
+            progress = ProgressDialog.show(this, "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+
+
             RequestQueue queue = Volley.newRequestQueue(this);
 
-            String url = "";
-//            String url = "http://back.meet.ge/get.php?type=mark";
-//            JsonArrayRequest requestMarka = new JsonArrayRequest(url,
-//                    new Response.Listener<JSONArray>() {
-//                        @Override
-//                        public void onResponse(JSONArray jsonArray) {
-//
-//                            if (jsonArray.length() > 0) {
-//                                Constantebi.brendList.clear();
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//                                    try {
-//                                        CarBrend carBrend = new CarBrend(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("name"));
-//                                        Constantebi.brendList.add(carBrend);
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//                            movida++;
-//                            writeToDB();
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//                            progress.dismiss();
-//                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//            );
-//
-//            url = "http://back.meet.ge/get.php?type=model";
-//            JsonArrayRequest requestModel = new JsonArrayRequest(url,
-//                    new Response.Listener<JSONArray>() {
-//                        @Override
-//                        public void onResponse(JSONArray jsonArray) {
-//
-//                            if (jsonArray.length() > 0) {
-//                                Constantebi.modelList.clear();
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//                                    try {
-//                                        CarModel carModel = new CarModel(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getInt("id_mark"), jsonArray.getJSONObject(i).getString("name"));
-//                                        Constantebi.modelList.add(carModel);
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//                            movida++;
-//                            writeToDB();
-//                        }
-//                    },
-//                    new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError volleyError) {
-//                            progress.dismiss();
-//                            Toast.makeText(MainActivity.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//            );
-
-
-            url = "http://back.meet.ge/get.php?type=cities";
+            String url = Constantebi.URL_GET_SITIS;
             JsonArrayRequest requestCities = new JsonArrayRequest(url,
                     new Response.Listener<JSONArray>() {
                         @Override
@@ -340,7 +386,8 @@ public class MainActivity extends AppCompatActivity {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     try {
                                         Cities newCity = new Cities(jsonArray.getJSONObject(i).getInt("id"), jsonArray.getJSONObject(i).getString("nameGE"));
-                                        newCity.setNameEN(jsonArray.getJSONObject(i).getString("nameEN"));
+
+                                        // newCity.setNameEN(jsonArray.getJSONObject(i).getString("nameEN"));
                                         newCity.setImage(jsonArray.getJSONObject(i).getString("image"));
                                         Constantebi.cityList.add(newCity);
                                     } catch (JSONException e) {
@@ -361,10 +408,11 @@ public class MainActivity extends AppCompatActivity {
                     }
             );
 
-            progress = ProgressDialog.show(this, "ჩამოტვირთვა", "გთხოვთ დაიცადოთ");
+            queue.add(requestCities);
+
+
 //            queue.add(requestMarka);
 //            queue.add(requestModel);
-            queue.add(requestCities);
 
             Toast.makeText(this, "INtidan chamotvirtva", Toast.LENGTH_LONG).show();
         }
@@ -374,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
 
@@ -424,6 +473,38 @@ public class MainActivity extends AppCompatActivity {
 //            DBmanager.close();
 
         }
+    }
+
+    private void fillUIatLogin() {
+        TextView my_fb_name = (TextView) findViewById(R.id.username);
+        de.hdodenhof.circleimageview.CircleImageView profImage = (CircleImageView) findViewById(R.id.profile_image);
+
+        if (my_fb_name != null) {
+            if (Constantebi.MY_NAME != null) {
+                my_fb_name.setText(Constantebi.MY_NAME);
+            }
+
+            if (Constantebi.profile != null) {
+                Picasso.with(this)
+                        .load("https://graph.facebook.com/" + Constantebi.profile.getId() + "/picture?type=large")
+                        .into(profImage);
+
+                navigationView.getMenu().getItem(5).setTitle(getString(R.string.manu_FBlogout));
+            }
+        }
+    }
+
+    private void clearUIatLogout() {
+        TextView myname = (TextView) findViewById(R.id.username);
+        myname.setText("");
+
+        de.hdodenhof.circleimageview.CircleImageView profImage = (CircleImageView) findViewById(R.id.profile_image);
+        profImage.setImageResource(R.drawable.ic_account_circle_white_48dp);
+
+        navigationView.getMenu().getItem(5).setTitle(getString(R.string.manu_FBlogin));
+
+        Constantebi.accessToken = null;
+        Constantebi.profile = null;
     }
 
     private class AsyncWrite extends AsyncTask<DBhelper, String, String> {

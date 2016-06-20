@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">PickMeApp</string>
-    <string name="facebook_app_id">1600696843527880</string>
+    <!--<string name="facebook_app_id">1600696843527880</string>-->
+    <string name="facebook_app_id">1716715945263526</string>
 
     <string name="ST_condicioner">კონდიციონერი</string>
     <string name="ST_sigar">არამწეველი</string>
@@ -59,6 +60,8 @@
     <string name="manu_favorites">რჩეული განცხ.</string>
     <string name="manu_mystatm">ჩემი განცხ.</string>
     <string name="manu_privit_info">პირადი ინფო</string>
+    <string name="manu_FBlogin">FB ავტორიზაცია</string>
+    <string name="manu_FBlogout">FB დატოვება</string>
     <string name="manu_exit">გასვლა</string>
 
     <string name="openDrawer">OpenDrawer</string>

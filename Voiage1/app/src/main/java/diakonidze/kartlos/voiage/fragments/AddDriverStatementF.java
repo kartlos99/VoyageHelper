@@ -37,11 +37,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
@@ -55,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.datebase.DBhelper;
@@ -369,42 +372,36 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                     driverStatement = readForm();
                     driverStatement.setUserID(Constantebi.MY_ID);
 
-                    JSONObject jsonObject = new JSONObject();
+                    JSONObject readedStatementJS = new JSONObject();
                     try {
-                        jsonObject.put("cityFrom", driverStatement.getCityFrom());
-                        jsonObject.put("cityTo", driverStatement.getCityTo());
-                        jsonObject.put("cityPath", driverStatement.getCityPath());
-                        jsonObject.put("date", driverStatement.getDate());
-                        jsonObject.put("time", driverStatement.getTime());
-                        jsonObject.put("freespace", driverStatement.getFreeSpace());
-                        jsonObject.put("price", driverStatement.getPrice());
-                        jsonObject.put("mark", driverStatement.getMarka());
-                        jsonObject.put("model", driverStatement.getModeli());
-                        jsonObject.put("color", driverStatement.getColor());
-                        jsonObject.put("kondincioneri", driverStatement.getKondencioneri());
-                        jsonObject.put("sigareti", driverStatement.getSigareti());
-                        jsonObject.put("sabarguli", driverStatement.getSabarguli());
-                        jsonObject.put("adgilzemisvla", driverStatement.getAtHome());
-                        jsonObject.put("cxoveli", driverStatement.getCxovelebi());
-                        jsonObject.put("placex", "555");
-                        jsonObject.put("placey", "555");
-                        jsonObject.put("ageFrom", 1);
-                        jsonObject.put("ageTo", driverStatement.getAgeTo());
-                        jsonObject.put("gender", driverStatement.getGender());
-                        jsonObject.put("comment", driverStatement.getComment());
-                        jsonObject.put("firstname", "KARTLOS");
-                        jsonObject.put("lastname", "DIAKO");
-                        jsonObject.put("mobile", Constantebi.MY_MOBILE);
-                        jsonObject.put("birth_date", "1999");
-                        jsonObject.put("status", 1);
-                        jsonObject.put("sex", 1);
-                        jsonObject.put("photo", Constantebi.profile.getProfilePictureUri(200, 300).toString());
-                        jsonObject.put("user_id", driverStatement.getUserID());
+                        readedStatementJS.put("cityFrom", driverStatement.getCityFrom());
+                        readedStatementJS.put("cityTo", driverStatement.getCityTo());
+                        readedStatementJS.put("cityPath", driverStatement.getCityPath());
+                        readedStatementJS.put("date", driverStatement.getDate());
+                        readedStatementJS.put("time", driverStatement.getTime());
+                        readedStatementJS.put("freespace", driverStatement.getFreeSpace());
+                        readedStatementJS.put("price", driverStatement.getPrice());
+                        readedStatementJS.put("kondincioneri", driverStatement.getKondencioneri());
+                        readedStatementJS.put("sigareti", driverStatement.getSigareti());
+                        readedStatementJS.put("sabarguli", driverStatement.getSabarguli());
+                        readedStatementJS.put("adgilzemisvla", driverStatement.getAtHome());
+                        readedStatementJS.put("cxoveli", driverStatement.getCxovelebi());
+                        readedStatementJS.put("placex", "555");
+                        readedStatementJS.put("placey", "555");
+                        readedStatementJS.put("ageFrom", 1);
+                        readedStatementJS.put("ageTo", driverStatement.getAgeTo());
+                        readedStatementJS.put("gender", driverStatement.getGender());
+                        readedStatementJS.put("comment", driverStatement.getComment());
+                        readedStatementJS.put("mobile", Constantebi.MY_MOBILE);
+                        readedStatementJS.put("status", 1);
+                        readedStatementJS.put("sex", 1);
+//                        readedStatementJS.put("photo", Constantebi.profile.getProfilePictureUri(200, 300).toString());
+                        readedStatementJS.put("user_id", driverStatement.getUserID());
 
                         if (uri != null) {
-                            jsonObject.put("image", convertImigToSrt(uri.getPath()));
+                            readedStatementJS.put("image", convertImigToSrt(uri.getPath()));
                         } else {
-                            jsonObject.put("image", "");
+                            readedStatementJS.put("image", "");
                         }
 
                     } catch (JSONException e) {
@@ -415,45 +412,77 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
 
                     if (workState.equals(Constantebi.REASON_ADD)) {
 
-                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=1&json";
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantebi.URL_INSERT_ST1,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        // response -shi gvibrunebs ID -s
+                                        Toast.makeText(getActivity(), "განცხადება დამატებულია!", Toast.LENGTH_SHORT).show();
 
-                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                                        driverStatement.setId(Integer.valueOf(response));
+                                        // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
+                                        DBmanager.initialaize(getActivity());
+                                        DBmanager.openWritable();
+                                        DBmanager.insertIntoDriver(driverStatement, Constantebi.MY_STATEMENT);
+                                        DBmanager.close();
+
+                                        getActivity().onBackPressed();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                        {
                             @Override
-                            public void onResponse(JSONObject jsonObject) {
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
 
-//                                Toast.makeText(getActivity(), "OK insert" + jsonObject.toString(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getActivity(), "განცხადება დამატებულია!", Toast.LENGTH_SHORT).show();
+                                params.put("cityFrom", driverStatement.getCityFrom());
+                                params.put("cityTo", driverStatement.getCityTo());
+                                params.put("cityPath", driverStatement.getCityPath());
+                                params.put("date", driverStatement.getDate());
+                                params.put("time", driverStatement.getTime());
+                                params.put("freespace", String.valueOf(driverStatement.getFreeSpace()));
+                                params.put("price", String.valueOf(driverStatement.getPrice()));
+                                params.put("kondincioneri", String.valueOf(driverStatement.getKondencioneri()));
+                                params.put("sigareti",String.valueOf( driverStatement.getSigareti()));
+                                params.put("sabarguli", String.valueOf(driverStatement.getSabarguli()));
+                                params.put("adgilzemisvla", String.valueOf(driverStatement.getAtHome()));
+                                params.put("cxoveli", String.valueOf(driverStatement.getCxovelebi()));
+                                params.put("placex", "555");
+                                params.put("placey", "555");
+                                params.put("ageFrom", "1");
+                                params.put("ageTo", String.valueOf(driverStatement.getAgeTo()));
+                                params.put("gender", String.valueOf(driverStatement.getGender()));
+                                params.put("comment", String.valueOf(driverStatement.getComment()));
+                                params.put("mobile", Constantebi.MY_MOBILE);
+                                params.put("status", "1");
+                                params.put("sex", "1");
+                                params.put("cartype", String.valueOf(driverStatement.getMarka()));
+//                        params.put("photo", Constantebi.profile.getProfilePictureUri(200, 300).toString());
+                                params.put("user_id", driverStatement.getUserID());
 
-                                // tu warmatebit ganxorcielda bazashi chawera, chventanac vinaxavt localurad
-                                try {
-                                    int id = jsonObject.getInt("insert_id");
-                                    driverStatement.setId(id);
-
-                                    DBmanager.initialaize(getActivity());
-                                    DBmanager.openWritable();
-                                    DBmanager.insertIntoDriver(driverStatement, Constantebi.MY_STATEMENT);
-                                    DBmanager.close();
-
-                                    getActivity().onBackPressed();
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                if (uri != null) {
+                                    params.put("image", convertImigToSrt(uri.getPath()));
+                                } else {
+                                    params.put("image", "");
                                 }
 
+                                params.toString();
+                                return params;
                             }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        queue.add(jsonRequest);
+                        };
+
+                        queue.add(stringRequest);
 
                     } else {
                         // **** aq modis ganaxlebis dros ******
 
                         try {
-                            jsonObject.put("s_id", driverStatement.getId());
+                            readedStatementJS.put("s_id", driverStatement.getId());
                         } catch (JSONException e) {
                             Toast.makeText(getActivity(), "mdzgolis gancxadebis ganaxleba - id aramaqvs rom gavagzavno serverze", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
@@ -462,7 +491,7 @@ public class AddDriverStatementF extends Fragment implements View.OnClickListene
                         // აქ უპდატეს ლინკია ცჰასაწერი!!!!!!!!!!!!!!!!!!*************************************
                         String url = "http://back.meet.ge/get.php?type=UPDATE&sub_type=1";
 
-                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, readedStatementJS, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject jsonObject) {
 

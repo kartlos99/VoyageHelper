@@ -206,7 +206,7 @@ public class DriverStatatementListFragment extends Fragment {
 //            http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=0&end=10
             case Constantebi.ALL_STAT:
 //            url = "http://back.meet.ge/get.php?type=1";
-                url = "http://back.meet.ge/get.php?type=PAGE&sub_type=1&start=" + dataStartPoint + "&end=" + dataPageSize;
+                url = Constantebi.URL_GET_ST_LIST + "stType=1&start_row=" + dataStartPoint + "&page_size=" + dataPageSize;
                 break;
 //            case Constantebi.MY_OWN_STAT:
 //                url = "http://back.meet.ge/get.php?type=1";
@@ -240,7 +240,7 @@ public class DriverStatatementListFragment extends Fragment {
                                 try {
 
                                     DriverStatement newDriverStatement = new DriverStatement(
-                                            jsonArray.getJSONObject(i).getString("user_id"),
+                                            jsonArray.getJSONObject(i).getString("userID"),
                                             jsonArray.getJSONObject(i).getInt("freespace"),
                                             jsonArray.getJSONObject(i).getInt("price"),
                                             jsonArray.getJSONObject(i).getString("date"),
@@ -249,10 +249,10 @@ public class DriverStatatementListFragment extends Fragment {
 
                                     newDriverStatement.setCityPath(jsonArray.getJSONObject(i).getString("cityPath"));
                                     newDriverStatement.setTime(jsonArray.getJSONObject(i).getString("time"));
-                                    newDriverStatement.setMarka(jsonArray.getJSONObject(i).getInt("mark")); //int
+                                    newDriverStatement.setMarka(jsonArray.getJSONObject(i).getInt("cartype")); //int
 
-                                    newDriverStatement.setColor(jsonArray.getJSONObject(i).getInt("color"));
-                                    newDriverStatement.setCarpicture(jsonArray.getJSONObject(i).getString("photo"));
+//                                    newDriverStatement.setColor(jsonArray.getJSONObject(i).getInt("color"));
+                                    newDriverStatement.setCarpicture(jsonArray.getJSONObject(i).getString("image"));
                                     newDriverStatement.setKondencioneri(jsonArray.getJSONObject(i).getInt("kondincioneri"));
                                     newDriverStatement.setSigareti(jsonArray.getJSONObject(i).getInt("sigareti"));
                                     newDriverStatement.setSabarguli(jsonArray.getJSONObject(i).getInt("sabarguli"));
@@ -264,11 +264,11 @@ public class DriverStatatementListFragment extends Fragment {
                                     newDriverStatement.setGender(jsonArray.getJSONObject(i).getInt("gender"));
                                     newDriverStatement.setComment(jsonArray.getJSONObject(i).getString("comment"));
 
-                                    newDriverStatement.setName(jsonArray.getJSONObject(i).getString("firstname"));
-                                    newDriverStatement.setSurname(jsonArray.getJSONObject(i).getString("lastname"));
+                                    newDriverStatement.setName(jsonArray.getJSONObject(i).getString("name"));
+//                                    newDriverStatement.setSurname(jsonArray.getJSONObject(i).getString("lastname"));
                                     newDriverStatement.setNumber(jsonArray.getJSONObject(i).getString("mobile"));
 
-                                    newDriverStatement.setId(jsonArray.getJSONObject(i).getInt("s_id"));
+                                    newDriverStatement.setId(jsonArray.getJSONObject(i).getInt("id"));
                                     newDriverStatement.setCarpicture(jsonArray.getJSONObject(i).getString("image"));
 
                                     newData.add(newDriverStatement);

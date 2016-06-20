@@ -25,11 +25,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -38,7 +40,9 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import diakonidze.kartlos.voiage.R;
 import diakonidze.kartlos.voiage.datebase.DBmanager;
@@ -248,8 +252,8 @@ public class AddPassengetStatementF extends Fragment {
 
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("CityFrom", passangerStatement.getCityFrom());
-                        jsonObject.put("CityTo", passangerStatement.getCityTo());
+                        jsonObject.put("cityFrom", passangerStatement.getCityFrom());
+                        jsonObject.put("cityTo", passangerStatement.getCityTo());
                         jsonObject.put("date", passangerStatement.getDate());
                         jsonObject.put("time", passangerStatement.getTime());
                         jsonObject.put("freespace", passangerStatement.getFreeSpace());
@@ -274,37 +278,58 @@ public class AddPassengetStatementF extends Fragment {
                     RequestQueue queue = Volley.newRequestQueue(getActivity());
 
                     if (workState.equals(Constantebi.REASON_ADD)) {
-                        String url = "http://back.meet.ge/get.php?type=INSERT&sub_type=2&json";
-//                String url = "http://back.meet.ge/get.php?type=my&sub_type=2";
 
-                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantebi.URL_INSERT_ST2,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        // response -shi gvibrunebs ID -s
+                                        Toast.makeText(getActivity(), "განცხადება დამატებულია!", Toast.LENGTH_SHORT).show();
+
+                                        passangerStatement.setId(Integer.valueOf(response));
+
+                                        DBmanager.initialaize(getActivity());
+                                        DBmanager.openWritable();
+                                        DBmanager.insertIntoPassanger(passangerStatement, Constantebi.MY_STATEMENT);
+                                        DBmanager.close();
+
+                                        getActivity().onBackPressed();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                        {
                             @Override
-                            public void onResponse(JSONObject jsonObject) {
-                                Toast.makeText(getActivity(), "განცხადება დამატებულია!", Toast.LENGTH_SHORT).show();
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<>();
 
-                                try {
-                                    int id = jsonObject.getInt("insert_id");
-                                    passangerStatement.setId(id);
+                                params.put("cityFrom", passangerStatement.getCityFrom());
+                                params.put("cityTo", passangerStatement.getCityTo());
+                                params.put("date", passangerStatement.getDate());
+                                params.put("time", passangerStatement.getTime());
+                                params.put("freespace", String.valueOf(passangerStatement.getFreeSpace()));
+                                params.put("price", String.valueOf(passangerStatement.getPrice()));
+                                params.put("kondincioneri", String.valueOf(passangerStatement.getKondencioneri()));
+                                params.put("sigareti", String.valueOf(passangerStatement.getSigareti()));
+                                params.put("sabarguli", String.valueOf(passangerStatement.getSabarguli()));
+                                params.put("adgilzemisvla", String.valueOf(passangerStatement.getAtHome()));
+                                params.put("cxovelebi", String.valueOf(passangerStatement.getCxovelebi()));
+                                params.put("placex", "555");
+                                params.put("placey", "555");
+                                params.put("comment", passangerStatement.getComment());
+                                params.put("user_id", passangerStatement.getUserID());
 
-                                    DBmanager.initialaize(getActivity());
-                                    DBmanager.openWritable();
-                                    DBmanager.insertIntoPassanger(passangerStatement, Constantebi.MY_STATEMENT);
-                                    DBmanager.close();
-
-                                    getActivity().onBackPressed();
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                params.toString();
+                                return params;
                             }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        };
 
-                        queue.add(jsonRequest);
+                        queue.add(stringRequest);
+
                     } else {
 
                         String url = "http://back.meet.ge/get.php?type=UPDATE&sub_type=2";

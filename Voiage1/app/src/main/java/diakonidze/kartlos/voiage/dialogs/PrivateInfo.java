@@ -1,11 +1,12 @@
 package diakonidze.kartlos.voiage.dialogs;
 
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.internal.widget.DialogTitle;
+//import android.support.v7.internal.widget.DialogTitle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +43,7 @@ public class PrivateInfo extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        Dialog d =  super.onCreateDialog(savedInstanceState);
+        Dialog d = super.onCreateDialog(savedInstanceState);
         d.setTitle("ტელეფონის ნომერი");
 
         return d;
@@ -61,31 +65,28 @@ public class PrivateInfo extends DialogFragment {
             public void onClick(View v) {
                 Constantebi.MY_MOBILE = mobileText.getText().toString();
 
-
-                String url = "back.meet.ge/mobile.php";
                 RequestQueue queue = Volley.newRequestQueue(getActivity());
 
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("fb_id",  Constantebi.profile.getId());
-                    jsonObject.put("mobile", Constantebi.MY_MOBILE);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                String url = "http://geolab.club/geolabwork/kartlos/change_mobile.php?fb_id=" + Constantebi.MY_ID + "&mobile=" + Constantebi.MY_MOBILE;
 
-                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject jsonObject) {
+                JsonArrayRequest request_mob_upd = new JsonArrayRequest(url,
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                             //   Toast.makeText(getActivity(), "Done!", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                               // Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(getActivity(), volleyError.toString() + "   -   " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
 
-                queue.add(jsonRequest);
+
+
+                queue.add(request_mob_upd);
 
                 dismiss();
             }

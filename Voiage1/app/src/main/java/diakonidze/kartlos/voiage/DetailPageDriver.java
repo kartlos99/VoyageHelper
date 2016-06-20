@@ -253,24 +253,15 @@ public class DetailPageDriver extends ActionBarActivity {
             // serverze gaushvebt gancx ID-s wasashlelad
             // da dadebiti pasuxis shemtxvevashi lokaluradac wavshlit
 
-            JSONObject delObj = new JSONObject();
-
-            try {
-                delObj.put("user_id", driverStatement.getUserID());
-                delObj.put("s_id", driverStatement.getId());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-            String url = "http://back.meet.ge/get.php?type=DELETE&sub_type=1";
+            String url = "http://geolab.club/geolabwork/kartlos/delete_st.php?stType=1&userID=" + driverStatement.getUserID() + "&s_id=" + driverStatement.getId();
 
-            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, delObj, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
 
-                    Toast.makeText(getApplicationContext(), "განცხადება წაიშალა!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "წაიშალა!", Toast.LENGTH_SHORT).show();
 
                     DBmanager.initialaize(getApplicationContext());
                     DBmanager.openWritable();

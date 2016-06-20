@@ -212,28 +212,19 @@ public class DetailPagePassanger extends ActionBarActivity {
             // serverze gaushvebt gancx ID-s wasashlelad
             // da dadebiti pasuxis shemtxvevashi lokaluradac wavshlit
 
-            JSONObject delObj = new JSONObject();
-
-            try {
-                delObj.put("user_id", passangerStatement.getUserID());
-                delObj.put("s_id", passangerStatement.getId());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-            String url = "http://back.meet.ge/get.php?type=DELETE&sub_type=2";
+            String url = "http://geolab.club/geolabwork/kartlos/delete_st.php?stType=2&userID=" + passangerStatement.getUserID() + "&s_id=" + passangerStatement.getId();
 
-            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, delObj, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
 
-                    Toast.makeText(getApplicationContext(), "განცხადება წაიშალა!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "წაიშალა!", Toast.LENGTH_SHORT).show();
 
                     DBmanager.initialaize(getApplicationContext());
                     DBmanager.openWritable();
-                    DBmanager.deleteDriverStatement(passangerStatement.getId());
+                    DBmanager.deletePassangerStatement(passangerStatement.getId());
                     DBmanager.close();
 
                     Intent toMyPage = new Intent(getApplicationContext(), MyStatements.class);

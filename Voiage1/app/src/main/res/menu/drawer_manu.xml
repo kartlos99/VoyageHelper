@@ -26,12 +26,18 @@
             android:icon="@drawable/ic_list_black_24dp"
             android:title="@string/manu_mystatm" />
 
-
         <item
             android:id="@+id/manuPrivit"
             android:checked="false"
             android:icon="@drawable/ic_info_outline_black_24dp"
             android:title="@string/manu_privit_info" />
+
+        <item
+            android:id="@+id/manuFBlogin"
+            android:checked="false"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="@string/manu_FBlogin" />
+
         <item
             android:id="@+id/manuExit"
             android:checked="false"

@@ -3,6 +3,7 @@
     package="diakonidze.kartlos.voiage" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,12 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="eIHidvQ1zFhfFjhapAMF5IMsSBM43F83x4RYQAaP" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="UFDZAIgmydGebmxYwbyauLpHUZSoW8kmQY9l91hf" />
 
         <activity
             android:name=".MainActivity"
